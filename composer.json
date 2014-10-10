@@ -1,7 +1,7 @@
 {
 	"name": "mdmsoft/yii2-application",
-	"description": "Simple ERP",
-	"keywords": ["yii2", "ERP"],
+	"description": "Yii2 application template",
+	"keywords": ["yii2", "Application"],
 	"homepage": "http://www.sangkilsoft.com/",
 	"type": "project",
 	"license": "BSD-3-Clause",
