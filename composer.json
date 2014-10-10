@@ -1,0 +1,45 @@
+{
+	"name": "mdmsoft/yii2-application",
+	"description": "Simple ERP",
+	"keywords": ["yii2", "ERP"],
+	"homepage": "http://www.sangkilsoft.com/",
+	"type": "project",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Misbahul Munir",
+			"email": "misbahuldmunir@gmail.com",
+			"role": "Core project development"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/mdmsoft/yii2-application/issues?page=1&state=open",
+		"source": "https://github.com/mdmsoft/yii2-application"
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"php": ">=5.4.0",
+		"yiisoft/yii2": "*",
+		"bower-asset/admin-lte": "1.3"
+	},
+	"require-dev": {
+		"yiisoft/yii2-debug": "*",
+		"yiisoft/yii2-gii": "*",
+		"yiisoft/yii2-codeception": "*"
+	},
+	"suggest": {
+		"codeception/codeception": "Codeception, 1.8.*@dev is currently works well with Yii.",
+		"codeception/specify": "BDD style code blocks for PHPUnit and Codeception",
+		"codeception/verify": "BDD Assertions for PHPUnit and Codeception",
+		"yiisoft/yii2-faker": "Fixtures generator for Yii2 based on Faker lib"
+	},
+	"config": {
+		"process-timeout": 1800
+	},
+	"extra": {
+		"asset-installer-paths": {
+			"npm-asset-library": "vendor/npm",
+			"bower-asset-library": "vendor/bower"
+		}
+	}
+}
