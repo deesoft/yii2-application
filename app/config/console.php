@@ -14,6 +14,8 @@ return [
         'migrate'=>[
             'class'=>'app\commands\MigrateController',
             'migrationLookup'=>[
+                '@yii/rbac/migrations',
+                '@mdm/admin/migrations',
             ]
         ]
     ],

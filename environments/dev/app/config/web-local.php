@@ -2,6 +2,7 @@
 
 $config = [
     'modules' => [
+        'admin' => 'mdm\admin\Module'
     ],
     'components' => [
         'assetManager' => [
