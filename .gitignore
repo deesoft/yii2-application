@@ -23,7 +23,7 @@ composer.phar
 composer.lock
 
 # yii console
-yii
+/yii
 
 # Mac DS_Store Files
 .DS_Store
