@@ -8,26 +8,24 @@ use yii\helpers\ArrayHelper;
 /**
  * Description of MigrateController
  *
- * @author Misbahul D Munir (mdmunir) <misbahuldmunir@gmail.com>
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  */
 class MigrateController extends \yii\console\controllers\MigrateController
 {
     /**
-     *
      * @var array
      */
     public $migrationLookup = [];
 
     /**
-     *
      * @var array
      */
-    private $_migrationPaths;
+    private $_migrationFiles;
 
-    protected function getMigrationPaths()
+    protected function getMigrationFiles()
     {
-        if ($this->_migrationPaths === null) {
-            $this->_migrationPaths = [];
+        if ($this->_migrationFiles === null) {
+            $this->_migrationFiles = [];
             $directories = array_merge($this->migrationLookup, [$this->migrationPath]);
             $extraPath = ArrayHelper::getValue(Yii::$app->params, 'yii.migrations');
             if (!empty($extraPath)) {
@@ -44,22 +42,22 @@ class MigrateController extends \yii\console\controllers\MigrateController
                         }
                         $path = $dir . DIRECTORY_SEPARATOR . $file;
                         if (preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches) && is_file($path)) {
-                            $this->_migrationPaths[$matches[1]] = $path;
+                            $this->_migrationFiles[$matches[1]] = $path;
                         }
                     }
                     closedir($handle);
                 }
             }
 
-            ksort($this->_migrationPaths);
+            ksort($this->_migrationFiles);
         }
 
-        return $this->_migrationPaths;
+        return $this->_migrationFiles;
     }
 
     protected function createMigration($class)
     {
-        $file = $this->getMigrationPaths()[$class];
+        $file = $this->getMigrationFiles()[$class];
         require_once($file);
 
         return new $class(['db' => $this->db]);
@@ -73,7 +71,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         }
 
         $migrations = [];
-        foreach ($this->getMigrationPaths() as $version => $path) {
+        foreach ($this->getMigrationFiles() as $version => $path) {
             if (!isset($applied[substr($version, 1, 13)])) {
                 $migrations[] = $version;
             }
