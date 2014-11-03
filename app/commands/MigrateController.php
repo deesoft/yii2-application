@@ -7,7 +7,21 @@ use yii\helpers\ArrayHelper;
 use yii\console\Exception;
 
 /**
- * Description of MigrateController
+ * MigrateController
+ * Use at application config
+ * 
+ * ~~~
+ * 'controlerMap' => [
+ *     'migrate' => [
+ *         'class' => 'app\commands\MigrateController',
+ *         'migrationLookup' => [
+ *             '@yii/rbac/migrations',
+ *             '@mdm/autonumber/migrations',
+ *             '@mdm/upload/migrations',
+ *         ]
+ *     ]
+ * ]
+ * ~~~
  *
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
