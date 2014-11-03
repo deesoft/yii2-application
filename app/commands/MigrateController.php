@@ -22,7 +22,7 @@ use yii\console\Exception;
  *     ]
  * ]
  * ~~~
- *
+ * 
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
  */
