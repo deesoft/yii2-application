@@ -1,19 +1,19 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Inflector;
 use yii\widgets\Breadcrumbs;
+use dee\easyui\EasyuiAsset;
+use dee\easyui\NavTree;
 
 /**
  * @var \yii\web\View $this
  * @var string $content
  */
-
-$asset = app\assets\AppAsset::register($this);
+EasyuiAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" manifest="<?= isset($this->context->manifestFile) ? $this->context->manifestFile : '' ?>">
+<html>
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,13 +22,22 @@ $asset = app\assets\AppAsset::register($this);
         <?php $this->head() ?>
     </head>
     <?php $this->beginBody() ?>
-    <body class="skin-blue fixed">
-        <header class="header">
-            <?php echo $this->render('heading', ['baseurl' => $asset->baseUrl]); ?>
-        </header>
-        <div class="wrapper row-offcanvas row-offcanvas-left">
-            <aside class="right-side">
-                <section class="content-header">
+    <body class="easyui-layout" style="text-align:left">
+        <div region="north" border="false" style="background:#666;text-align:center">
+        </div>
+        <div region="west" split="true" title="Plugins" style="width:250px;padding:5px;">
+            <?php
+            $items = [];
+            ?>
+            <?=
+            NavTree::widget([
+                'items' => $items,
+            ]);
+            ?>
+        </div>
+        <div region="center">
+            <div class="easyui-layout" data-options="fit:true">
+                <div region="north" border="false" style="height: 80px;">
                     <h1>
                         <?= '&nbsp;' . Html::encode($this->title) ?>
                         <small><?php echo \Yii::$app->controller->id . '-' . \Yii::$app->controller->action->id; ?></small>
@@ -43,30 +52,19 @@ $asset = app\assets\AppAsset::register($this);
                     ?>
                     <?=
                     Breadcrumbs::widget([
-                        'tag'=>'ol',
-                        'encodeLabels'=>false,
-                        'homeLink'=>['label'=>'<i class="fa fa-dashboard"></i> Home/Dashboard','url'=>['/site/index']],
+                        'tag' => 'ol',
+                        'encodeLabels' => false,
+                        'homeLink' => ['label' => '<i class="fa fa-dashboard"></i> Home/Dashboard', 'url' => ['/site/index']],
                         'links' => $breadcrumbs,
                     ])
                     ?>
-                </section>
-                <section class="content">
-                    <?= $content ?>
-                </section>
-            </aside>
-            <aside class="left-side sidebar-offcanvas">
-                <?php echo $this->render('sidebar', ['baseurl' => $asset->baseUrl]); ?>
-            </aside>
+                </div>
+                <div region="center">
+                    <?= $content; ?>
+                </div>
+            </div>
         </div>
-
-        <!--        <footer class="footer">
-                    <div class="container">
-                        <p class="pull-left">&copy; My Company <?= ''//date('Y')              ?></p>
-                        <p class="pull-right"><?= ''//Yii::powered()              ?></p>
-                    </div>
-                </footer>-->
-    </div>
-    <?php $this->endBody() ?>
-</body>
+        <?php $this->endBody() ?>
+    </body>
 </html>
 <?php $this->endPage() ?>
