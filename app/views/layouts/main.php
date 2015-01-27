@@ -10,6 +10,7 @@ use dee\easyui\NavTree;
  * @var string $content
  */
 EasyuiAsset::register($this);
+app\assets\AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -20,14 +21,72 @@ EasyuiAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <style>
+            .breadcrumb {
+                background-color: #f5f5f5;
+                border-radius: 4px;
+                list-style: outside none none;
+                margin-bottom: 20px;
+                padding: 8px 15px;
+            }
+        </style>
     </head>
     <?php $this->beginBody() ?>
     <body class="easyui-layout" style="text-align:left">
         <div region="north" border="false" style="background:#666;text-align:center">
+            <div id="header-inner">
+                <table cellpadding="0" cellspacing="0" style="width:100%;">
+                    <tr>
+                        <td rowspan="2" style="width:20px;">
+                        </td>
+                        <td style="height:52px;">
+                            <div style="color:#fff;font-size:22px;font-weight:bold;">
+                                <?= Html::a(Html::encode(Yii::$app->name), ['/site/index']) ?>
+                            </div>
+                            <div style="color:#fff">
+                                <a href="/index.php" style="color:#fff;text-decoration:none">easyui helps you build your web pages easily!</a>
+                            </div>
+                        </td>
+                        <td style="padding-right:5px;text-align:right;vertical-align:bottom;">
+                            <div id="topmenu">
+                                <?php
+                                $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [];
+                                foreach (Yii::$app->controller->modules as $module) {
+                                    if ($module != Yii::$app) {
+                                        array_unshift($breadcrumbs, ['label' => Inflector::camel2words($module->id), 'url' => ['/' . $module->uniqueId]]);
+                                    }
+                                }
+                                ?>
+                                <?=
+                                Breadcrumbs::widget([
+                                    'tag' => 'ol',
+                                    'encodeLabels' => false,
+                                    'homeLink' => ['label' => '<i class="fa fa-dashboard"></i> Home/Dashboard', 'url' => ['/site/index']],
+                                    'links' => $breadcrumbs,
+                                ])
+                                ?>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div region="west" split="true" title="Plugins" style="width:250px;padding:5px;">
+        <div region="west" split="true" title="Nav" style="width:250px;padding:5px;">
             <?php
-            $items = [];
+            $items = [
+                'satu',
+                [
+                    'label' => 'dua',
+                    'items' => [
+                        'dua-satu',
+                        'dua-dua'
+                    ]
+                ],
+                [
+                    'label' => 'tiga',
+                    'url' => ['tiga']
+                ]
+            ];
             ?>
             <?=
             NavTree::widget([
@@ -36,33 +95,7 @@ EasyuiAsset::register($this);
             ?>
         </div>
         <div region="center">
-            <div class="easyui-layout" data-options="fit:true">
-                <div region="north" border="false" style="height: 80px;">
-                    <h1>
-                        <?= '&nbsp;' . Html::encode($this->title) ?>
-                        <small><?php echo \Yii::$app->controller->id . '-' . \Yii::$app->controller->action->id; ?></small>
-                    </h1>
-                    <?php
-                    $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [];
-                    foreach (Yii::$app->controller->modules as $module) {
-                        if ($module != Yii::$app) {
-                            array_unshift($breadcrumbs, ['label' => Inflector::camel2words($module->id), 'url' => ['/' . $module->uniqueId]]);
-                        }
-                    }
-                    ?>
-                    <?=
-                    Breadcrumbs::widget([
-                        'tag' => 'ol',
-                        'encodeLabels' => false,
-                        'homeLink' => ['label' => '<i class="fa fa-dashboard"></i> Home/Dashboard', 'url' => ['/site/index']],
-                        'links' => $breadcrumbs,
-                    ])
-                    ?>
-                </div>
-                <div region="center">
-                    <?= $content; ?>
-                </div>
-            </div>
+            <?= $content; ?>
         </div>
         <?php $this->endBody() ?>
     </body>

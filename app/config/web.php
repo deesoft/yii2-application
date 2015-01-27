@@ -30,13 +30,6 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@app/views/layouts' => '@dee/easyui/views/layouts',
-                ]
-            ]
-        ]
     ],
     'params' => $params,
 ];
