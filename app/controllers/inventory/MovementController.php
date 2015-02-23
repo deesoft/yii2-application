@@ -8,7 +8,7 @@ use app\models\inventory\searchs\GoodsMovement as GoodsMovementSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use biz\core\inventory\components\GoodsMovement as ApiMovement;
+use biz\core\components\inventory\GoodsMovement as ApiMovement;
 use yii\helpers\ArrayHelper;
 use app\models\inventory\GoodsMovementDtl;
 use biz\core\base\Configs;

@@ -8,7 +8,7 @@ use app\models\inventory\searchs\Transfer as TransferSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use biz\core\inventory\components\Transfer as ApiTransfer;
+use biz\core\components\inventory\Transfer as ApiTransfer;
 
 /**
  * MovementController implements the CRUD actions for Transfer model.

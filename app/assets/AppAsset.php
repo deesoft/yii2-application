@@ -15,8 +15,20 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $baseUrl = '@web/css';
+    public $sourcePath = '@bower/admin-lte';
     public $css = [
-        'main.css',
+        'css/bootstrap.min.css',
+        'css/font-awesome.min.css',
+        'css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
+        'css/AdminLTE.css'
+    ];
+    public $js = [
+        'js/bootstrap.min.js',
+        'js/AdminLTE/app.js',
+        //'js/plugins/fullcalendar/fullcalendar.min.js'
+        //'js/AdminLTE/demo.js'
+    ];
+    public $depends = [
+        'yii\web\YiiAsset',
     ];
 }

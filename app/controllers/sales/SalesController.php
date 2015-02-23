@@ -8,7 +8,7 @@ use app\models\sales\searchs\Sales as SalesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use biz\core\sales\components\Sales as ApiSales;
+use biz\core\components\sales\Sales as ApiSales;
 
 /**
  * SalesController implements the CRUD actions for Sales model.

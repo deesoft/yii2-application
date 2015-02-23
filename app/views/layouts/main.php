@@ -1,68 +1,64 @@
 <?php
 
 use yii\helpers\Html;
-use dee\easyui\EasyuiAsset;
-use dee\easyui\NavTree;
+use yii\helpers\Inflector;
+use yii\widgets\Breadcrumbs;
+use app\components\Alert;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-EasyuiAsset::register($this);
 app\assets\AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?= Yii::$app->language ?>" manifest="<?= isset($this->context->manifestFile) ? $this->context->manifestFile : '' ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-        <style>
-            .breadcrumb {
-                background-color: #f5f5f5;
-                border-radius: 4px;
-                list-style: outside none none;
-                margin-bottom: 20px;
-                padding: 8px 15px;
-            }
-        </style>
     </head>
     <?php $this->beginBody() ?>
-    <body class="easyui-layout" style="background: #eee;text-align:left;">
-        <div region="north" border="false" style="background:#3c8dbc;height: 70px;">
-            <h2>
-                <?= Html::a(Yii::$app->name, Yii::$app->homeUrl) ?>
-            </h2>
+    <body class="skin-blue">
+        <header class="header">
+            <?php echo $this->render('heading'); ?>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <aside class="right-side">
+                <section class="content-header">
+                    <h1>
+                        <?= '&nbsp;' . Html::encode($this->title) ?>
+                        <small></small>
+                    </h1>
+                    <?php
+                    $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [];
+                    foreach (Yii::$app->controller->modules as $module) {
+                        if ($module != Yii::$app) {
+                            array_unshift($breadcrumbs, ['label' => Inflector::camel2words($module->id), 'url' => ['/' . $module->uniqueId]]);
+                        }
+                    }
+                    ?>
+                    <?=
+                    Breadcrumbs::widget([
+                        'tag'=>'ol',
+                        'encodeLabels'=>false,
+                        'homeLink'=>['label'=>'<i class="fa fa-dashboard"></i> Home/Dashboard','url'=>['/site/index']],
+                        'links' => $breadcrumbs,
+                    ])
+                    ?>
+                </section>
+                <section class="content">
+                    <?= Alert::widget() ?>
+                    <?= $content ?>
+                </section>
+            </aside>            
+            <aside class="left-side sidebar-offcanvas">
+                <?php echo $this->render('sidebar'); ?>
+            </aside>
         </div>
-        <div region="west" title="Nav" style="width:250px;padding:5px;">
-            <?php
-            $items = [
-                'satu',
-                [
-                    'label' => 'dua',
-                    'items' => [
-                        'dua-satu',
-                        'dua-dua'
-                    ]
-                ],
-                [
-                    'label' => 'tiga',
-                    'url' => ['tiga']
-                ]
-            ];
-            ?>
-            <?=
-            NavTree::widget([
-                'items' => $items,
-            ]);
-            ?>
-        </div>
-        <div region="center" style="padding-left: 20px;padding-top: 10px;">
-            <?= $content; ?>
-        </div>
-        <?php $this->endBody() ?>
-    </body>
+    <?php $this->endBody() ?>
+</body>
 </html>
 <?php $this->endPage() ?>

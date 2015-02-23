@@ -8,7 +8,7 @@ use app\models\accounting\searchs\Invoice as InvoiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use biz\core\accounting\components\Invoice as ApiInvoice;
+use biz\core\components\accounting\Invoice as ApiInvoice;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.

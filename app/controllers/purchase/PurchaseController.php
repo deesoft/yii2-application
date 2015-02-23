@@ -4,11 +4,9 @@ namespace app\controllers\purchase;
 
 use Yii;
 use app\models\purchase\Purchase;
-use app\models\purchase\searchs\Purchase as PurchaseSearch;
-use yii\web\Controller;
+use dee\angular\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use biz\core\purchase\components\Purchase as ApiPurchase;
+use dee\angular\tools\DataSource;
 
 /**
  * PurchaseController implements the CRUD actions for Purchase model.
@@ -16,15 +14,10 @@ use biz\core\purchase\components\Purchase as ApiPurchase;
 class PurchaseController extends Controller
 {
 
-    public function behaviors()
+    protected function verbs()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        return[
+            'delete' => ['post'],
         ];
     }
 
@@ -34,13 +27,15 @@ class PurchaseController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PurchaseSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index');
+    }
 
-        return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
+    public function actionList()
+    {
+        $dataSource = new DataSource([
+            'query' => Purchase::find(),
         ]);
+        return $dataSource->search(Yii::$app->request->getQueryParams());
     }
 
     /**
@@ -50,9 +45,7 @@ class PurchaseController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-                'model' => $this->findModel($id),
-        ]);
+        return $this->findModel($id);
     }
 
     /**
@@ -65,31 +58,20 @@ class PurchaseController extends Controller
         $model = new Purchase([
             'branch_id' => 1
         ]);
-        $api = new ApiPurchase([
-            'modelClass' => Purchase::className(),
-        ]);
-
-        if ($model->load(Yii::$app->request->post())) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $data = $model->attributes;
-                $data['details'] = Yii::$app->request->post('PurchaseDtl', []);
-                $model = $api->create($data, $model);
-                if (!$model->hasErrors()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    $transaction->rollBack();
-                }
-            } catch (\Exception $e) {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->load(Yii::$app->request->post());
+            if ($model->save()) {
+                $transaction->commit();
+            } else {
                 $transaction->rollBack();
-                throw $e;
             }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $model->addError('', $e->getMessage());
         }
-        return $this->render('create', [
-                'model' => $model,
-                'details' => $model->purchaseDtls
-        ]);
+
+        return $model;
     }
 
     /**
@@ -101,31 +83,21 @@ class PurchaseController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $api = new ApiPurchase([
-            'modelClass' => Purchase::className(),
-        ]);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $data = $model->attributes;
-                $data['details'] = Yii::$app->request->post('PurchaseDtl', []);
-                $model = $api->update($id, $data, $model);
-                if (!$model->hasErrors()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    $transaction->rollBack();
-                }
-            } catch (\Exception $e) {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->load(Yii::$app->request->post());
+            if ($model->save()) {
+                $transaction->commit();
+            } else {
                 $transaction->rollBack();
-                throw $e;
             }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $model->addError('', $e->getMessage());
         }
-        return $this->render('update', [
-                'model' => $model,
-                'details' => $model->purchaseDtls
-        ]);
+
+        return $model;
     }
 
     public function actionReceive($id)
@@ -142,11 +114,7 @@ class PurchaseController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $api = new ApiPurchase([
-            'modelClass' => Purchase::className(),
-        ]);
-        $api->delete($id, $model);
-        return $this->redirect(['index']);
+        return $model->delete();
     }
 
     /**

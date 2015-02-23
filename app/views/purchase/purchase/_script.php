@@ -1,151 +1,106 @@
+<?php
+
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+?>
 <script>
-    biz.purchase = (function($) {
-        var local = {
-            applyProduct: function($row, item, sel_uom) {
-                $row.find('span.product').text(item.cd + ' ' + item.text);
-                $row.find('input[data-field="product_id"]').val(item.id);
+    var dApp = angular.module('dApp', [
+        'ngRoute',
+        'dControllers',
+        'ui.bootstrap',
+    ]);
 
-                // apply uoms
-                var $select = $row.find('select[data-field="uom_id"]').html('');
-                $.each(item.uoms, function() {
-                    var $opt = $('<option>').val(this.id).text(this.nm).attr('data-isi', this.isi);
-                    if (sel_uom !== undefined && sel_uom == this.id) {
-                        $opt.prop('selected', true);
-                    }
-                    $select.append($opt);
-                });
-            },
-            addItem: function(item) {
-                var has = false;
-                $.each($('#detail-grid').mdmTabularInput('getAllRows'), function() {
-                    var $row = $(this);
-                    if ($row.find('input[data-field="product_id"]').val() == item.id) {
-                        has = true;
-                        var $qty = $row.find('input[data-field="qty"]');
-                        $qty.val($qty.val() == '' ? '2' : $qty.val() * 1 + 1);
-                    }
-                });
-                if (!has) {
-                    var $row = $('#detail-grid').mdmTabularInput('addRow');
+    var globalData = globalData || {};
 
-                    local.applyProduct($row, item);
-                    $row.find('input[data-field="qty"]').val('1');
-                    $('#detail-grid').mdmTabularInput('selectRow', $row);
-                    $row.find('input[data-field="qty"]').focus();
+    dApp.config(['$routeProvider',
+        function ($routeProvider) {
+            $routeProvider.
+                when('/view/:id', {
+                    templateUrl: '<?= Url::to(['partial', 'view' => 'view']) ?>',
+                    controller: 'ViewCtrl'
+                }).
+                when('/edit/:id', {
+                    templateUrl: '<?= Url::to(['partial', 'view' => 'edit']) ?>',
+                    controller: 'EditCtrl'
+                }).
+                when('/create', {
+                    templateUrl: '<?= Url::to(['partial', 'view' => 'create']) ?>',
+                    controller: 'CreateCtrl'
+                }).
+                when('/:page', {
+                    templateUrl: '<?= Url::to(['partial', 'view' => 'list']) ?>',
+                    controller: 'ListCtrl'
+                }).
+                otherwise({
+                    templateUrl: '<?= Url::to(['partial', 'view' => 'list']) ?>',
+                    controller: 'ListCtrl'
+                });
+        }]);
+    // controllers
+    var dControllers = angular.module('dControllers', []);
+    dControllers.controller('ListCtrl', ['$scope', '$http', '$routeParams',
+        function ($scope, $http, $routeParams) {
+            $http.get('<?= Url::to(['list']) ?>', {
+                params: {page: $routeParams.page}
+            }).success(function (data, status, headers) {
+                $scope.rows = data;
+                $scope.status = status;
+                $scope.headers = headers;
+            });
+        }]);
+    dControllers.controller('ViewCtrl', ['$scope', '$http', '$routeParams',
+        function ($scope, $http, $routeParams) {
+            $http.get('<?= Url::to(['view']) ?>', {
+                params: {
+                    id: $routeParams.id,
+                    expand: 'details,supplier,branch'
                 }
-                local.normalizeItem();
-            },
-            normalizeItem: function() {
-                var total = 0.0;
-                $.each($('#detail-grid').mdmTabularInput('getAllRows'), function() {
-                    var $row = $(this);
-                    var q = $row.find('input[data-field="qty"]').val();
-                    q = (q == '' ? 1 : q);
-                    var isi = $row.find('[data-field="uom_id"] > :selected').data('isi');
-                    isi = isi ? isi : 1;
-                    var t = isi * q * $row.find('input[data-field="price"]').val();
-                    $row.find('span.total-price').text(biz.format(t));
-                    $row.find('input[data-field="total_price"]').val(t);
-                    total += t;
-                });
-                $('#purchase-value').val(total);
-                $('#total-price').text(biz.format(total));
-            },
-            showDiscount: function() {
-                var purch_val = $('#purchase-value').val();
-                var disc_val = $('#item-discount').val();
-                if (disc_val * 1 != 0) {
-                    $('#bfore').show();
-                    var disc_val = purch_val * disc_val * 0.01;
-                    $('#purchase-val').text(biz.format(purch_val));
-                    $('#disc-val').text(biz.format(disc_val));
-                    $('#total-price').text(biz.format(purch_val - disc_val));
-                } else {
-                    $('#total-price').text(biz.format(purch_val));
-                    $('#bfore').hide();
+            }).success(function (data) {
+                $scope.model = data;
+            });
+        }]);
+    dControllers.controller('EditCtrl', ['$scope', '$http', '$routeParams',
+        function ($scope, $http, $routeParams) {
+            $http.get('<?= Url::to(['view']) ?>', {
+                params: {
+                    id: $routeParams.id,
+                    expand: 'details,supplier,branch'
                 }
-            },
-            onProductChange: function() {
-                var item = biz.master.searchProductByCode(this.value);
-                if (item !== false) {
-                    local.addItem(item);
-                }
-                this.value = '';
-                $(this).autocomplete("close");
-            },
-        }
-        var pub = {
-            onReady: function() {
-                $('#detail-grid')
-                    .off('keydown.purchase', ':input[data-field]')
-                    .on('keydown.purchase', ':input[data-field]', function(e) {
-                        if (e.keyCode == 13) {
-                            var $this = $(this);
-                            var $inputs = $this.closest('tr').find(':input:visible[data-field]');
-                            var idx = $inputs.index(this);
-                            if (idx >= 0) {
-                                if (idx < $inputs.length - 1) {
-                                    $inputs.eq(idx + 1).focus();
-                                } else {
-                                    $('#product').focus();
-                                }
-                            }
-                        }
-                    });
-                    
-                var clicked = false;
-                $('#detail-grid')
-                    .off('click.purchase, focus.purchase', 'input[data-field]')
-                    .on('click.purchase, focus.purchase', 'input[data-field]', function(e) {
-                        if (e.type == 'click') {
-                            clicked = true;
-                        } else {
-                            if (!clicked) {
-                                $(this).select();
-                            }
-                            clicked = false;
-                        }
-                    });
+            }).success(function (data) {
+                $scope.model = data;
+            });
 
-                $('#product').change(local.onProductChange);
-                $('#product').focus();
-                $('#product').data('ui-autocomplete')._renderItem = biz.global.renderItem;
-                
-                $('#detail-grid').on('change','[data-field]',function(){
-                    local.normalizeItem();
-                });
-                
-                local.showDiscount();
-                $('#item-discount').change(local.showDiscount);
-
-                $(window).keydown(function(event) {
-                    if (event.keyCode == 13) {
-                        var $target = $(event.target);
-                        if ($target.is('#product') || $target.is('#purchasehdr-item_discount')) {
-                            $target.change();
-                        } else {
-                            event.preventDefault();
-                        }
-                        return false;
+            $scope.save = function () {
+                $http.post('<?= Url::to(['update']) ?>', $scope.model, {
+                    params: {
+                        id: $routeParams.id,
                     }
                 });
-
-                // inisialisasi uom
-                $.each($('#detail-grid').mdmTabularInput('getAllRows'), function() {
-                    var $row = $(this);
-                    var product = biz.master.products[$row.find('[data-field="product_id"]').val()];
-                    if (product) {
-                        local.applyProduct($row, product, $row.find('[data-field="sel_uom_id"]').val());
-                    }
-                });
-
-                $('#detail-grid').mdmNumericInput('input[data-field]');
-                local.normalizeItem();
-            },
-            onProductSelect: function(event, ui) {
-                local.addItem(ui.item);
             }
-        };
-        return pub;
-    })(window.jQuery);
+
+            $http.get('<?= Url::to(['/masters']) ?>', {
+                params: {masters: ['products', 'suppliers']}
+            }).success(function (masters) {
+                $scope.masters = masters;
+            });
+            
+        }]);
+    dControllers.controller('CreateCtrl', ['$scope', '$http',
+        function ($scope, $http) {
+            $scope.model = {
+                number: 'xxx',
+                date: '2015-02-01'
+            };
+
+            $scope.save = function () {
+                $http.post('<?= Url::to(['create']) ?>', $scope.model);
+            }
+
+            $http.get('<?= Url::to(['/masters']) ?>', {
+                params: {masters: ['products', 'suppliers']}
+            }).success(function (masters) {
+                $scope.masters = masters;
+            });
+        }]);
 </script>

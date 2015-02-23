@@ -90,4 +90,13 @@ class Purchase extends \biz\core\models\purchase\Purchase
             ],
         ]);
     }
+    
+    public function extraFields()
+    {
+        return[
+            'details'=>'purchaseDtls',
+            'supplier',
+            'branch'
+        ];
+    }
 }

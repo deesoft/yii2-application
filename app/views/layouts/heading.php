@@ -98,7 +98,7 @@ use yii\helpers\Html;
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header bg-light-blue">
-                        <img src="<?= $baseurl ?>/img/avatar04.png" class="img-circle" alt="User Image" />
+                        <img src="/img/avatar04.png" class="img-circle" alt="User Image" />
                         <p>
                             <?php echo (!Yii::$app->user->isGuest) ? Yii::$app->user->identity->username : 'Guest'; ?> - Web Developer
                             <small>Member since Nov. 2012</small>

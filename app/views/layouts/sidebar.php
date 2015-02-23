@@ -9,7 +9,7 @@ use mdm\admin\components\MenuHelper;
     <!-- Sidebar user panel -->
     <div class="user-panel">
         <div class="pull-left image">
-            <img src="<?= $baseurl ?>/img/avatar04.png" class="img-circle" alt="User Image" />
+            <img src="/img/avatar04.png" class="img-circle" alt="User Image" />
         </div>
         <div class="pull-left info">
             <p>Hello, <?php echo (!Yii::$app->user->isGuest) ? Yii::$app->user->identity->username : 'Guest'; ?></p>
@@ -79,7 +79,7 @@ use mdm\admin\components\MenuHelper;
 //            ]],
 //    ];
 
-    $menuCallback = function ($menu) {
+    $menuCallback = function($menu) {
         $item = [
             'label' => $menu['name'],
             'url' => MenuHelper::parseRoute($menu['route']),
@@ -92,12 +92,11 @@ use mdm\admin\components\MenuHelper;
         if ($menu['children'] != []) {
             $item['items'] = $menu['children'];
         }
-
         return $item;
     };
 
-    //$items = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $menuCallback);
-    $items = [];
+    $items = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $menuCallback);
+    //$items = [];
     echo SideMenu::widget([
         'items' => $items,
     ]);
