@@ -21,8 +21,8 @@ class Purchase extends \biz\core\models\purchase\Purchase
     {
         $rules = parent::rules();
         return array_merge([
-            [['nmSupplier', 'Date'], 'required'],
-            [['nmSupplier'], 'in', 'range' => Supplier::find()->select('name')->column()],
+//            [['nmSupplier', 'Date'], 'required'],
+//            [['nmSupplier'], 'in', 'range' => Supplier::find()->select('name')->column()],
             ], $rules);
     }
 

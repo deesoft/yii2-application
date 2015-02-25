@@ -25,13 +25,14 @@ class Helper
 
     public static function getMasters($masters)
     {
+        
         $masters = array_flip($masters);
         $result = [];
 
         // master product
         if (isset($masters['products'])) {
             $query_product = Product::find()
-                ->select(['id', 'cd' => 'code', 'text' => 'name', 'label' => 'name'])
+                ->select(['id', 'code', 'name'])
                 ->andWhere(['status' => Product::STATUS_ACTIVE])
                 ->indexBy('id')
                 ->asArray();
@@ -39,17 +40,17 @@ class Helper
             $products = $query_product->all();
 
             $query_uom = ProductUom::find()
-                ->select(['pu.product_id', 'pu.uom_id', 'pu.isi', 'uom_nm' => 'u.name'])
+                ->select(['pu.product_id', 'pu.uom_id', 'pu.isi', 'u.name'])
                 ->from(ProductUom::tableName() . ' pu')
                 ->joinWith(['uom' => function($q) {
-                    $q->from(Uom::tableName() . ' u');
-                }])
+                        $q->from(Uom::tableName() . ' u');
+                    }])
                 ->orderBy(['pu.product_id' => SORT_ASC, 'pu.isi' => SORT_ASC])
                 ->asArray();
             foreach ($query_uom->all() as $row) {
                 $products[$row['product_id']]['uoms'][] = [
                     'id' => $row['uom_id'],
-                    'nm' => $row['uom_nm'],
+                    'name' => $row['name'],
                     'isi' => $row['isi']
                 ];
             }
@@ -92,7 +93,7 @@ class Helper
         // customer
         if (isset($masters['customers'])) {
             $result['customers'] = Customer::find()
-                    ->select(['id', 'label' => 'name'])
+                    ->select(['id', 'name'])
                     ->asArray()->all();
         }
 
@@ -134,5 +135,54 @@ class Helper
                     ->asArray()->all();
         }
         return $result;
+    }
+
+    public static function getProducts()
+    {
+        $query_product = Product::find()
+            ->select(['id', 'code', 'name'])
+            ->andWhere(['status' => Product::STATUS_ACTIVE])
+            ->indexBy('id')
+            ->orderBy('id')
+            ->asArray();
+
+        $products = $query_product->all();
+
+        $query_uom = ProductUom::find()
+            ->select(['pu.product_id', 'pu.uom_id', 'pu.isi', 'u.name'])
+            ->from(ProductUom::tableName() . ' pu')
+            ->joinWith(['uom' => function($q) {
+                    $q->from(Uom::tableName() . ' u');
+                }])
+            ->orderBy(['pu.product_id' => SORT_ASC, 'pu.isi' => SORT_ASC])
+            ->asArray();
+        foreach ($query_uom->all() as $row) {
+            $products[$row['product_id']]['uoms'][] = [
+                'id' => $row['uom_id'],
+                'name' => $row['name'],
+                'isi' => $row['isi']
+            ];
+        }
+        return $products;
+    }
+
+    public function getBarcodes()
+    {
+        $barcodes = [];
+        $query_barcode = ProductChild::find()
+            ->select(['barcode' => 'lower(barcode)', 'id' => 'product_id'])
+            ->union(Product::find()->select(['lower(code)', 'id']))
+            ->asArray();
+        foreach ($query_barcode->all() as $row) {
+            $barcodes[$row['barcode']] = $row['id'];
+        }
+        return $barcodes;
+    }
+
+    public static function getSuppliers()
+    {
+        return Supplier::find()
+                ->select(['id', 'name'])
+                ->asArray()->all();
     }
 }

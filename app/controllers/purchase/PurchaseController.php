@@ -60,7 +60,8 @@ class PurchaseController extends Controller
         ]);
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            $model->load(Yii::$app->request->post());
+            $model->load(Yii::$app->request->post(),'');
+            $model->purchaseDtls = Yii::$app->request->post('details', []);
             if ($model->save()) {
                 $transaction->commit();
             } else {
@@ -86,7 +87,10 @@ class PurchaseController extends Controller
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            $model->load(Yii::$app->request->post());
+            $model->load(Yii::$app->request->post(),'');
+            if (($details = Yii::$app->request->post('details')) !== null) {
+                $model->purchaseDtls = $details;
+            }
             if ($model->save()) {
                 $transaction->commit();
             } else {
