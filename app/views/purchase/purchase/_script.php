@@ -43,8 +43,9 @@ use yii\helpers\Url;
                     });
             } else {
                 $scope.masters.products = Object.keys(ns.masters.products).map(function (key) {
-                            return ns.masters.products[key];
-                        });;
+                    return ns.masters.products[key];
+                });
+                ;
                 $scope.masters.suppliers = ns.masters.suppliers;
             }
 
@@ -56,16 +57,7 @@ use yii\helpers\Url;
                 $scope.model = {
                     details: [],
                 }
-                $scope.save = function () {
-                    $scope.model.supplier_id = $scope.model.supplier.id;
-                    $http.post('<?= Url::to(['create']) ?>', $scope.model)
-                        .success(function (data, status) {
-                            if (status == 200) {
-                                window.location.hash = '#/view/' + data.id;
-                            }
-                        });
-                }
-
+                $scope.saveUrl = '<?= Url::to(['create']) ?>';
             } else {
                 $http.get('<?= Url::to(['view']) ?>', {
                     params: {
@@ -78,17 +70,21 @@ use yii\helpers\Url;
                     ns.ensureProduct();
                     $scope.model = data;
                 });
+                $scope.paramId = $routeParams.id;
+                $scope.saveUrl = '<?= Url::to(['update']) ?>';
+            }
 
-                $scope.save = function () {
-                    $http.post('<?= Url::to(['update']) ?>', $scope.model, {
-                        params: {id: $routeParams.id, }
-                    })
-                        .success(function (data, status) {
-                            if (status == 200) {
-                                window.location.hash = '#/view/' + data.id;
-                            }
-                        });
-                }
+            $scope.save = function () {
+                $http.post($scope.saveUrl, $scope.model, {
+                    params: {id: $scope.paramId, },
+                    headers: {'X-CSRF-Token': yii.getCsrfToken()}
+                }).success(function (model, status) {
+                    if (status == 200) {
+                        window.location.hash = '#/view/' + model.id;
+                    } else {
+
+                    }
+                });
             }
 
             $scope.dt = {
@@ -102,6 +98,14 @@ use yii\helpers\Url;
                     $scope.dt.opened = true;
                 }
             }
+
+            var _fokusKey = -1;
+            $scope.lastRepeat = function () {
+                if (_fokusKey >= 0) {
+                    jQuery('tr[data-key="' + _fokusKey + '"] input[data-field="qty"]').focus().select();
+                    _fokusKey = -1;
+                }
+            };
 
             var addItem = function (item) {
                 var has = false;
@@ -121,9 +125,10 @@ use yii\helpers\Url;
                         product: item, qty: 1, price: 0
                     });
                 }
-                setTimeout(function () {
-                    jQuery('tr[data-key="' + key + '"] input[data-field="qty"]').focus().select();
-                }, 300);
+                _fokusKey = key;
+//                setTimeout(function () {
+//                    jQuery('tr[data-key="' + key + '"] input[data-field="qty"]').focus().select();
+//                }, 300);
             }
 
             $scope.changeProduct = function (event) {
@@ -151,7 +156,7 @@ use yii\helpers\Url;
                 }
                 $scope.model.details = temp;
             }
-            $scope.subTotal = function(detail){
+            $scope.subTotal = function (detail) {
                 return detail.qty * detail.price;
             }
         }
@@ -162,6 +167,7 @@ use yii\helpers\Url;
         'dControllers',
         'ui.bootstrap',
         'angucomplete',
+        'mdm.angular',
     ]);
 
     dApp.config(['$routeProvider',
@@ -202,7 +208,7 @@ use yii\helpers\Url;
             $scope.pager = {maxSize: 5};
             $scope.goto = function (page) {
                 $http.get('<?= Url::to(['list']) ?>', {
-                    params: {page: page, 'per-page': 5}
+                    params: {page: page, 'per-page': 10}
                 }).success(function (data, status, headers) {
                     $scope.rows = data;
                     $scope.headers = headers;
@@ -216,7 +222,6 @@ use yii\helpers\Url;
                 $scope.goto($scope.pager.currentPage);
             }
             $scope.goto();
-
         }]);
 
     dControllers.controller('ViewCtrl', ['$scope', '$http', '$routeParams',

@@ -13,7 +13,7 @@ use dee\angular\tools\DataSource;
  */
 class PurchaseController extends Controller
 {
-
+    public $enableCsrfValidation = true;
     protected function verbs()
     {
         return[

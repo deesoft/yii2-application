@@ -31,6 +31,7 @@
                         <p class="input-group" style="width: 50%;">
                             <input type="text" class="form-control" datepicker-popup="{{dt.format}}" 
                                    ng-model="model.date" is-open="dt.opened" datepicker-options="dt.dateOptions" 
+                                   ng-focus="dt.open($event)"
                                    ng-required="true" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="dt.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -49,7 +50,7 @@
                     <div class="row">
                         <div class="col-xs-10">
                             Product :
-                            <input type="text" class="form-control" ng-model="selectedProduct"
+                            <input type="text" class="form-control" ng-model="selectedProduct" id="product"
                                    typeahead="product as product.name for product in masters.products | filter:$viewValue | limitTo:8"
                                    ng-keyup="changeProduct($event, $viewValue)"
                                    typeahead-on-select="selectProduct($item)"
@@ -74,13 +75,13 @@
                             </tr>
                         </thead>
                         <tbody id="detail-grid">
-                            <tr ng-repeat="(idx,detail) in model.details" data-key="{{idx}}">
+                            <tr ng-repeat="(idx,detail) in model.details" data-key="{{idx}}" on-last-repeat="lastRepeat()">
                                 <td >{{detail.product.name}}</td>
                                 <td ><input ng-model="detail.qty" class="form-control" data-field="qty"></td>
-                                <td ><select ng-model="detail.uom_id" class="form-control"
+                                <td ><select ng-model="detail.uom_id" class="form-control" data-field="uom"
                                             ng-options="uom.id as uom.name for uom in detail.product.uoms">
                                     </select></td>
-                                <td ><input ng-model="detail.price" class="form-control"></td>
+                                <td ><input ng-model="detail.price" class="form-control" data-field="price"></td>
                                 <td >{{subTotal(detail)}}</td>
                                 <td><a href="javascript:;" ng-click="deleteRow(idx)"><i class="glyphicon glyphicon-trash"></i></a></td>
                             </tr>
