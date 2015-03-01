@@ -10,6 +10,7 @@ use dee\angular\AngucompleteAsset;
 AngularRouteAsset::register($this);
 AngularBootstrapAsset::register($this);
 AngucompleteAsset::register($this);
+\dee\angular\AngularResourceAsset::register($this);
 ?>
 <?php JsBlock::widget(['pos' => View::POS_END, 'viewFile' => '_script']) ?>
 <?php JsBlock::begin() ?>
@@ -33,4 +34,4 @@ AngucompleteAsset::register($this);
 </script>
 <?php JsBlock::end(); ?>
 
-<div ng-app="dApp"><div ng-view=""></div></div>
+<div ng-app="dApp" ng-view=""></div>

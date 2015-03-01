@@ -5,7 +5,7 @@
     <a class="btn btn-primary btn-sm" href="#/list">List</a>
     <a class="btn btn-danger btn-sm" ng-href="#edit/{{model.id}}">Edit</a>
 </div>
-
+{{ctrlName}}
 <div class="box box-primary">
     <div class="box box-body">
         <div class="row">

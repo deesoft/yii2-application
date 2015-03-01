@@ -9,15 +9,17 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th><a href="#">Number</a></th>
-                            <th><a href="#">Supplier</a></th>
+                            <th><a >Number</a></th>
+                            <th><a >Supplier</a></th>
+                            <th><a >Branch</a></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-key="{{model.id}}" ng-repeat="(no,model) in rows">
-                            <td><a href="#/view/{{model.id}}">{{(pager.currentPage-1)*pager.itemPerPage + no + 1}}</a></td>
+                            <td><a ng-href="#/view/{{model.id}}">{{(pager.currentPage-1)*pager.itemPerPage + no + 1}}</a></td>
                             <td>{{model.number}}</td>
-                            <td>{{model.supplier_id}}</td>
+                            <td>{{model.supplier.name}}</td>
+                            <td>{{model.branch.name}}</td>
                         </tr>
                     </tbody>
                 </table>

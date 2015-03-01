@@ -5,6 +5,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 ?>
 <script>
+
     var ns = ns || {
         _queueProduct: [],
         masters: {},
@@ -22,220 +23,224 @@ use yii\helpers\Url;
                 });
             }
         },
-        initMaster: function ($scope, $http) {
-            // products
-            $scope.masters = $scope.masters || {};
-
+        getMaster: function (Resource) {
             if (!ns.masters._loaded) {
-                $http.get('<?= Url::to(['/masters', 'masters' => 'products,suppliers,barcodes']) ?>')
-                    .success(function (result) {
-                        angular.forEach(result, function (data, key) {
-                            ns.masters[key] = data;
-                        });
-                        // products
-                        $scope.masters.products = Object.keys(result.products).map(function (key) {
-                            return result.products[key];
-                        });
-                        // supplier
-                        $scope.masters.suppliers = result.suppliers;
-                        ns.masters._loaded = true;
-                        ns.ensureProduct();
+                ns.masters = Resource.master({}, function (result) {
+                    // products
+                    ns.masters._products = Object.keys(result.products).map(function (key) {
+                        return result.products[key];
                     });
-            } else {
-                $scope.masters.products = Object.keys(ns.masters.products).map(function (key) {
-                    return ns.masters.products[key];
-                });
-                ;
-                $scope.masters.suppliers = ns.masters.suppliers;
-            }
-
-        },
-        ctrlFunc: function ($scope, $http, $routeParams) {
-            ns.initMaster($scope, $http);
-
-            if ($routeParams === undefined) {
-                $scope.model = {
-                    details: [],
-                }
-                $scope.saveUrl = '<?= Url::to(['create']) ?>';
-            } else {
-                $http.get('<?= Url::to(['view']) ?>', {
-                    params: {
-                        id: $routeParams.id,
-                        expand: 'details,supplier,branch'
-                    }
-                }).success(function (data) {
-                    data.details = data.details || [];
-                    ns._queueProduct.push(data.details);
+                    ns.masters._loaded = true;
                     ns.ensureProduct();
-                    $scope.model = data;
-                });
-                $scope.paramId = $routeParams.id;
-                $scope.saveUrl = '<?= Url::to(['update']) ?>';
-            }
-
-            $scope.save = function () {
-                $http.post($scope.saveUrl, $scope.model, {
-                    params: {id: $scope.paramId, },
-                    headers: {'X-CSRF-Token': yii.getCsrfToken()}
-                }).success(function (model, status) {
-                    if (status == 200) {
-                        window.location.hash = '#/view/' + model.id;
-                    } else {
-
-                    }
                 });
             }
-
-            $scope.dt = {
-                opened: false,
-                dateOptions: {},
-                format: 'dd-MM-yyyy',
-                open: function ($event) {
-                    $event.preventDefault();
-                    $event.stopPropagation();
-
-                    $scope.dt.opened = true;
-                }
+            return {
+                products: ns.masters._products,
+                suppliers: ns.masters.suppliers,
             }
-
-            var _fokusKey = -1;
-            $scope.lastRepeat = function () {
-                if (_fokusKey >= 0) {
-                    jQuery('tr[data-key="' + _fokusKey + '"] input[data-field="qty"]').focus().select();
-                    _fokusKey = -1;
-                }
-            };
-
-            var addItem = function (item) {
-                var has = false;
-                var key = 0;
-                for (key in $scope.model.details) {
-                    var detail = $scope.model.details[key];
-                    if (detail.product_id == item.id) {
-                        has = true;
-                        detail.qty++;
-                        break;
-                    }
-                }
-                if (!has) {
-                    key = $scope.model.details.length;
-                    $scope.model.details.push({
-                        product_id: item.id,
-                        product: item, qty: 1, price: 0
-                    });
-                }
-                _fokusKey = key;
-//                setTimeout(function () {
-//                    jQuery('tr[data-key="' + key + '"] input[data-field="qty"]').focus().select();
-//                }, 300);
-            }
-
-            $scope.changeProduct = function (event) {
-                if (event.keyCode == 13 && angular.isString($scope.selectedProduct)) {
-                    var code = $scope.selectedProduct;
-                    if (ns.masters.barcodes[code]) {
-                        var id = ns.masters.barcodes[code];
-                        addItem(ns.masters.products[id]);
-                        $scope.selectedProduct = '';
-                    }
-                }
-            }
-
-            $scope.selectProduct = function (item) {
-                addItem(item);
-                $scope.selectedProduct = '';
-            }
-
-            $scope.deleteRow = function (idx) {
-                var temp = [];
-                for (var key in $scope.model.details) {
-                    if (key != idx) {
-                        temp.push($scope.model.details[key])
-                    }
-                }
-                $scope.model.details = temp;
-            }
-            $scope.subTotal = function (detail) {
-                return detail.qty * detail.price;
-            }
-        }
+        },
+        getModel: function (Resource, id) {
+            return Resource.get({
+                id: id,
+            }, function (data) {
+                data.details = data.details || [];
+                ns._queueProduct.push(data.details);
+                ns.ensureProduct();
+            });
+        },
     };
 
-    var dApp = angular.module('dApp', [
+    angular.module('dApp', [
         'ngRoute',
-        'dControllers',
         'ui.bootstrap',
-        'angucomplete',
         'mdm.angular',
-    ]);
-
-    dApp.config(['$routeProvider',
-        function ($routeProvider) {
-            $routeProvider.
-                when('/view/:id', {
-                    templateUrl: '<?= Url::to(['partial', 'view' => 'view']) ?>',
-                    controller: 'ViewCtrl'
-                }).
-                when('/edit/:id', {
-                    templateUrl: '<?= Url::to(['partial', 'view' => 'edit']) ?>',
-                    controller: 'EditCtrl'
-                }).
-                when('/create', {
-                    templateUrl: '<?= Url::to(['partial', 'view' => 'create']) ?>',
-                    controller: 'CreateCtrl'
-                }).
-                when('/list', {
-                    templateUrl: '<?= Url::to(['partial', 'view' => 'list']) ?>',
-                    controller: 'ListCtrl'
-                }).
-                otherwise({
-                    redirectTo: '/list',
+        'ngResource',
+    ])
+        .factory('Resource', ['$resource',
+            function ($resource) {
+                return $resource('<?= Url::to(['resource']) ?>', {}, {
+                    query: {
+                        params: {'per-page': 10, expand: 'supplier,branch', },
+                        isArray:true,
+                    },
+                    get: {
+                        params: {expand: 'supplier,branch,details', },
+                    },
+                    save: {
+                        headers: {'X-CSRF-Token': yii.getCsrfToken()},
+                    },
+                    update: {
+                        method: 'PUT',
+                        headers: {'X-CSRF-Token': yii.getCsrfToken()},
+                    },
+                    master: {
+                        method: 'GET',
+                        url: '<?= Url::to(['/masters', 'masters' => 'products,suppliers,barcodes']); ?>'
+                    },
                 });
-        }]);
-    // controllers
-    var dControllers = angular.module('dControllers', []);
-    dControllers.controller('ListCtrl', ['$scope', '$http',
-        function ($scope, $http) {
-
-            var mapPage = {
-                totalItems: 'X-Pagination-Total-Count',
-                pageCount: 'X-Pagination-Page-Count',
-                currentPage: 'X-Pagination-Current-Page',
-                itemPerPage: 'X-Pagination-Per-Page',
-            };
-
-            $scope.pager = {maxSize: 5};
-            $scope.goto = function (page) {
-                $http.get('<?= Url::to(['list']) ?>', {
-                    params: {page: page, 'per-page': 10}
-                }).success(function (data, status, headers) {
-                    $scope.rows = data;
-                    $scope.headers = headers;
-
-                    angular.forEach(mapPage, function (val, key) {
-                        $scope.pager[key] = headers(val);
+            }])
+        .config(['$routeProvider',
+            function ($routeProvider) {
+                $routeProvider.
+                    when('/view/:id', {
+                        templateUrl: '<?= Url::to(['template', 'view' => 'view']) ?>',
+                        controller: 'ViewCtrl',
+                        name: 'view',
+                    }).
+                    when('/edit/:id', {
+                        templateUrl: '<?= Url::to(['template', 'view' => 'edit']) ?>',
+                        controller: 'CreateEditCtrl',
+                        name: 'edit',
+                    }).
+                    when('/create', {
+                        templateUrl: '<?= Url::to(['template', 'view' => 'create']) ?>',
+                        controller: 'CreateEditCtrl',
+                        name: 'create',
+                    }).
+                    when('/list', {
+                        templateUrl: '<?= Url::to(['template', 'view' => 'list']) ?>',
+                        controller: 'ListCtrl',
+                        name: 'list',
+                    }).
+                    otherwise({
+                        redirectTo: '/list',
                     });
-                });
-            }
-            $scope.pageChange = function () {
-                $scope.goto($scope.pager.currentPage);
-            }
-            $scope.goto();
-        }]);
+            }])
+        .controller('ListCtrl', ['$scope', 'Resource',
+            function ($scope, Resource) {
+                var headerPageMap = {
+                    totalItems: 'X-Pagination-Total-Count',
+                    pageCount: 'X-Pagination-Page-Count',
+                    currentPage: 'X-Pagination-Current-Page',
+                    itemPerPage: 'X-Pagination-Per-Page',
+                };
+                
+                $scope.pager = {maxSize: 5};
 
-    dControllers.controller('ViewCtrl', ['$scope', '$http', '$routeParams',
-        function ($scope, $http, $routeParams) {
-            return ns.ctrlFunc.call(this, $scope, $http, $routeParams);
-        }]);
+                var gotoPage = function (page) {
+                    $scope.rows = Resource.query({
+                        page: page,
+                    }, function (r, headers) {
+                        angular.forEach(headerPageMap, function (val, key) {
+                            $scope.pager[key] = headers(val);
+                        });
+                    });
+                }
 
-    dControllers.controller('EditCtrl', ['$scope', '$http', '$routeParams',
-        function ($scope, $http, $routeParams) {
-            return ns.ctrlFunc.call(this, $scope, $http, $routeParams);
-        }]);
+                $scope.pageChange = function () {
+                    gotoPage($scope.pager.currentPage);
+                }
 
-    dControllers.controller('CreateCtrl', ['$scope', '$http',
-        function ($scope, $http) {
-            return ns.ctrlFunc.call(this, $scope, $http);
-        }]);
+                gotoPage();
+            }])
+        .controller('ViewCtrl', ['$scope', '$routeParams', 'Resource',
+            function ($scope, $routeParams, Resource) {
+                $scope.masters = ns.getMaster(Resource);
+                $scope.model = ns.getModel(Resource, $routeParams.id);
+            }])
+        .controller('CreateEditCtrl', ['$scope', '$routeParams', '$route', 'Resource',
+            function ($scope, $routeParams, $route, Resource) {
+                $scope.masters = ns.getMaster(Resource);
+                var _isCreate = $route.current.name == 'create',
+                    _action, _id;
+
+                if (_isCreate) {
+                    $scope.model = new Resource({details: []});
+                    _id = undefined;
+                    _action = '$save';
+                } else {
+                    $scope.model = ns.getModel(Resource, $routeParams.id);
+                    _id = $routeParams.id;
+                    _action = '$update';
+                }
+
+                $scope.save = function () {
+                    if ($scope.model.supplier) {
+                        $scope.model.supplier_id = $scope.model.supplier.id;
+                    }
+                    $scope.model[_action]({id: _id}, function (model) {
+                        window.location.hash = '#/view/' + model.id;
+                    }, function (error) {
+
+                    });
+                }
+
+                $scope.dt = {
+                    opened: false,
+                    dateOptions: {},
+                    format: 'dd-MM-yyyy',
+                    open: function ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                        $scope.dt.opened = true;
+                    }
+                }
+
+                var _fokusKey = -1;
+                $scope.setFokusQty = function () {
+                    if (_fokusKey >= 0) {
+                        jQuery('tr[data-key="' + _fokusKey + '"] input[data-field="qty"]').focus().select();
+                        _fokusKey = -1;
+                    }
+                };
+
+                var addItem = function (item) {
+                    var has = false;
+                    var key = 0;
+                    for (key in $scope.model.details) {
+                        var detail = $scope.model.details[key];
+                        if (detail.product_id == item.id) {
+                            has = true;
+                            detail.qty++;
+                            _fokusKey = key;
+                            break;
+                        }
+                    }
+                    if (!has) {
+                        key = $scope.model.details.length;
+                        var uom_id;
+                        if (item.uoms[0]) {
+                            uom_id = item.uoms[0].id;
+                        }
+                        $scope.model.details.push({
+                            product_id: item.id,
+                            product: item,
+                            uom_id: uom_id,
+                            qty: 1, price: 0
+                        });
+                        _fokusKey = key;
+                    }
+                }
+
+                $scope.changeProduct = function (event) {
+                    if (event.keyCode == 13 && angular.isString($scope.selectedProduct)) {
+                        var code = $scope.selectedProduct;
+                        if (ns.masters.barcodes[code]) {
+                            var id = ns.masters.barcodes[code];
+                            addItem(ns.masters.products[id]);
+                            $scope.selectedProduct = '';
+                        }
+                    }
+                }
+
+                $scope.selectProduct = function (item) {
+                    addItem(item);
+                    $scope.selectedProduct = '';
+                }
+
+                $scope.deleteRow = function (idx) {
+                    var temp = [];
+                    for (var key in $scope.model.details) {
+                        if (key != idx) {
+                            temp.push($scope.model.details[key])
+                        }
+                    }
+                    $scope.model.details = temp;
+                    jQuery('#product').focus();
+                }
+
+                $scope.subTotal = function (detail) {
+                    return detail.qty * detail.price;
+                }
+            }]);
 </script>

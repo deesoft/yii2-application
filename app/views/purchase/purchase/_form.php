@@ -1,20 +1,20 @@
 <?php
 /* @var $this yii\web\View */
 ?>
-<form >
+<form name="form">
     <div class="box box-primary">
         <div class="box box-body">
             <div class="row">
                 <div class="col-xs-6">
-                    <div class="form-group field-purchase-number">
-                        <label for="purchase-number" class="control-label">Number</label>
+                    <div class="form-group ">
+                        <label for="number" class="control-label">Number</label>
                         <span class="form-control">{{model.number}}</span>
 
                         <div class="help-block"></div>
                     </div>
-                    <div class="form-group field-purchase-nmsupplier required">
+                    <div class="form-group required" ng-class="{error:true}">
                         <label for="purchase-nmsupplier" class="control-label">Nm Supplier</label>
-                        <input type="text" class="form-control" ng-model="model.supplier"
+                        <input type="text" class="form-control" ng-model="model.supplier" name="supplier"
                                typeahead="supplier as supplier.name for supplier in masters.suppliers | filter:$viewValue | limitTo:8">
 
                         <div class="help-block"></div>
@@ -52,13 +52,13 @@
                             Product :
                             <input type="text" class="form-control" ng-model="selectedProduct" id="product"
                                    typeahead="product as product.name for product in masters.products | filter:$viewValue | limitTo:8"
-                                   ng-keyup="changeProduct($event, $viewValue)"
+                                   ng-keypress="changeProduct($event, $viewValue)"
                                    typeahead-on-select="selectProduct($item)"
                                    >
                         </div>
                         <div class="col-xs-2">
                             Item Discount:
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="diskon" mdm-validation="">
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                             </tr>
                         </thead>
                         <tbody id="detail-grid">
-                            <tr ng-repeat="(idx,detail) in model.details" data-key="{{idx}}" on-last-repeat="lastRepeat()">
+                            <tr ng-repeat="(idx,detail) in model.details" data-key="{{idx}}" on-last-repeat="setFokusQty()">
                                 <td >{{detail.product.name}}</td>
                                 <td ><input ng-model="detail.qty" class="form-control" data-field="qty"></td>
                                 <td ><select ng-model="detail.uom_id" class="form-control" data-field="uom"

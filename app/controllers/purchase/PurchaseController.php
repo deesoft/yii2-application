@@ -30,7 +30,7 @@ class PurchaseController extends Controller
         return $this->render('index');
     }
 
-    public function actionList()
+    public function query()
     {
         $dataSource = new DataSource([
             'query' => Purchase::find(),
@@ -43,7 +43,7 @@ class PurchaseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function view($id)
     {
         return $this->findModel($id);
     }
@@ -53,7 +53,7 @@ class PurchaseController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function create()
     {
         $model = new Purchase([
             'branch_id' => 1
@@ -63,6 +63,7 @@ class PurchaseController extends Controller
             $model->load(Yii::$app->request->post(),'');
             $model->purchaseDtls = Yii::$app->request->post('details', []);
             if ($model->save()) {
+                $model->refresh();
                 $transaction->commit();
             } else {
                 $transaction->rollBack();
@@ -81,7 +82,7 @@ class PurchaseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function update($id)
     {
         $model = $this->findModel($id);
 
@@ -92,6 +93,7 @@ class PurchaseController extends Controller
                 $model->purchaseDtls = $details;
             }
             if ($model->save()) {
+                $model->refresh();
                 $transaction->commit();
             } else {
                 $transaction->rollBack();
@@ -115,7 +117,7 @@ class PurchaseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function delete($id)
     {
         $model = $this->findModel($id);
         return $model->delete();
