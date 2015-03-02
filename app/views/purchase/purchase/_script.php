@@ -58,7 +58,7 @@ use yii\helpers\Url;
     ])
         .factory('Resource', ['$resource',
             function ($resource) {
-                return $resource('<?= Url::to(['resource']) ?>', {}, {
+                return $resource('<?= Url::to(['resource']) ?>', {id:'@id'}, {
                     query: {
                         params: {'per-page': 10, expand: 'supplier,branch', },
                         isArray:true,

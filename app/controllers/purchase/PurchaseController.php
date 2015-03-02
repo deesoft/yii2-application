@@ -6,7 +6,7 @@ use Yii;
 use app\models\purchase\Purchase;
 use dee\angular\Controller;
 use yii\web\NotFoundHttpException;
-use dee\angular\tools\DataSource;
+use dee\angular\DataSource;
 
 /**
  * PurchaseController implements the CRUD actions for Purchase model.
