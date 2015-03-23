@@ -1,7 +1,11 @@
 <?php
 /* @var $this yii\web\View */
 ?>
-<form name="form">
+<form name="Form">
+    <div class="btn-group">
+        <button class="btn btn-primary btn-sm" ng-click="save()">Save</button>
+        <button class="btn btn-danger btn-sm" ng-click="discard()">Discard</button>
+    </div>
     <div class="box box-primary">
         <div class="box box-body">
             <div class="row">
@@ -58,7 +62,7 @@
                         </div>
                         <div class="col-xs-2">
                             Item Discount:
-                            <input type="text" class="form-control" name="diskon" mdm-validation="">
+                            <input type="text" class="form-control" name="diskon" >
                         </div>
                     </div>
                 </div>
@@ -74,16 +78,16 @@
                                 <th class="col-lg-1">&nbsp;</th>
                             </tr>
                         </thead>
-                        <tbody id="detail-grid">
-                            <tr ng-repeat="(idx,detail) in model.details" data-key="{{idx}}" on-last-repeat="setFokusQty()">
-                                <td >{{detail.product.name}}</td>
-                                <td ><input ng-model="detail.qty" class="form-control" data-field="qty"></td>
-                                <td ><select ng-model="detail.uom_id" class="form-control" data-field="uom"
-                                            ng-options="uom.id as uom.name for uom in detail.product.uoms">
+                        <tbody id="item-grid">
+                            <tr ng-repeat="(idx,item) in model.items" data-key="{{idx}}" on-last-repeat="setFokusQty()">
+                                <td >{{item.product.name}}</td>
+                                <td ><input ng-model="item.qty" class="form-control" data-field="qty"></td>
+                                <td ><select ng-model="item.uom_id" class="form-control" data-field="uom"
+                                             ng-options="uom.id as uom.name for uom in item.product.uoms">
                                     </select></td>
-                                <td ><input ng-model="detail.price" class="form-control" data-field="price"></td>
-                                <td >{{subTotal(detail)}}</td>
-                                <td><a href="javascript:;" ng-click="deleteRow(idx)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                <td ><input ng-model="item.price" class="form-control" data-field="price"></td>
+                                <td style="text-align: right;">{{item.qty*item.price | number}}</td>
+                                <td ><a href="javascript:;" ng-click="deleteRow(idx)"><i class="glyphicon glyphicon-trash"></i></a></td>
                             </tr>
                         </tbody>
                     </table>

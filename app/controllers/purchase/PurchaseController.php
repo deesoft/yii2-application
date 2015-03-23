@@ -6,7 +6,7 @@ use Yii;
 use app\models\purchase\Purchase;
 use dee\angular\Controller;
 use yii\web\NotFoundHttpException;
-use dee\angular\DataSource;
+use yii\data\ActiveDataProvider;
 
 /**
  * PurchaseController implements the CRUD actions for Purchase model.
@@ -14,12 +14,6 @@ use dee\angular\DataSource;
 class PurchaseController extends Controller
 {
     public $enableCsrfValidation = true;
-    protected function verbs()
-    {
-        return[
-            'delete' => ['post'],
-        ];
-    }
 
     /**
      * Lists all Purchase models.
@@ -32,10 +26,10 @@ class PurchaseController extends Controller
 
     public function query()
     {
-        $dataSource = new DataSource([
+        $dataProvider = new ActiveDataProvider([
             'query' => Purchase::find(),
         ]);
-        return $dataSource->search(Yii::$app->request->getQueryParams());
+        return $dataProvider;
     }
 
     /**
@@ -61,7 +55,6 @@ class PurchaseController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $model->load(Yii::$app->request->post(),'');
-            $model->purchaseDtls = Yii::$app->request->post('details', []);
             if ($model->save()) {
                 $model->refresh();
                 $transaction->commit();
@@ -89,9 +82,6 @@ class PurchaseController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $model->load(Yii::$app->request->post(),'');
-            if (($details = Yii::$app->request->post('details')) !== null) {
-                $model->purchaseDtls = $details;
-            }
             if ($model->save()) {
                 $model->refresh();
                 $transaction->commit();
@@ -106,11 +96,6 @@ class PurchaseController extends Controller
         return $model;
     }
 
-    public function actionReceive($id)
-    {
-        return $this->redirect(['/inventory/movement/create', 'type' => 100, 'id' => $id]);
-    }
-
     /**
      * Deletes an existing Purchase model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -120,7 +105,20 @@ class PurchaseController extends Controller
     public function delete($id)
     {
         $model = $this->findModel($id);
-        return $model->delete();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+                return false;
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        return true;
     }
 
     /**

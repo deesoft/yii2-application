@@ -5,6 +5,7 @@
     <div class="box box-info">
         <div class="box-body no-padding">
             <div >
+                filter:<input ng-model="searchText" ng-keypress="doSearch($event)">
                 <table class="table table-striped">
                     <thead>
                         <tr>

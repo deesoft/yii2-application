@@ -5,13 +5,12 @@ namespace app\controllers\inventory;
 use Yii;
 use app\models\inventory\GoodsMovement;
 use app\models\inventory\searchs\GoodsMovement as GoodsMovementSearch;
-use yii\web\Controller;
+use dee\angular\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use biz\core\components\inventory\GoodsMovement as ApiMovement;
 use yii\helpers\ArrayHelper;
 use app\models\inventory\GoodsMovementDtl;
 use biz\core\base\Configs;
+use yii\data\ActiveDataProvider;
 
 /**
  * MovementController implements the CRUD actions for GoodsMovement model.
@@ -19,16 +18,17 @@ use biz\core\base\Configs;
 class MovementController extends Controller
 {
 
-    public function behaviors()
+    public function actions()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
+        $action = parent::actions();
+
+        return ArrayHelper::merge($action, [
+                'resource' => [
+                    'extraPatrens' => [
+                        'POST {type}{reff}' => 'create',
+                    ]
                 ],
-            ],
-        ];
+        ]);
     }
 
     /**
@@ -46,16 +46,23 @@ class MovementController extends Controller
         ]);
     }
 
+    public function query()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query'=>  GoodsMovement::find()
+        ]);
+        
+        return $dataProvider;
+    }
+
     /**
      * Displays a single GoodsMovement model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function view($id)
     {
-        return $this->render('view', [
-                'model' => $this->findModel($id),
-        ]);
+        return $this->findModel($id);
     }
 
     /**
@@ -63,47 +70,36 @@ class MovementController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($type, $id)
+    public function create($type = null, $reff = null)
     {
-        $model = GoodsMovement::findOne([
-                'reff_type' => $type,
-                'reff_id' => $id,
-                'status' => GoodsMovement::STATUS_DRAFT,
-        ]);
-        $model = $model ? : new GoodsMovement([
-            'reff_type' => $type,
-            'reff_id' => $id,
-        ]);
-        $api = new ApiMovement();
-        $config = Configs::movement($type);
-
-        list($modelRef, $details) = $this->getReference($type, $id, $model->goodsMovementDtls);
-        $model->populateRelation('goodsMovementDtls', $details);
-        if ($model->load(Yii::$app->request->post())) {
-            try {
-                $transaction = Yii::$app->db->beginTransaction();
-                $data = $model->attributes;
-
-                $data['details'] = Yii::$app->request->post('GoodsMovementDtl', []);
-
-                $model = $api->create($data, $model);
-                if (!$model->hasErrors() && !$model->hasRelatedErrors()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    $transaction->rollBack();
-                }
-            } catch (\Exception $exc) {
-                $transaction->rollBack();
-                throw $exc;
-            }
+        if ($type !== null) {
+            $model = GoodsMovement::findOne([
+                    'reff_type' => $type,
+                    'reff_id' => $reff,
+                    'status' => GoodsMovement::STATUS_DRAFT,
+            ]);
         }
-        return $this->render('create', [
-                'model' => $model,
-                'modelRef' => $modelRef,
-                'details' => $model->goodsMovementDtls,
-                'config' => $config,
-        ]);
+        if (!isset($model)) {
+            $model = new GoodsMovement([
+                'reff_type' => $type,
+                'reff_id' => $reff,
+            ]);
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->load(Yii::$app->request->post(), '');
+            if ($model->save()) {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $model->addError('', $e->getMessage());
+        }
+
+        return $model;
     }
 
     /**
@@ -112,44 +108,29 @@ class MovementController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function update($id)
     {
         $model = $this->findModel($id);
-        $api = new ApiMovement();
-
-        list($modelRef, $details) = $this->getReference($model->reff_type, $model->reff_id, $model->goodsMovementDtls);
-        $config = Configs::movement($model->reff_type);
-        $model->populateRelation('goodsMovementDtls', $details);
-        if ($model->load(Yii::$app->request->post())) {
-            try {
-                $transaction = Yii::$app->db->beginTransaction();
-                $data = $model->attributes;
-
-                $data['details'] = Yii::$app->request->post('GoodsMovementDtl', []);
-
-                $model = $api->update($id, $data, $model);
-                if (!$model->hasErrors() && !$model->hasRelatedErrors()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    $transaction->rollBack();
-                }
-            } catch (\Exception $exc) {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->load(Yii::$app->request->post(), '');
+            if ($model->save()) {
+                $transaction->commit();
+            } else {
                 $transaction->rollBack();
-                throw $exc;
             }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $model->addError('', $e->getMessage());
         }
-        return $this->render('update', [
-                'model' => $model,
-                'modelRef' => $modelRef,
-                'details' => $model->goodsMovementDtls,
-                'config' => $config,
-        ]);
+
+        return $model;
     }
 
     protected function getReference($reff_type, $reff_id, $origin = [])
     {
-        $config = Configs::movement($reff_type);;
+        $config = Configs::movement($reff_type);
+        ;
         $class = $config['class'];
         $relation = $config['relation'];
 
@@ -176,40 +157,42 @@ class MovementController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function delete($id)
     {
         $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
         try {
-            $transaction = Yii::$app->db->beginTransaction();
-            $api = new ApiMovement();
-            if ($api->delete($id, $model)) {
+            if ($model->delete()) {
                 $transaction->commit();
-                return $this->redirect(['index']);
             } else {
                 $transaction->rollBack();
+                return false;
             }
-        } catch (\Exception $exc) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
-            throw $exc;
+            throw $e;
         }
+
+        return true;
     }
 
-    public function actionApply($id)
+    public function apply($id)
     {
         $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
         try {
-            $transaction = Yii::$app->db->beginTransaction();
-            $api = new ApiMovement();
-            if ($api->apply($id, $model)) {
+            $model->load(Yii::$app->request->post(), '');
+            if ($model->save()) {
                 $transaction->commit();
-                return $this->redirect(['index']);
             } else {
                 $transaction->rollBack();
             }
-        } catch (\Exception $exc) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
-            throw $exc;
+            $model->addError('', $e->getMessage());
         }
+
+        return $model;
     }
 
     /**

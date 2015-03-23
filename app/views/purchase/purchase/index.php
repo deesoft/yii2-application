@@ -32,5 +32,4 @@ AngucompleteAsset::register($this);
     });
 </script>
 <?php JsBlock::end(); ?>
-
 <div ng-app="dApp" ng-view=""></div>

@@ -17,18 +17,17 @@ class AppAsset extends AssetBundle
 {
     public $sourcePath = '@bower/admin-lte';
     public $css = [
-        'css/bootstrap.min.css',
-        'css/font-awesome.min.css',
+//        'css/font-awesome.min.css',
+        '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css',
+        '//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css',
         'css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
         'css/AdminLTE.css'
     ];
     public $js = [
-        'js/bootstrap.min.js',
         'js/AdminLTE/app.js',
-        //'js/plugins/fullcalendar/fullcalendar.min.js'
-        //'js/AdminLTE/demo.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
     ];
 }

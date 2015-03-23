@@ -1,39 +1,29 @@
 <?php
 
 use yii\helpers\Url;
+use app\components\Helper;
 
 /* @var $this yii\web\View */
+
+$masters = [];
+foreach (['products', 'suppliers', 'barcodes'] as $name) {
+    $method = 'get' . $name;
+    $masters[$name] = Helper::$method();
+}
+$masters['_products'] = array_values($masters['products']);
 ?>
 <script>
 
-    var ns = ns || {
-        _queueProduct: [],
-        masters: {},
-        ensureProduct: function () {
-            if (ns.masters._loaded) {
-                angular.forEach(ns._queueProduct, function (details, key) {
-                    if (details != undefined) {
-                        angular.forEach(details, function (detail) {
-                            if (!detail.product) {
-                                detail.product = ns.masters.products[detail.product_id];
-                            }
-                        });
-                        ns._queueProduct[key] = undefined;
-                    }
-                });
-            }
+    var ns = {
+        masters:<?= json_encode($masters) ?>,
+        ensureProduct: function (items) {
+            angular.forEach(items, function (item) {
+                if (!item.product) {
+                    item.product = ns.masters.products[item.product_id];
+                }
+            });
         },
-        getMaster: function (Resource) {
-            if (!ns.masters._loaded) {
-                ns.masters = Resource.master({}, function (result) {
-                    // products
-                    ns.masters._products = Object.keys(result.products).map(function (key) {
-                        return result.products[key];
-                    });
-                    ns.masters._loaded = true;
-                    ns.ensureProduct();
-                });
-            }
+        getMaster: function () {
             return {
                 products: ns.masters._products,
                 suppliers: ns.masters.suppliers,
@@ -43,9 +33,8 @@ use yii\helpers\Url;
             return Resource.get({
                 id: id,
             }, function (data) {
-                data.details = data.details || [];
-                ns._queueProduct.push(data.details);
-                ns.ensureProduct();
+                data.items = data.items || [];
+                ns.ensureProduct(data.items);
             });
         },
     };
@@ -58,13 +47,13 @@ use yii\helpers\Url;
     ])
         .factory('Resource', ['$resource',
             function ($resource) {
-                return $resource('<?= Url::to(['resource']) ?>', {id:'@id'}, {
+                return $resource('<?= Url::to(['resource']) ?>', {}, {
                     query: {
                         params: {'per-page': 10, expand: 'supplier,branch', },
-                        isArray:true,
+                        isArray: true,
                     },
                     get: {
-                        params: {expand: 'supplier,branch,details', },
+                        params: {expand: 'supplier,branch,items', },
                     },
                     save: {
                         headers: {'X-CSRF-Token': yii.getCsrfToken()},
@@ -72,10 +61,6 @@ use yii\helpers\Url;
                     update: {
                         method: 'PUT',
                         headers: {'X-CSRF-Token': yii.getCsrfToken()},
-                    },
-                    master: {
-                        method: 'GET',
-                        url: '<?= Url::to(['/masters', 'masters' => 'products,suppliers,barcodes']); ?>'
                     },
                 });
             }])
@@ -97,6 +82,11 @@ use yii\helpers\Url;
                         controller: 'CreateEditCtrl',
                         name: 'create',
                     }).
+                    when('/receive/:id', {
+                        templateUrl: '<?= Url::to(['template', 'view' => 'receive']) ?>',
+                        controller: 'ReceiveCtrl',
+                        name: 'receive',
+                    }).
                     when('/list', {
                         templateUrl: '<?= Url::to(['template', 'view' => 'list']) ?>',
                         controller: 'ListCtrl',
@@ -114,12 +104,12 @@ use yii\helpers\Url;
                     currentPage: 'X-Pagination-Current-Page',
                     itemPerPage: 'X-Pagination-Per-Page',
                 };
-                
+
                 $scope.pager = {maxSize: 5};
 
-                var gotoPage = function (page) {
+                var gotoPage = function () {
                     $scope.rows = Resource.query({
-                        page: page,
+                        page: $scope.pager.currentPage,
                     }, function (r, headers) {
                         angular.forEach(headerPageMap, function (val, key) {
                             $scope.pager[key] = headers(val);
@@ -128,10 +118,15 @@ use yii\helpers\Url;
                 }
 
                 $scope.pageChange = function () {
-                    gotoPage($scope.pager.currentPage);
+                    gotoPage();
                 }
 
                 gotoPage();
+                $scope.doSearch = function (event) {
+                    if (event.keyCode == 13) {
+                        gotoPage()
+                    }
+                }
             }])
         .controller('ViewCtrl', ['$scope', '$routeParams', 'Resource',
             function ($scope, $routeParams, Resource) {
@@ -141,28 +136,41 @@ use yii\helpers\Url;
         .controller('CreateEditCtrl', ['$scope', '$routeParams', '$route', 'Resource',
             function ($scope, $routeParams, $route, Resource) {
                 $scope.masters = ns.getMaster(Resource);
+                var _fields = ['supplier_id', 'date', 'items'];
                 var _isCreate = $route.current.name == 'create',
                     _action, _id;
 
                 if (_isCreate) {
-                    $scope.model = new Resource({details: []});
+                    $scope.model = new Resource({items: []});
                     _id = undefined;
-                    _action = '$save';
+                    _action = 'save';
                 } else {
                     $scope.model = ns.getModel(Resource, $routeParams.id);
                     _id = $routeParams.id;
-                    _action = '$update';
+                    _action = 'update';
                 }
 
                 $scope.save = function () {
                     if ($scope.model.supplier) {
                         $scope.model.supplier_id = $scope.model.supplier.id;
                     }
-                    $scope.model[_action]({id: _id}, function (model) {
+                    var data = {};
+                    angular.forEach(_fields, function (field) {
+                        data[field] = $scope.model[field];
+                    });
+                    Resource[_action]({id: _id}, data, function (model) {
                         window.location.hash = '#/view/' + model.id;
                     }, function (error) {
 
                     });
+                }
+                
+                $scope.discard = function (){
+                    if(_isCreate){
+                        window.location.hash = '#/list';
+                    }else{
+                        window.location.hash = '#/view/' + _id;
+                    }
                 }
 
                 $scope.dt = {
@@ -184,27 +192,27 @@ use yii\helpers\Url;
                     }
                 };
 
-                var addItem = function (item) {
+                var addItem = function (product) {
                     var has = false;
                     var key = 0;
-                    for (key in $scope.model.details) {
-                        var detail = $scope.model.details[key];
-                        if (detail.product_id == item.id) {
+                    for (key in $scope.model.items) {
+                        var item = $scope.model.items[key];
+                        if (item.product_id == product.id) {
                             has = true;
-                            detail.qty++;
+                            item.qty++;
                             _fokusKey = key;
                             break;
                         }
                     }
                     if (!has) {
-                        key = $scope.model.details.length;
+                        key = $scope.model.items.length;
                         var uom_id;
-                        if (item.uoms[0]) {
-                            uom_id = item.uoms[0].id;
+                        if (product.uoms[0]) {
+                            uom_id = product.uoms[0].id;
                         }
-                        $scope.model.details.push({
-                            product_id: item.id,
-                            product: item,
+                        $scope.model.items.push({
+                            product_id: product.id,
+                            product: product,
                             uom_id: uom_id,
                             qty: 1, price: 0
                         });
@@ -223,24 +231,25 @@ use yii\helpers\Url;
                     }
                 }
 
-                $scope.selectProduct = function (item) {
-                    addItem(item);
+                $scope.selectProduct = function (product) {
+                    console.log('sss');
+                    addItem(product);
                     $scope.selectedProduct = '';
                 }
 
                 $scope.deleteRow = function (idx) {
                     var temp = [];
-                    for (var key in $scope.model.details) {
+                    for (var key in $scope.model.items) {
                         if (key != idx) {
-                            temp.push($scope.model.details[key])
+                            temp.push($scope.model.items[key])
                         }
                     }
-                    $scope.model.details = temp;
+                    $scope.model.items = temp;
                     jQuery('#product').focus();
                 }
 
-                $scope.subTotal = function (detail) {
-                    return detail.qty * detail.price;
+                $scope.subTotal = function (item) {
+                    return item.qty * item.price;
                 }
             }]);
 </script>

@@ -42,21 +42,16 @@
             <div class="col-lg-12">
                 <table class="tabular table-striped col-lg-12">
                     <thead style="background-color: #9d9d9d;">
-                        <tr><th class="col-lg-4">Product</th>
-                            <th class="col-lg-1">Qty</th>
-                            <th class="col-lg-2">Uom</th>
-                            <th class="col-lg-2">@Price</th>
-
-                            <th class="col-lg-2">Sub Total</th>
+                        <tr><th class="col-lg-4">Number</th>
+                            <th class="col-lg-1">Date</th>
+                            <th class="col-lg-2">Warehouse</th>
                         </tr>
                     </thead>
                     <tbody id="item-grid">
-                        <tr ng-repeat="(idx,item) in model.items" data-key="{{idx}}">
-                            <td >{{item.product.name}}</td>
-                            <td >{{item.qty}}</td>
-                            <td >{{item.uom_id}}</td>
-                            <td style="text-align: right;">{{item.price | number}}</td>
-                            <td style="text-align: right;">{{item.price*item.qty | number}}</td>
+                        <tr ng-repeat="(idx,movement) in movements" data-key="{{idx}}">
+                            <td >{{movement.number}}</td>
+                            <td >{{movement.date}}</td>
+                            <td >{{movement.warehouse.name}}</td>
                         </tr>
                     </tbody>
                 </table>

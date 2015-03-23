@@ -10,8 +10,8 @@ use app\models\inventory\GoodsMovement;
 /**
  * Description of Purchase
  *
- * @property PurchaseDtl[] $purchaseDtls
- * @property GoodsMovement[] $grs
+ * @property PurchaseDtl[] $items
+ * @property GoodsMovement[] $movements
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  */
 class Purchase extends \biz\core\models\purchase\Purchase
@@ -21,8 +21,7 @@ class Purchase extends \biz\core\models\purchase\Purchase
     {
         $rules = parent::rules();
         return array_merge([
-//            [['nmSupplier', 'Date'], 'required'],
-//            [['nmSupplier'], 'in', 'range' => Supplier::find()->select('name')->column()],
+            
             ], $rules);
     }
 
@@ -35,12 +34,12 @@ class Purchase extends \biz\core\models\purchase\Purchase
         $this->value = $value;
     }
 
-    public function getPurchaseDtls()
+    public function getItems()
     {
         return $this->hasMany(PurchaseDtl::className(), ['purchase_id' => 'id']);
     }
 
-    public function getGrs()
+    public function getMovements()
     {
         return $this->hasMany(GoodsMovement::className(), ['reff_id' => 'id'])
                 ->onCondition(['reff_type' => 100]);
@@ -82,21 +81,16 @@ class Purchase extends \biz\core\models\purchase\Purchase
                     'Date' => 'date',
                 ]
             ],
-            [
-                'class' => 'mdm\converter\RelatedConverter',
-                'attributes' => [
-                    'nmSupplier' => [[Supplier::className(), 'id' => 'supplier_id'], 'name'],
-                ],
-            ],
         ]);
     }
     
     public function extraFields()
     {
         return[
-            'details'=>'purchaseDtls',
+            'items',
             'supplier',
-            'branch'
+            'branch',
+            'movements'
         ];
     }
 }
