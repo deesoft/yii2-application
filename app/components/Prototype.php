@@ -3,9 +3,25 @@
 namespace app\components;
 
 use yii\base\UnknownPropertyException;
+use yii\base\UnknownMethodException;
 
 /**
  * Prototype
+ *
+ * ~~~
+ * Yii::$app->attachBehavior(0,Prototype::className());
+ *
+ * Yii::$app->prototype->x = 1;
+ * echo Yii::$app->x; // 1
+ * Yii::$app->x = 'seratus';
+ * echo Yii::$app->x; // 'seratus'
+ *
+ * Yii::$app->prototype->z = function($var){
+ *    echo $var;
+ * }
+ *
+ * Yii::$app->z();
+ * ~~~
  *
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
@@ -72,7 +88,7 @@ class Prototype extends \yii\base\Behavior
      */
     public function hasMethod($name)
     {
-        return isset($name, $this->_fn) && is_callable($this->_fn[$name]);
+        return isset($this->_fn[$name]) && is_callable($this->_fn[$name]);
     }
 
     /**
@@ -81,6 +97,9 @@ class Prototype extends \yii\base\Behavior
     public function __call($name, $params)
     {
 //        array_unshift($params, $this->owner);
-        return call_user_func_array($this->_fn[$name], $params);
+        if ($this->hasMethod($name)) {
+            return call_user_func_array($this->_fn[$name], $params);
+        }
+        throw new UnknownMethodException('Calling unknown method: ' . get_class($this) . "::$name()");
     }
 }
