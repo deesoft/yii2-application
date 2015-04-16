@@ -23,6 +23,8 @@
         "yiisoft/yii2-bootstrap": "~2.0",
         "mdmsoft/yii2-admin": "~1.0",
         "deesoft/yii2-console": "~1.0",
+        "deesoft/yii2-angular": "~1.0",
+        "deesoft/biz3-core": "~3.0",
         "bower-asset/admin-lte": "1.3",
         "bower-asset/angular": "~1.3.0",
         "bower-asset/angular-mocks": "~1.3.0",
