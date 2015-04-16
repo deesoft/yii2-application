@@ -87,7 +87,7 @@
                                     </select></td>
                                 <td ><input ng-model="item.price" class="form-control" data-field="price"></td>
                                 <td style="text-align: right;">{{item.qty*item.price | number}}</td>
-                                <td ><a href="javascript:;" ng-click="deleteRow(idx)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                <td style="text-align: center;"><a href="javascript:;" ng-click="deleteRow(idx)"><i class="glyphicon glyphicon-trash"></i></a></td>
                             </tr>
                         </tbody>
                     </table>

@@ -40,7 +40,7 @@ class Prototype extends \yii\base\Behavior
      */
     public function canGetProperty($name, $checkVars = true)
     {
-        return $name === static::REF_NAME || array_key_exists($name, $this->_fn);
+        return $name === static::REF_NAME || array_key_exists($name, $this->_fn) || $this->hasMethod('get'.ucfirst($name));
     }
 
     /**
@@ -52,6 +52,8 @@ class Prototype extends \yii\base\Behavior
             return $this;
         } elseif (array_key_exists($name, $this->_fn)) {
             return $this->_fn[$name];
+        } elseif ($this->hasMethod('get'.ucfirst($name))) {
+            return call_user_func($this->_fn['get'.ucfirst($name)]);
         } else {
             throw new UnknownPropertyException('Getting unknown property: '.get_class($this).'::'.$name);
         }
@@ -100,6 +102,6 @@ class Prototype extends \yii\base\Behavior
         if ($this->hasMethod($name)) {
             return call_user_func_array($this->_fn[$name], $params);
         }
-        throw new UnknownMethodException('Calling unknown method: ' . get_class($this) . "::$name()");
+        throw new UnknownMethodException('Calling unknown method: '.get_class($this)."::$name()");
     }
 }
