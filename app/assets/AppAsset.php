@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $baseUrl = '@web/css';
+    public $sourcePath = '@bower/admin-lte';
     public $css = [
 //        'css/font-awesome.min.css',
         '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css',
@@ -30,4 +30,5 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset'
     ];
+
 }
