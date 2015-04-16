@@ -18,7 +18,7 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 You can then install the application using the following command:
 
 ~~~
-# git clone https://github.com/deesoft/yii2-application.git application
+# git clone https://github.com/deesoft/application.git application
 # cd application
 # php composer.phar global require "fxp/composer-asset-plugin:1.0.0"
 # php composer.phar update
