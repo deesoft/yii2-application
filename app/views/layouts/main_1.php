@@ -5,41 +5,34 @@ use yii\helpers\Inflector;
 use yii\widgets\Breadcrumbs;
 use app\components\Alert;
 
+
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-app\assets\AppAsset::register($this);
+$asset = app\assets\AppAsset::register($this);
+$asset2 = app\assets\AddAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?= Yii::$app->language ?>" manifest="<?= isset($this->context->manifestFile) ? $this->context->manifestFile : '' ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-        <style>
-            .breadcrumb {
-                background-color: #f5f5f5;
-                border-radius: 4px;
-                list-style: outside none none;
-                margin-bottom: 20px;
-                padding: 8px 15px;
-            }
-        </style>
     </head>
     <?php $this->beginBody() ?>
-    <body class="skin-blue">
+    <body class="skin-blue fixed">
         <header class="header">
-            <?php echo $this->render('heading'); ?>
+            <?php echo $this->render('heading', ['baseurl' => $asset->baseUrl]); ?>
         </header>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <aside class="right-side">
                 <section class="content-header">
                     <h1>
                         <?= '&nbsp;' . Html::encode($this->title) ?>
-                        <small></small>
+                        <small><?php //echo \Yii::$app->controller->id . '-' . \Yii::$app->controller->action->id; ?></small>
                     </h1>
                     <?php
                     $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [];
@@ -64,9 +57,17 @@ app\assets\AppAsset::register($this);
                 </section>
             </aside>            
             <aside class="left-side sidebar-offcanvas">
-                <?php echo $this->render('sidebar'); ?>
+                <?php echo $this->render('sidebar', ['baseurl' => $asset->baseUrl]); ?>
             </aside>
         </div>
+
+        <!--        <footer class="footer">
+                    <div class="container">
+                        <p class="pull-left">&copy; My Company <?= ''//date('Y')              ?></p>
+                        <p class="pull-right"><?= ''//Yii::powered()              ?></p>
+                    </div>
+                </footer>-->
+    </div>
     <?php $this->endBody() ?>
 </body>
 </html>

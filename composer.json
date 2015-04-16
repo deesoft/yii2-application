@@ -30,6 +30,7 @@
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0",
         "mdmsoft/yii2-gii": "~1.0",
+        "deesoft/yii2-console": "~1.0",
         "yiisoft/yii2-codeception": "~2.0"
     },
     "suggest": {
