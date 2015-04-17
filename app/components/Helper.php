@@ -166,7 +166,7 @@ class Helper
         return $products;
     }
 
-    public function getBarcodes()
+    public static function getBarcodes()
     {
         $barcodes = [];
         $query_barcode = ProductChild::find()
