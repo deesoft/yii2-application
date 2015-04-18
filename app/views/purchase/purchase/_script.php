@@ -56,6 +56,7 @@ $masters['_products'] = array_values($masters['products']);
                         params: {expand: 'supplier,branch,items', },
                     },
                     save: {
+                        method: 'POST',
                         headers: {'X-CSRF-Token': yii.getCsrfToken()},
                     },
                     update: {

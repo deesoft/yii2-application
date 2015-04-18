@@ -3,8 +3,8 @@
 ?>
 <form name="Form">
     <div class="btn-group">
-        <button class="btn btn-primary btn-sm" ng-click="save()">Save</button>
-        <button class="btn btn-danger btn-sm" ng-click="discard()">Discard</button>
+        <a class="btn btn-primary btn-sm" ng-click="save()">Save</a>
+        <a class="btn btn-danger btn-sm" ng-click="discard()">Discard</a>
     </div>
     <div class="box box-primary">
         <div class="box box-body">

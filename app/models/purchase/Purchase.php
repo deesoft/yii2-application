@@ -28,7 +28,7 @@ class Purchase extends \biz\core\models\purchase\Purchase
     public function calcDetails()
     {
         $value = 0.0;
-        foreach ($this->purchaseDtls as $detail) {
+        foreach ($this->items as $detail) {
             $value += $detail->qty * $detail->price * $detail->productUom->isi * (1.0 - 0.01 * $detail->discount);
         }
         $this->value = $value;
