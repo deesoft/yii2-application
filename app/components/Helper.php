@@ -2,17 +2,17 @@
 
 namespace app\components;
 
-use app\models\master\Product;
-use app\models\master\ProductUom;
-use app\models\master\Uom;
-use app\models\master\ProductChild;
-use app\models\master\PriceCategory;
-use app\models\master\Price;
-use app\models\master\Customer;
-use app\models\master\Supplier;
-use app\models\master\ProductSupplier;
-use app\models\master\ProductStock;
-use app\models\accounting\searchs\Coa;
+use app\api\models\master\Product;
+use app\api\models\master\ProductUom;
+use app\api\models\master\Uom;
+use app\api\models\master\ProductChild;
+use app\api\models\master\PriceCategory;
+use app\api\models\master\Price;
+use app\api\models\master\Customer;
+use app\api\models\master\Supplier;
+use app\api\models\master\ProductSupplier;
+use app\api\models\master\ProductStock;
+use app\api\models\accounting\searchs\Coa;
 
 /**
  * Helper
