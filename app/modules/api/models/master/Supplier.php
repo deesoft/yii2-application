@@ -2,19 +2,89 @@
 
 namespace app\api\models\master;
 
-use yii\helpers\ArrayHelper;
+use Yii;
 
 /**
- * Supplier
+ * This is the model class for table "{{%supplier}}".
  *
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.0
+ * @property integer $id
+ * @property string $code
+ * @property string $name
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
+ *
+ * @property ProductSupplier[] $productSuppliers
+ * @property Product[] $products
+ * 
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>  
+ * @since 3.0
  */
-class Supplier extends \biz\api\models\master\Supplier
+class Supplier extends \app\api\base\ActiveRecord
 {
-    
-    public static function selectOptions()
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-        return ArrayHelper::map(static::find()->asArray()->all(), 'id', 'name');
+        return '{{%supplier}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['code', 'name'], 'required'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['created_by', 'updated_by'], 'integer'],
+            [['code'], 'string', 'max' => 4],
+            [['name'], 'string', 'max' => 64]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'code' => 'Code',
+            'name' => 'Name',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductSuppliers()
+    {
+        return $this->hasMany(ProductSupplier::className(), ['supplier_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('{{%product_supplier}}', ['supplier_id' => 'id']);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return[
+            'BizTimestampBehavior',
+            'BizBlameableBehavior'
+        ];
     }
 }

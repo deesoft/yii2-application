@@ -2,21 +2,100 @@
 
 namespace app\api\models\master;
 
-use yii\helpers\ArrayHelper;
+use Yii;
 
 /**
- * Branch
+ * This is the model class for table "{{%branch}}".
  *
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.0
+ * @property integer $id
+ * @property integer $orgn_id
+ * @property string $code
+ * @property string $name
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
+ *
+ * @property UserToBranch[] $userToBranches
+ * @property Orgn $orgn
+ * @property Warehouse[] $warehouses
+ * 
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>  
+ * @since 3.0
  */
-class Branch extends \biz\api\models\master\Branch
+class Branch extends \app\api\base\ActiveRecord
 {
-
-    public static function selectOptions($orgn_id = null)
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-        return ArrayHelper::map(static::find()->andFilterWhere([
-                    'orgn_id' => $orgn_id
-                ])->all(), 'id', 'name');
+        return '{{%branch}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['orgn_id', 'code', 'name'], 'required'],
+            [['orgn_id', 'created_by', 'updated_by'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['code'], 'string', 'max' => 4],
+            [['name'], 'string', 'max' => 32]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'orgn_id' => 'Orgn ID',
+            'code' => 'Code',
+            'name' => 'Name',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserToBranches()
+    {
+        return $this->hasMany(UserToBranch::className(), ['branch_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrgn()
+    {
+        return $this->hasOne(Orgn::className(), ['id' => 'orgn_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWarehouses()
+    {
+        return $this->hasMany(Warehouse::className(), ['branch_id' => 'id']);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return[
+            'BizTimestampBehavior',
+            'BizBlameableBehavior'
+        ];
     }
 }

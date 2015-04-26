@@ -8,7 +8,7 @@ namespace app\api\models\accounting;
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
  */
-class GlHeader extends \biz\api\models\accounting\GlHeader
+class GlHeader extends \app\api\models\accounting\GlHeader
 {
     
 }

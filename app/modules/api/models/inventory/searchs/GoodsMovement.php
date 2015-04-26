@@ -48,10 +48,16 @@ class GoodsMovement extends GoodsMovementModel
             'query' => $query,
         ]);
 
-        $this->load($params);
+        $this->load($params,'');
         if (!$this->validate()) {
             $query->where('1=0');
             return $dataProvider;
+        }
+        $reff_types = [
+            'purchase' => 100,
+        ];
+        if(isset($params['reff']) && isset($reff_types[$params['reff']])){
+            $this->reff_type = $reff_types[$params['reff']];
         }
 
         $query->andFilterWhere([

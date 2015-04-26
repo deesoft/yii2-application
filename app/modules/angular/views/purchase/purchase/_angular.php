@@ -47,7 +47,7 @@ $masters['_products'] = array_values($masters['products']);
     ])
         .factory('Resource', ['$resource',
             function ($resource) {
-                var url = '<?= Url::to(['/api/purchase/purchase']) ?>';
+                var url = '<?= Url::to(['/api/purchase/purchase','id'=>':id']) ?>';
                 return $resource(url, {}, {
                     query: {
                         params: {'per-page': 10, expand: 'supplier,branch', },

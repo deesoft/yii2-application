@@ -9,6 +9,8 @@ return [
     'controllerNamespace' => 'app\controllers',
     'bootstrap' => [
         'log',
+        'app\\api\\Bootstrap',
+        'api',
     ],
     'modules' => [
         'api' => [

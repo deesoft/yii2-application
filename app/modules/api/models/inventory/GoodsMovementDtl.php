@@ -3,28 +3,72 @@
 namespace app\api\models\inventory;
 
 use Yii;
-use app\api\models\master\Product;
-use app\api\models\master\Uom;
 
 /**
- * GoodsMovementDtl
+ * This is the model class for table "{{%goods_movement_dtl}}".
  *
- * @property Product $product
- * @property Uom $uom
+ * @property integer $movement_id
+ * @property integer $product_id
+ * @property integer $uom_id
+ * @property double $qty
+ * @property double $item_value cogs value
+ * @property double $trans_value invoice value
+ *
+ * @property GoodsMovement $movement
  * 
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.0
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>  
+ * @since 3.0
  */
-class GoodsMovementDtl extends \biz\api\models\inventory\GoodsMovementDtl
+class GoodsMovementDtl extends \app\api\base\ActiveRecord
 {
+    /**
+     * @var double 
+     */
+    public $avaliable;
 
-    public function getProduct()
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+        return '{{%goods_movement_dtl}}';
     }
-    
-    public function getUom()
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
     {
-        return $this->hasOne(Uom::className(), ['id' => 'uom_id']);
+        return [
+            [['product_id', 'uom_id', 'qty'], 'required',],
+            [['movement_id', 'product_id', 'uom_id'], 'integer'],
+            [['qty', 'item_value', 'trans_value', 'avaliable'], 'number'],
+            [['qty'], 'compare', 'compareAttribute' => 'avaliable', 'operator' => '<=',
+                'when' => function($obj) {
+                return $obj->avaliable !== null && $obj->avaliable !== '';
+            }],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'movement_id' => 'Movement ID',
+            'product_id' => 'Product ID',
+            'qty' => 'Qty',
+            'item_value' => 'Item Value',
+            'trans_value' => 'Trans Value',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMovement()
+    {
+        return $this->hasOne(GoodsMovement::className(), ['id' => 'movement_id']);
     }
 }

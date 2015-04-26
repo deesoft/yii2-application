@@ -3,60 +3,103 @@
 namespace app\api\models\sales;
 
 use Yii;
-use app\api\models\master\Customer;
-use app\api\models\master\Branch;
 
 /**
- * Sales
+ * This is the model class for table "{{%sales}}".
+ *
+ * @property integer $id
+ * @property string $number
+ * @property integer $branch_id
+ * @property integer $customer_id
+ * @property string $date
+ * @property double $value
+ * @property double $discount
+ * @property integer $status
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
  *
  * @property SalesDtl[] $salesDtls
  * 
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.0
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>  
+ * @since 3.0
  */
-class Sales extends \biz\api\models\sales\Sales
+class Sales extends \app\api\base\ActiveRecord
 {
+    // status sales
+    const STATUS_DRAFT = 10;
+    const STATUS_PROCESS = 20;
+    const STATUS_CLOSE = 90;
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%sales}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
-        $rules = parent::rules();
-        return array_merge([
-            [['Date'], 'required'],
-            [['nmCustomer'], 'in', 'range' => Customer::find()->select('name')->column()]
-            ], $rules);
+        return [
+            [['branch_id', 'date', 'value'], 'required'],
+            [['branch_id', 'customer_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['status'], 'default', 'value' => static::STATUS_DRAFT],
+            [['date', 'created_at', 'updated_at'], 'safe'],
+            [['value', 'discount'], 'number'],
+            [['number'], 'string', 'max' => 16]
+        ];
     }
 
-    public function getCustomer()
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return [
+            'id' => 'ID',
+            'number' => 'Number',
+            'branch_id' => 'Branch ID',
+            'customer_id' => 'Customer ID',
+            'date' => 'Date',
+            'value' => 'Value',
+            'discount' => 'Discount',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
+        ];
     }
 
-    public function getBranch()
-    {
-        return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
-    }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSalesDtls()
     {
         return $this->hasMany(SalesDtl::className(), ['sales_id' => 'id']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        return array_merge([
+        return[
+            'BizTimestampBehavior',
+            'BizBlameableBehavior',
             [
-                'class' => 'mdm\converter\DateConverter',
-                'attributes' => [
-                    'Date' => 'date',
-                ]
+                'class' => 'mdm\autonumber\Behavior',
+                'digit' => 6,
+                'attribute' => 'number',
+                'value' => 'SA' . date('y.?')
             ],
-            [
-                'class' => 'mdm\converter\RelatedConverter',
-                'attributes' => [
-                    'nmCustomer' => [[Customer::className(), 'id' => 'customer_id'], 'name'],
-                ],
-            ],
-            ], $behaviors);
+            'BizStatusConverter',
+            'mdm\behaviors\ar\RelationBehavior',
+        ];
     }
 }
