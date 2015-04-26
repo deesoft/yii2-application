@@ -16,19 +16,19 @@
                     <div class="help-block"></div>
                 </div>
                 <div class="form-group field-purchase-nmsupplier required">
-                    <label class="control-label">Nm Supplier</label>
+                    <label for="purchase-nmsupplier" class="control-label">Nm Supplier</label>
                     <span class="form-control">{{model.supplier.name}}</span>
                     <div class="help-block"></div>
                 </div>
                 <div class="form-group field-purchase-nmstatus">
-                    <label class="control-label">Nm Status</label>
+                    <label for="purchase-nmstatus" class="control-label">Nm Status</label>
                     <span class="form-control">{{model.status}}</span>
                     <div class="help-block"></div>
                 </div>
             </div>
             <div class="col-xs-6">                
                 <div class="form-group field-purchase-date required">
-                    <label class="control-label">Date</label>
+                    <label for="purchase-date" class="control-label">Date</label>
                         <span class="form-control">{{model.date | date:'dd-MM-yyyy'}}</span>
                     <div class="help-block"></div>
                 </div>
