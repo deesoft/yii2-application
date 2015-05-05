@@ -25,7 +25,7 @@ class Helper
 
     public static function getMasters($masters)
     {
-        
+
         $masters = array_flip($masters);
         $result = [];
 
@@ -37,26 +37,22 @@ class Helper
                 ->indexBy('id')
                 ->asArray();
 
-            $products = $query_product->all();
+            $result['products'] = $query_product->all();
+        }
 
-            $query_uom = ProductUom::find()
-                ->select(['pu.product_id', 'pu.uom_id', 'pu.isi', 'u.name'])
-                ->from(ProductUom::tableName() . ' pu')
-                ->joinWith(['uom' => function($q) {
-                        $q->from(Uom::tableName() . ' u');
-                    }])
-                ->orderBy(['pu.product_id' => SORT_ASC, 'pu.isi' => SORT_ASC])
-                ->asArray();
-            foreach ($query_uom->all() as $row) {
-                $products[$row['product_id']]['uoms'][] = [
+        // uoms
+        if (isset($masters['uoms'])) {
+            $_uoms = Uom::find()->indexBy('id')->asArray()->all();
+            $uoms = [];
+            foreach (ProductUom::find()->asArray()->all() as $row) {
+                $uoms[$row['product_id']][] = [
                     'id' => $row['uom_id'],
-                    'name' => $row['name'],
+                    'name' => $_uoms[$row['uom_id']]['name'],
                     'isi' => $row['isi']
                 ];
             }
-            $result['products'] = $products;
+            $result['uoms'] = $uoms;
         }
-
         // barcodes
         if (isset($masters['barcodes'])) {
             $barcodes = [];
@@ -146,24 +142,7 @@ class Helper
             ->orderBy('id')
             ->asArray();
 
-        $products = $query_product->all();
-
-        $query_uom = ProductUom::find()
-            ->select(['pu.product_id', 'pu.uom_id', 'pu.isi', 'u.name'])
-            ->from(ProductUom::tableName() . ' pu')
-            ->joinWith(['uom' => function($q) {
-                    $q->from(Uom::tableName() . ' u');
-                }])
-            ->orderBy(['pu.product_id' => SORT_ASC, 'pu.isi' => SORT_ASC])
-            ->asArray();
-        foreach ($query_uom->all() as $row) {
-            $products[$row['product_id']]['uoms'][] = [
-                'id' => $row['uom_id'],
-                'name' => $row['name'],
-                'isi' => $row['isi']
-            ];
-        }
-        return $products;
+        return $query_product->all();
     }
 
     public static function getBarcodes()
@@ -184,5 +163,19 @@ class Helper
         return Supplier::find()
                 ->select(['id', 'name'])
                 ->asArray()->all();
+    }
+
+    public function getUoms()
+    {
+        $_uoms = Uom::find()->indexBy('id')->asArray()->all();
+        $uoms = [];
+        foreach (ProductUom::find()->asArray()->all() as $row) {
+            $uoms[$row['product_id']][] = [
+                'id' => $row['uom_id'],
+                'name' => $_uoms[$row['uom_id']]['name'],
+                'isi' => $row['isi']
+            ];
+        }
+        return $uoms;
     }
 }

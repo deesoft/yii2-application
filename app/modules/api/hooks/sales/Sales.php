@@ -26,7 +26,7 @@ class Sales extends \yii\base\Behavior
     /**
      * Handler for Good Movement created.
      * It used to update stock
-     * @param \app\api\base\Event $event
+     * @param \dee\base\Event $event
      */
     public function goodsMovementApplied($event)
     {

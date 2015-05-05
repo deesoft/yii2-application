@@ -89,28 +89,21 @@ class PurchaseDtl extends ActiveRecord
         return $this->_uomList;
     }
 
-    public function getUoms()
-    {
-        return $this->hasMany(Uom::className(), ['id' => 'uom_id'])->via('productUoms');
-    }
-
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
-    public function getProductUoms()
-    {
-        return $this->hasMany(ProductUom::className(), ['product_id' => 'product_id']);
-    }
-
-    public function getProductUom()
-    {
-        return $this->hasOne(ProductUom::className(), ['product_id' => 'product_id', 'uom_id' => 'uom_id']);
-    }
-
     public function getUom()
     {
         return $this->hasOne(Uom::className(), ['id' => 'uom_id']);
+    }
+
+    public function extraFields()
+    {
+        return[
+            'product',
+            'uom'
+        ];
     }
 }

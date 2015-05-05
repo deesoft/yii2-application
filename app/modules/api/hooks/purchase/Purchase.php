@@ -33,7 +33,7 @@ class Purchase extends \yii\base\Behavior
     /**
      * Handler for Good Movement created.
      * It used to update stock
-     * @param \app\api\base\Event $event
+     * @param \dee\base\Event $event
      */
     public function movementChangeStatus($event)
     {
@@ -58,7 +58,7 @@ class Purchase extends \yii\base\Behavior
     /**
      * Handler for Good Movement created.
      * It used to update stock
-     * @param \app\api\base\Event $event
+     * @param \dee\base\Event $event
      */
     public function movementCreate($event)
     {
@@ -75,7 +75,7 @@ class Purchase extends \yii\base\Behavior
     /**
      * Handler for Good Movement Update.
      * It used to update stock
-     * @param \app\api\base\Event $event
+     * @param \dee\base\Event $event
      */
     public function movementUpdate($event)
     {

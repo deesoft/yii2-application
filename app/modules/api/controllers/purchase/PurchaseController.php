@@ -25,6 +25,7 @@ class PurchaseController extends Controller
      */
     public $prefixEventName = 'ePurchase';
 
+    public $expandParam = 'attribute';
     /**
      * @var array
      */

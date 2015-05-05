@@ -25,11 +25,18 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
             $app->getUrlManager()->addRules([
                 [
                     'class' => 'dee\rest\UrlRule',
+                    'tokens' => [
+                        '{id}' => '<id:\\d[\\d,]*>',
+                        '{attr}' => '<attribute:\\w+>',
+                    ],
+                    'extraPatterns' => [
+                        'GET,HEAD {id}/{attr}' => 'view',
+                    ],
                     'routePrefix' => $this->id,
                     'prefix' => 'api',
                     'controller' => [
                         'purchase' => 'purchase/purchase',
-                        '<reff:\w+>/<reff_id:\d+>/movements' => 'inventory/movement',
+                        'movement' => 'inventory/movement',
                     ]
                 ],
                 ], false);

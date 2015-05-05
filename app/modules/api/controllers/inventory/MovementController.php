@@ -29,8 +29,8 @@ class MovementController extends Controller
      * @var array
      */
     protected $patchingStatus = [
-        [MGoodsMovement::STATUS_DRAFT, MGoodsMovement::STATUS_PROCESS, 'process'],
-        [MGoodsMovement::STATUS_PROCESS, MGoodsMovement::STATUS_DRAFT, 'reject'],
+        [MGoodsMovement::STATUS_DRAFT, MGoodsMovement::STATUS_APPLIED, 'process'],
+        [MGoodsMovement::STATUS_APPLIED, MGoodsMovement::STATUS_DRAFT, 'reject'],
     ];
 
     /**

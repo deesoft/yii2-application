@@ -40,18 +40,21 @@
     <div class="box box-footer">
         <div class="row">
             <div class="col-lg-12">
-                <table class="tabular table-striped col-lg-12">
-                    <thead style="background-color: #9d9d9d;">
-                        <tr><th class="col-lg-4">Number</th>
-                            <th class="col-lg-1">Date</th>
-                            <th class="col-lg-2">Warehouse</th>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><a >Number</a></th>
+                            <th><a >Warehouse</a></th>
+                            <th><a >Branch</a></th>
                         </tr>
                     </thead>
-                    <tbody id="item-grid">
-                        <tr ng-repeat="(idx,movement) in movements" data-key="{{idx}}">
-                            <td >{{movement.number}}</td>
-                            <td >{{movement.date}}</td>
-                            <td >{{movement.warehouse.name}}</td>
+                    <tbody>
+                        <tr data-key="{{model.id}}" ng-repeat="(no,model) in rows">
+                            <td><a ng-href="#/view/{{model.id}}">{{(pager.currentPage-1)*pager.itemPerPage + no + 1}}</a></td>
+                            <td>{{model.number}}</td>
+                            <td>{{model.supplier.name}}</td>
+                            <td>{{model.branch.name}}</td>
                         </tr>
                     </tbody>
                 </table>

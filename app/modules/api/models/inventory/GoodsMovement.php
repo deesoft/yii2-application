@@ -3,8 +3,9 @@
 namespace app\api\models\inventory;
 
 use Yii;
-use app\api\base\Configs;
 use app\api\base\ActiveRecord;
+use app\api\models\master\Warehouse;
+
 /**
  * This is the model class for table "{{%goods_movement}}".
  *
@@ -103,59 +104,10 @@ class GoodsMovement extends ActiveRecord
         return $this->hasMany(GoodsMovementDtl::className(), ['movement_id' => 'id']);
     }
 
-    /**
-     * Get reference configuration
-     * @param type $reff_type
-     * @return null
-     */
-    public static function reffConfig($reff_type)
+    public function getWarehouse()
     {
-        return Configs::movement($reff_type);
+        return $this->hasOne(Warehouse::className(), ['id'=>'warehouse_id']);
     }
-
-    public function getReffConfig()
-    {
-        return Configs::movement($this->reff_type);
-    }
-
-    /**
-     * Set type of document depending reference document
-     */
-    public function resolveType()
-    {
-        if (($config = Configs::movement($this->reff_type)) !== null) {
-            $this->type = $config['type'];
-        } else {
-            $this->addError('reff_type', "Reference type {$this->reff_type} not recognize");
-        }
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReffDoc()
-    {
-        if (($config = $this->reffConfig) && isset($config['class'])) {
-            return $this->hasOne($config['class'], ['id' => 'reff_id']);
-        }
-        return null;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReffDocDtls()
-    {
-        if (($reff = $this->reffDoc) !== null) {
-            $config = $this->reffConfig;
-            $relation = $reff->getRelation($config['relation']);
-            return $this->hasMany($relation->modelClass, $relation->link)
-                    ->via('reffDoc')
-                    ->indexBy('product_id');
-        }
-        return null;
-    }
-
     /**
      * @inheritdoc
      */
@@ -177,6 +129,21 @@ class GoodsMovement extends ActiveRecord
                 return !empty($child->qty);
             }
             ],
+        ];
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['nmStatus'] = 'nmStatus';
+        return $fields;
+    }
+
+    public function extraFields()
+    {
+        return[
+            'items',
+            'warehouse',
         ];
     }
 }

@@ -3,7 +3,7 @@
 namespace app\api\hooks\accounting;
 
 use Yii;
-use app\api\base\Event;
+use dee\base\Event;
 use app\api\components\accounting\GL as ApiGL;
 use yii\base\UserException;
 
