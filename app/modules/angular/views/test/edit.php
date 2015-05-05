@@ -12,7 +12,7 @@ use dee\angular\Angular;
     <button ng-click="save()">Save</button>
 </div>
 
-<?php $angular->beginScript() ?>
+<?php Angular::beginScript() ?>
 <script>
 $location = $injector.get('$location');
 $routeParams = $injector.get('$routeParams');
@@ -27,4 +27,4 @@ $scope.save = function () {
 }
 </script>
 <?php
-$angular->endScript();
+Angular::endScript();

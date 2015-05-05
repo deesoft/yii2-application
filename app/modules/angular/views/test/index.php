@@ -27,7 +27,7 @@ use dee\angular\Angular;
     </tbody>
 </table>
 
-<?php $angular->beginScript() ?>
+<?php Angular::beginScript() ?>
 <script>
 Rest = $injector.get('Rest');
 $scope.items = Rest.all();
@@ -37,4 +37,4 @@ $scope.deleteItem = function (id) {
 }
 </script>
 <?php
-$angular->endScript();
+Angular::endScript();

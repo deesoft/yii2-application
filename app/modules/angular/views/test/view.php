@@ -11,7 +11,7 @@ Id = {{id}}
 Item = {{item | json}}
 </pre>
 
-<?php $angular->beginScript() ?>
+<?php Angular::beginScript() ?>
 <script>
 $location = $injector.get('$location');
 $routeParams = $injector.get('$routeParams');
@@ -22,4 +22,4 @@ $scope.id = $routeParams.id;
 $scope.item = Rest.get($scope.id);
 
 </script>
-<?php $angular->endScript();
+<?php Angular::endScript();
