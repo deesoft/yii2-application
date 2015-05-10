@@ -10,7 +10,7 @@ return [
     'bootstrap' => [
         'log',
         'app\\api\\Bootstrap',
-        'api',
+//        'api',
     ],
     'modules' => [
         'api' => [

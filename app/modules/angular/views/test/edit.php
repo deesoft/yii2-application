@@ -10,6 +10,7 @@ use dee\angular\Angular;
     Name : <input type="text" ng-model="item.name"><br>
     Value : <input type="text" ng-model="item.value"><br>
     <button ng-click="save()">Save</button>
+    <a href="#/">Cancel</a>
 </div>
 
 <?php Angular::beginScript() ?>
