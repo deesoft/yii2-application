@@ -81,8 +81,8 @@ class AccPeriode extends \app\api\base\ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior',
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior',
             [
                 'class' => 'mdm\converter\DateConverter',
                 'attributes' => [
@@ -90,7 +90,7 @@ class AccPeriode extends \app\api\base\ActiveRecord
                     'DateTo' => 'date_to'
                 ]
             ],
-            'BizStatusConverter',
+            'app\api\base\StatusConverter',
         ];
     }
 }

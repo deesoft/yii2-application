@@ -114,15 +114,15 @@ class GoodsMovement extends ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior',
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior',
             [
                 'class' => 'mdm\autonumber\Behavior',
                 'digit' => 6,
                 'attribute' => 'number',
                 'value' => 'IM' . date('ymd.?')
             ],
-            'BizStatusConverter',
+            'app\api\base\StatusConverter',
             [
                 'class' => 'mdm\behaviors\ar\RelationBehavior',
                 'beforeRSave' => function($child) {

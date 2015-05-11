@@ -84,15 +84,15 @@ class Transfer extends \app\api\base\ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior',
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior',
             [
                 'class' => 'mdm\autonumber\Behavior',
                 'digit' => 6,
                 'attribute' => 'number',
                 'value' => 'IT' . date('y.?')
             ],
-            'BizStatusConverter',
+            'app\api\base\StatusConverter',
             'mdm\behaviors\ar\RelationBehavior',
         ];
     }

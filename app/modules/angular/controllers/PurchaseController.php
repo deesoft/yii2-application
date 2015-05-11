@@ -1,6 +1,6 @@
 <?php
 
-namespace app\angular\controllers\purchase;
+namespace app\angular\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -10,9 +10,9 @@ use yii\web\Controller;
  */
 class PurchaseController extends Controller
 {
-
+    
     /**
-     * Display main page
+     * Display main page.
      * @return mixed
      */
     public function actionIndex()

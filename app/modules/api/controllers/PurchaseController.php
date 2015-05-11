@@ -1,6 +1,6 @@
 <?php
 
-namespace app\api\controllers\purchase;
+namespace app\api\controllers;
 
 use Yii;
 use app\api\base\Controller;
@@ -33,16 +33,6 @@ class PurchaseController extends Controller
         [MPurchase::STATUS_DRAFT, MPurchase::STATUS_PROCESS, 'process'],
         [MPurchase::STATUS_PROCESS, MPurchase::STATUS_DRAFT, 'reject'],
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function events()
-    {
-        return[
-            'patch' => 'ePatch',
-        ];
-    }
 
     /**
      * @param \dee\base\Event $event

@@ -1,0 +1,1 @@
+yii.app.initMasters(['products','barcodes','productUoms','suppliers']);

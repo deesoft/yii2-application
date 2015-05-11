@@ -103,15 +103,15 @@ class Purchase extends ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior',
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior',
             [
                 'class' => 'mdm\autonumber\Behavior',
                 'digit' => 6,
                 'attribute' => 'number',
                 'value' => 'PU' . date('y.?')
             ],
-            'BizStatusConverter',
+            'app\api\base\StatusConverter',
             'mdm\behaviors\ar\RelationBehavior',
         ];
     }

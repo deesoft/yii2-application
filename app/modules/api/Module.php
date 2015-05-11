@@ -22,24 +22,29 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof \yii\web\Application) {
-            $app->getUrlManager()->addRules([
-                [
-                    'class' => 'dee\rest\UrlRule',
-                    'tokens' => [
-                        '{id}' => '<id:\\d[\\d,]*>',
-                        '{attr}' => '<attribute:\\w+>',
-                    ],
-                    'extraPatterns' => [
-                        'GET,HEAD {id}/{attr}' => 'view',
-                    ],
-                    'routePrefix' => $this->id,
-                    'prefix' => 'api',
-                    'controller' => [
-                        'purchase' => 'purchase/purchase',
-                        'movement' => 'inventory/movement',
-                    ]
-                ],
-                ], false);
+            $app->getUrlManager()->addRules($this->getUrlRules(), false);
         }
+    }
+
+    protected function getUrlRules()
+    {
+        return[
+            [
+                'class' => 'dee\rest\UrlRule',
+                'tokens' => [
+                    '{id}' => '<id:\\d[\\d,]*>',
+                    '{attr}' => '<attribute:\\w+>',
+                ],
+                'extraPatterns' => [
+                    'GET,HEAD {id}/{attr}' => 'view',
+                ],
+                'prefixRoute' => $this->id,
+                'prefix' => 'api',
+                'controller' => [
+                    'purchase' => 'purchase/purchase',
+                    'movement' => 'inventory/movement',
+                ]
+            ],
+        ];
     }
 }

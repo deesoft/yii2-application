@@ -183,9 +183,9 @@ class Product extends \app\api\base\ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior',
-            'BizStatusConverter',
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior',
+            'app\api\base\StatusConverter',
         ];
     }
 }

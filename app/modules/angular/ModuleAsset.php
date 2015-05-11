@@ -19,6 +19,7 @@ class ModuleAsset extends \yii\web\AssetBundle
      * @inheritdoc
      */
     public $js = [
+        'js/dee.basic.js',
         'js/module.base.js',
     ];
 
@@ -27,8 +28,5 @@ class ModuleAsset extends \yii\web\AssetBundle
      */
     public $depends = [
         'yii\web\YiiAsset',
-        'dee\angular\AngularAsset',
-        'dee\angular\AngularBootstrapAsset',
-        'dee\angular\AngucompleteAsset'
     ];
 }

@@ -74,8 +74,8 @@ class ProductGroup extends \app\api\base\ActiveRecord
     public function behaviors()
     {
         return[
-            'BizTimestampBehavior',
-            'BizBlameableBehavior'
+            'yii\behaviors\TimestampBehavior',
+            'yii\behaviors\BlameableBehavior'
         ];
     }
 }

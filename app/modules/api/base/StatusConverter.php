@@ -15,4 +15,8 @@ class StatusConverter extends \mdm\converter\EnumConverter
      * @var string
      */
     public $enumPrefix = 'STATUS_';
+
+    public $attributes = [
+        'nmStatus' => 'status',
+    ];
 }
