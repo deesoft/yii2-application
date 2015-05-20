@@ -4,7 +4,7 @@ namespace app\api\controllers;
 
 use Yii;
 use app\api\base\AdvanceController;
-use app\api\models\purchase\Purchase as MPurchase;
+use app\api\models\inventory\GoodsMovement as MMovement;
 
 /**
  * Description of PurchaseController
@@ -13,27 +13,28 @@ use app\api\models\purchase\Purchase as MPurchase;
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 3.0
  */
-class PurchaseController extends AdvanceController
+class MovementController extends AdvanceController
 {
     /**
      * @inheritdoc
      */
-    public $modelClass = 'app\api\models\purchase\Purchase';
+    public $modelClass = 'app\api\models\inventory\GoodsMovement';
 
     /**
      * @inheritdoc
      */
-    public $prefixEventName = 'ePurchase';
+    public $prefixEventName = 'eMovement';
 
     public $extraPatterns = [
         'GET,HEAD {id}{attribute}' => 'viewDetail',
     ];
+    
     /**
      * @var array
      */
     protected $patchingStatus = [
-        [MPurchase::STATUS_DRAFT, MPurchase::STATUS_PROCESS, 'process'],
-        [MPurchase::STATUS_PROCESS, MPurchase::STATUS_DRAFT, 'reject'],
+        [MMovement::STATUS_DRAFT, MMovement::STATUS_APPLIED, 'apply'],
+        [MMovement::STATUS_APPLIED, MMovement::STATUS_DRAFT, 'reject'],
     ];
 
     /**
@@ -41,7 +42,7 @@ class PurchaseController extends AdvanceController
      */
     public function ePatch($event)
     {
-        /* @var $model MPurchase */
+        /* @var $model MMovement */
         $model = $event->params[0];
         $dirty = $model->getDirtyAttributes();
         $olds = $model->getOldAttributes();

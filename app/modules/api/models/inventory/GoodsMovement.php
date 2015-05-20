@@ -125,9 +125,6 @@ class GoodsMovement extends ActiveRecord
             'app\api\base\StatusConverter',
             [
                 'class' => 'mdm\behaviors\ar\RelationBehavior',
-                'beforeRSave' => function($child) {
-                return !empty($child->qty);
-            }
             ],
         ];
     }

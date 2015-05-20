@@ -7,6 +7,8 @@
 
 namespace app\api;
 
+use Yii;
+
 /**
  * Description of Module
  *
@@ -15,6 +17,24 @@ namespace app\api;
  */
 class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            $definitions = require(__DIR__ . '/definitions.php');
+            foreach ($definitions as $name => $definition) {
+                Yii::$container->set($name, $definition);
+            }
+
+            $hooks = require(__DIR__ . '/hooks.php');
+            Yii::$app->attachBehaviors(array_combine($hooks, $hooks));
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @inheritdoc
@@ -36,13 +56,13 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
                     '{attr}' => '<attribute:\\w+>',
                 ],
                 'extraPatterns' => [
-                    'GET,HEAD {id}/{attr}' => 'view',
+                    '{id}/{attr}',
                 ],
                 'prefixRoute' => $this->id,
                 'prefix' => 'api',
-                'controller' => [
-                    'purchase' => 'purchase/purchase',
-                    'movement' => 'inventory/movement',
+                'actions' => [
+                    'purchase' => 'purchase/index',
+                    'movement' => 'movement/index',
                 ]
             ],
         ];

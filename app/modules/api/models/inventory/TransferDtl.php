@@ -21,6 +21,7 @@ use Yii;
  */
 class TransferDtl extends \app\api\base\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -56,7 +57,6 @@ class TransferDtl extends \app\api\base\ActiveRecord
         ];
     }
 
-
     /**
      * Set default value for GR detail
      * @param \app\api\models\inventory\GoodsMovementDtl $model
@@ -76,6 +76,7 @@ class TransferDtl extends \app\api\base\ActiveRecord
         $model->avaliable = $this->total_release - $this->total_receive;
         $model->uom_id = $this->uom_id;
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -8,7 +8,7 @@ use dee\angular\Angular;
 $angular->renderJs('js/form.js');
 ?>
 
-<div class="purchase-form">
+<div class="movement-form">
     <form name="Form" d-errors="errors">
         <div ng-if="errors.status">
             <h1>Error {{errors.status}}: {{errors.text}}</h1>
@@ -23,23 +23,23 @@ $angular->renderJs('js/form.js');
         <div class="box box-body">
             <div class="row">
                 <div class="col-xs-6">
-                    <div class="form-group required" ng-class="{error:errors.supplier_id}">
-                        <label for="purchase-supplier_id" class="control-label">Supplier</label>
-                        <input id="purchase-supplier_id" name="supplier_id" class="form-control" ng-model="model.supplier"
-                               typeahead="supplier as supplier.name for supplier in suppliers.asArray() | filter:$viewValue | limitTo:8">
-                        <div class="help-block">{{errors.supplier_id}}</div>
-                    </div>
                     <div class="form-group required" ng-class="{error:errors.branch_id}">
-                        <label for="purchase-branch_id" class="control-label">Branch ID</label>
-                        <input id="purchase-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id">
+                        <label for="movement-branch_id" class="control-label">Branch ID</label>
+                        <input id="movement-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id">
                         <div class="help-block">{{errors.branch_id}}</div>
+                    </div>
+                    <div class="form-group required" ng-class="{error:errors.warehouse_id}">
+                        <label for="movement-warehouse_id" class="control-label">Warehouse</label>
+                        <input id="movement-supplier_id" name="warehouse_id" class="form-control" ng-model="model.warehouse"
+                               typeahead="warehouse as warehouse.name for warehouse in warehouses.asArray() | filter:$viewValue | limitTo:8">
+                        <div class="help-block">{{errors.warehouse_id}}</div>
                     </div>
                 </div>
                 <div class="col-xs-6">
                     <div class="form-group required" ng-class="{error:errors.date}">
-                        <label for="purchase-date" class="control-label">Date</label>
+                        <label for="movement-date" class="control-label">Date</label>
                         <p class="input-group" style="width: 50%;">
-                            <input id="purchase-date" name="date" type="text" class="form-control"
+                            <input id="movement-date" name="date" type="text" class="form-control"
                                    ng-model="model.date" datepicker-popup="dd-MM-yyyy"
                                    is-open="dt.opened" datepicker-options="{}"
                                    ng-focus="dt.open($event)" close-text="Close" />
@@ -48,11 +48,6 @@ $angular->renderJs('js/form.js');
                             </span>
                         </p>
                         <div class="help-block">{{errors.date}}</div>
-                    </div>
-                    <div class="form-group" ng-class="{error:errors.discount}">
-                        <label for="purchase-discount" class="control-label">Discount</label>
-                        <input id="purchase-discount" name="discount" class="form-control" ng-model="model.discount">
-                        <div class="help-block">{{errors.discount}}</div>
                     </div>
                 </div>
             </div>

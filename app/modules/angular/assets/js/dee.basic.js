@@ -35,7 +35,7 @@ DObject = (function () {
             this._items = items;
         },
         _refresh: function () {
-            
+
         },
         _save: function () {
             this._array = undefined;
@@ -66,14 +66,14 @@ DObject = (function () {
             this._refresh();
             if (id === undefined) {
                 var keys = Object.keys(this._items);
-                if(keys.length){
+                if (keys.length) {
                     last = keys[keys.length - 1];
-                    if(last == parseInt(last)){
+                    if (last == parseInt(last)) {
                         id = parseInt(last) + 1;
-                    }else{
+                    } else {
                         id = (new Date()).getTime();
                     }
-                }else{
+                } else {
                     id = 1;
                 }
             }
@@ -81,9 +81,15 @@ DObject = (function () {
             this._save();
             return id;
         },
-        update: function (id, item) {
+        set: function (id, item) {
             this._refresh();
-            this._items[id] = item;
+            if (typeof id === 'object') {
+                for (var k in id) {
+                    this._items[k] = id[k];
+                }
+            } else {
+                this._items[id] = item;
+            }
             this._save();
         },
         remove: function (id) {
@@ -97,10 +103,10 @@ DObject = (function () {
 })();
 
 DStorage = (function () {
-    var prefixData = 'dee_d_';
-    var prefixInfo = 'dee_i_';
+    var prefixData = 'd426_d_';
+    var prefixInfo = 'd426_i_';
 
-    return Kelas(DObject,{
+    return Kelas(DObject, {
         initialize: function (name) {
             this.name = name;
             this.access = 0;

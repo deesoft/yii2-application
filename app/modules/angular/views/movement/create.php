@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $angular->renderJs('js/create.js');
 ?>
 
-<div class="purchase-create">
+<div class="movement-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

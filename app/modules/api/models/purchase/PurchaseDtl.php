@@ -20,6 +20,7 @@ use app\api\models\master\ProductUom;
  * @property double $price
  * @property double $discount
  * @property double $total_receive
+ * @property double $avaliable
  *
  * @property Purchase $purchase
  * @property Product $product
@@ -97,6 +98,11 @@ class PurchaseDtl extends ActiveRecord
     public function getUom()
     {
         return $this->hasOne(Uom::className(), ['id' => 'uom_id']);
+    }
+
+    public function getAvaliable()
+    {
+        return $this->qty - $this->total_receive;
     }
 
     public function extraFields()

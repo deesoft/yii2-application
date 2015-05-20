@@ -4,12 +4,12 @@ $routeParams = $injector.get('$routeParams');
 
 $scope.paramId = $routeParams.id;
 // model
-Purchase.get({id: $scope.paramId, expand: 'supplier,branch'}, function (row) {
+Movement.get({id: $scope.paramId, expand: 'supplier,branch'}, function (row) {
     $scope.model = row;
 });
 
-Purchase.items({
-    id: $scope.paramId,
+Movement.query({
+    id: $scope.paramId, attribute: 'items',
     expand: 'product,uom'
 }, function (rows) {
     $scope.items = rows;
@@ -17,7 +17,7 @@ Purchase.items({
 
 // save Item
 $scope.save = function () {
-    Purchase.update({id: $scope.paramId}, $scope.model, function (model) {
+    Movement.update({id: $scope.paramId}, $scope.model, function (model) {
         id = model.id;
         $location.path('/view/' + id);
     }, function (r) {

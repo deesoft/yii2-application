@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $angular Angular */
 
-Angular::renderScript('js/update.js');
+$angular->renderJs('js/update.js');
 ?>
 
 <div class="purchase-update">

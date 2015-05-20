@@ -23,7 +23,7 @@ dApp.directive('inputProduct', function () {
 dApp.directive('chgFokus', function () {
     return {
         restrict: 'A',
-        link: function (scope, element,attrs) {
+        link: function (scope, element, attrs) {
             scope.$watch(attrs.chgFokus, function (val) {
                 if (val >= 0) {
                     setTimeout(function () {
@@ -52,8 +52,24 @@ dApp.directive('chgFokus', function () {
     };
 });
 
-dApp.factory('Purchase',['Rest',function(Rest){
-        return Rest('purchase/:id',{},{
-            items:{method: 'GET',isArray:true,url:'purchase/:id/items'}
-        });
-}]);
+dApp.factory('Movement', ['Rest', function (Rest) {
+        return Rest('movement/:id');
+    }]);
+
+dApp.factory('MovementItems', ['Rest', function (Rest) {
+        return Rest('movement/:id/items');
+    }]);
+
+dApp.factory('myFunc', function () {
+    var avaliableField = {
+        purchase: ['qty', 'total_receive'],
+    };
+    return {
+        getAvaliable: function (type, row) {
+            fs = avaliableField[type];
+            if (fs) {
+                return row[fs[0]] - row[fs[1]];
+            }
+        }
+    };
+});

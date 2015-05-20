@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $angular Angular */
 
-$angular->renderJs('js/create.js');
+$angular->renderJs('js/update.js');
 ?>
 
-<div class="purchase-create">
+<div class="movement-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

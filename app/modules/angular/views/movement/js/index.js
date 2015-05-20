@@ -3,7 +3,7 @@
 $scope.provider = {
     multisort: false,
     query: function(){
-        Purchase.query({
+        Movement.query({
             page: $scope.provider.currentPage,
             sort: $scope.provider.sort,
             expand:'supplier,branch',
@@ -21,7 +21,7 @@ $scope.provider.query();
 $scope.deleteModel = function(model){
     if(confirm('Are you sure you want to delete')){
         id = model.id;
-        Purchase.remove({id:id},{},function(){
+        Movement.remove({id:id},{},function(){
             $scope.provider.query();
         });
     }

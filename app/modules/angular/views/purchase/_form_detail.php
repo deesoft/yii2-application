@@ -5,6 +5,7 @@
                 <div class="col-xs-10">
                     Product :
                     <input type="text" class="form-control" ng-model="selectedProduct" id="product"
+                           input-product="addItem"
                            typeahead="product as product.name for product in products.asArray() | filter:$viewValue | limitTo:8"
                            typeahead-on-select="selectProduct($item)"
                            >
@@ -28,11 +29,11 @@
                     </tr>
                 </thead>
                 <tbody id="item-grid">
-                    <tr ng-repeat="(idx,item) in items" data-key="{{idx}}" d-last-repeat="setFokusQty()">
+                    <tr ng-repeat="(idx,item) in items" data-key="{{idx}}" chg-fokus="itemActive">
                         <td >{{item.product.name}}</td>
                         <td ><input ng-model="item.qty" class="form-control" data-field="qty"></td>
                         <td ><select ng-model="item.uom_id" class="form-control" data-field="uom"
-                                     ng-options="uom.id as uom.name for uom in masters.uoms[item.product_id]">
+                                     ng-options="uom.id as uom.name for uom in productUoms.get(item.product_id)">
                             </select></td>
                         <td ><input ng-model="item.price" class="form-control" data-field="price"></td>
                         <td style="text-align: right;">{{item.qty * item.price| number}}</td>

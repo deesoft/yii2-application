@@ -2,11 +2,12 @@
 
 use dee\angular\Angular;
 use app\angular\ModuleAsset;
+use app\angular\components\Helper;
+use yii\helpers\Json;
 
 /* @var $this yii\web\View */
 
 ModuleAsset::register($this);
-
 ?>
 <?=
 Angular::widget([
@@ -14,19 +15,19 @@ Angular::widget([
     'routes' => [
         '/' => [
             'view' => 'index',
-            'di' => ['Purchase',],
+            'di' => ['Movement'],
         ],
         '/view/:id' => [
             'view' => 'view',
-            'di' => ['Purchase',],
+            'di' => ['Movement'],
         ],
         '/update/:id' => [
             'view' => 'update',
-            'di' => ['Purchase',],
+            'di' => ['Movement'],
         ],
-        '/create' => [
+        '/create/:reff/:id' => [
             'view' => 'create',
-            'di' => ['Purchase',],
+            'di' => ['Movement'],
         ],
     ],
     'jsFile' => 'js/main.js'
