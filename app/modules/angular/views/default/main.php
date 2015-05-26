@@ -12,37 +12,40 @@ ModuleAsset::register($this);
 Angular::widget([
     'requires' => ['app.angular', 'ui.bootstrap',],
     'routes' => [
+        '/'=>[
+            'view'=>'index'
+        ],
         '/purchase' => [
-            'view' => 'index',
+            'view' => 'purchase/index',
             'di' => ['Purchase',],
         ],
         '/purchase/view/:id' => [
-            'view' => 'view',
+            'view' => 'purchase/view',
             'di' => ['Purchase',],
         ],
         '/purchase/update/:id' => [
-            'view' => 'update',
+            'view' => 'purchase/update',
             'di' => ['Purchase',],
         ],
         '/purchase/create' => [
-            'view' => 'create',
+            'view' => 'purchase/create',
             'di' => ['Purchase',],
         ],
         '/movement' => [
-            'view' => 'index',
-            'di' => ['Purchase',],
+            'view' => 'movement/index',
+            'di' => ['Movement',],
         ],
         '/movement/view/:id' => [
-            'view' => 'view',
-            'di' => ['Purchase',],
+            'view' => 'movement/view',
+            'di' => ['Movement',],
         ],
         '/movement/update/:id' => [
-            'view' => 'update',
-            'di' => ['Purchase',],
+            'view' => 'movement/update',
+            'di' => ['Movement',],
         ],
         '/movement/create' => [
-            'view' => 'create',
-            'di' => ['Purchase',],
+            'view' => 'movement/create',
+            'di' => ['Movement',],
         ],
     ],
     'jsFile' => 'main.js'

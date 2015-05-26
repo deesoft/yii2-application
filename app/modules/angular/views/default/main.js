@@ -57,3 +57,9 @@ dApp.factory('Purchase',['Rest',function(Rest){
             items:{method: 'GET',isArray:true,url:'purchase/:id/items'}
         });
 }]);
+
+dApp.factory('Movement',['Rest',function(Rest){
+        return Rest('movement/:id',{},{
+            items:{method: 'GET',isArray:true,url:'movement/:id/items'}
+        });
+}]);
