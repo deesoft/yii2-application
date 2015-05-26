@@ -3,6 +3,7 @@ use yii\web\View;
 
 /* @var $this View*/
 
+$this->title = 'Simple Chat';
 $this->registerJs($this->render('script.js.php'));
 ?>
 <style>

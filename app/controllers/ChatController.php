@@ -83,9 +83,23 @@ class ChatController extends \yii\web\Controller
         return true;
     }
 
+    /**
+     * Removes older char.
+     */
+    protected function gc()
+    {
+        $SAVE_HISTORY = 3 * 24 * 3600; // delete chat with age more 3 days
+        $probability = 100; // 1%
+
+        if (mt_rand(0, 1000000) < $probability) {
+            Chat::deleteAll('[[time]] < :time', [':time' => time() - $SAVE_HISTORY]);
+        }
+    }
+
     public function actionMessage($id)
     {
         $MAX_CONN = 15; // 15 second
+
         $begin = time();
         $idleTime = $begin - 60;
         $sse = new SSE();
@@ -103,6 +117,8 @@ class ChatController extends \yii\web\Controller
             ->where(['to' => $id, 'read' => 0])
             ->groupBy('from');
 
+        // remove older chat
+        $this->gc();
         while (time() - $begin < $MAX_CONN) {
             // get all account
             $last = $otherAccs->max('last_actifity');
