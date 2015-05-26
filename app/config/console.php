@@ -14,7 +14,7 @@ return [
             'migrationLookup' => [
                 '@yii/rbac/migrations',
                 '@mdm/admin/migrations',
-                '@biz/core/migrations'
+                '@app/api/migrations',
             ]
         ],
     ],
