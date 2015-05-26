@@ -88,11 +88,12 @@ class ChatController extends \yii\web\Controller
      */
     protected function gc()
     {
-        $SAVE_HISTORY = 3 * 24 * 3600; // delete chat with age more 3 days
+        $SAVE_HISTORY = 1 * 24 * 3600; // delete chat with age more 1 day(s)
         $probability = 100; // 1%
 
         if (mt_rand(0, 1000000) < $probability) {
             Chat::deleteAll('[[time]] < :time', [':time' => time() - $SAVE_HISTORY]);
+            ChatAccount::deleteAll('[[last_actifity]] < :time', [':time' => time() - $SAVE_HISTORY]);
         }
     }
 
