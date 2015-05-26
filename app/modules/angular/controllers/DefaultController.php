@@ -2,13 +2,21 @@
 
 namespace app\angular\controllers;
 
+use Yii;
+use yii\web\Controller;
+
 /**
- * Description of DefaultController
- *
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.0
+ * DefaultController implements the CRUD actions for Purchase model.
  */
-class DefaultController
+class DefaultController extends Controller
 {
-    //put your code here
+
+    /**
+     * Display main page.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        return $this->render('main');
+    }
 }
