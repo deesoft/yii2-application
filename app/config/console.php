@@ -8,16 +8,6 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
-    'controllerMap' => [
-        'migrate' => [
-            'class' => 'dee\console\MigrateController',
-            'migrationLookup' => [
-                '@yii/rbac/migrations',
-                '@mdm/admin/migrations',
-                '@app/api/migrations',
-            ]
-        ],
-    ],
     'components' => [
         'log' => [
             'targets' => [
