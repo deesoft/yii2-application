@@ -51,17 +51,17 @@ Composer がインストールされていれば、次のコマンドを使っ�
 
 4. ウェブサーバのドキュメントルートを設定します。
 
-   - フロントエンドのパスは `/path/to/yii-application/frontend/web/`、URL は `http://frontend/` を使用
+   - フロントエンドのパスは `/path/to/yii-application/app/web/`、URL は `http://app/` を使用
    - バックエンドのパスは `/path/to/yii-application/backend/web/`、URL は `http://backend/` を使用
 
    Apache の場合は、次のように設定することが出来ます。
 
        <VirtualHost *:80>
-           ServerName frontend.dev
+           ServerName app.dev
            ServerAlias 127.0.0.1
-           DocumentRoot /path/to/yii-application/frontend/web/
+           DocumentRoot /path/to/yii-application/app/web/
            
-           <Directory "/path/to/yii-application/frontend/web/">
+           <Directory "/path/to/yii-application/app/web/">
                # 綺麗な URL をサポートするために mod_rewrite を使用
                RewriteEngine on
                # ディレクトリまたはファイルがある場合は、リクエストを直接使用
@@ -101,12 +101,12 @@ Composer がインストールされていれば、次のコマンドを使っ�
            listen 80; ## listen for ipv4
            #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
        
-           server_name frontend.dev;
-           root        /path/to/yii-application/frontend/web/;
+           server_name app.dev;
+           root        /path/to/yii-application/app/web/;
            index       index.php;
        
-           access_log  /path/to/yii-application/log/frontend-access.log;
-           error_log   /path/to/yii-application/log/frontend-error.log;
+           access_log  /path/to/yii-application/log/app-access.log;
+           error_log   /path/to/yii-application/log/app-error.log;
        
            location / {
                # 本当のファイルでないものは全て index.php にリダイレクト
@@ -178,7 +178,7 @@ Composer がインストールされていれば、次のコマンドを使っ�
    次の行を追加します。
 
    ```
-   127.0.0.1   frontend.dev
+   127.0.0.1   app.dev
    127.0.0.1   backend.dev
    ```
 

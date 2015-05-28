@@ -31,4 +31,4 @@ Structure
 Additional Topics
 -----------------
 
-* [Creating links from backend to frontend](topic-link-backend-frontend.md)
+* [Creating links from backend to app](topic-link-backend-app.md)

@@ -26,15 +26,15 @@
 
 - `common/config/main.php`
 - `common/config/main-local.php`
-- `frontend/config/main.php`
-- `frontend/config/main-local.php`
+- `app/config/web.php`
+- `app/config/web-local.php`
 
 パラメータは次の順序で読まれます。
 
 - `common/config/params.php`
 - `common/config/params-local.php`
-- `frontend/config/params.php`
-- `frontend/config/params-local.php`
+- `app/config/params.php`
+- `app/config/params-local.php`
 
 後の構成情報ファイルが先のものを上書きするわけです。
 

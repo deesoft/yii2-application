@@ -51,17 +51,17 @@ the installed application. You only need to do these once for all.
 
 4. Set document roots of your web server:
 
-   - for frontend `/path/to/yii-application/frontend/web/` and using the URL `http://frontend.dev/`
+   - for app `/path/to/yii-application/app/web/` and using the URL `http://app.dev/`
    - for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend.dev/`
 
    For Apache it could be the following:
 
        <VirtualHost *:80>
-           ServerName frontend.dev
+           ServerName app.dev
            ServerAlias 127.0.0.1
-           DocumentRoot /path/to/yii-application/frontend/web/
+           DocumentRoot /path/to/yii-application/app/web/
            
-           <Directory "/path/to/yii-application/frontend/web/">
+           <Directory "/path/to/yii-application/app/web/">
                # use mod_rewrite for pretty URL support
                RewriteEngine on
                # If a directory or a file exists, use the request directly
@@ -101,12 +101,12 @@ the installed application. You only need to do these once for all.
            listen 80; ## listen for ipv4
            #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
        
-           server_name frontend.dev;
-           root        /path/to/yii-application/frontend/web/;
+           server_name app.dev;
+           root        /path/to/yii-application/app/web/;
            index       index.php;
        
-           access_log  /path/to/yii-application/log/frontend-access.log;
-           error_log   /path/to/yii-application/log/frontend-error.log;
+           access_log  /path/to/yii-application/log/app-access.log;
+           error_log   /path/to/yii-application/log/app-error.log;
        
            location / {
                # Redirect everything that isn't a real file to index.php
@@ -178,7 +178,7 @@ the installed application. You only need to do these once for all.
    Add the following lines:
 
    ```
-   127.0.0.1   frontend.dev
+   127.0.0.1   app.dev
    127.0.0.1   backend.dev
    ```
 

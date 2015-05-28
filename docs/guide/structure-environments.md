@@ -18,20 +18,20 @@ and debug turned on. Second is for server deployments. It has debug and develope
 Typically environment contains application bootstrap files such as `index.php` and config files suffixed with
 `-local.php`. These are added to `.gitignore` and never added to source code repository.
 
-In order to avoid duplication configurations are overriding each other. For example, the frontend reads configuration in the
+In order to avoid duplication configurations are overriding each other. For example, the app reads configuration in the
 following order:
 
 - `common/config/main.php`
 - `common/config/main-local.php`
-- `frontend/config/main.php`
-- `frontend/config/main-local.php`
+- `app/config/web.php`
+- `app/config/web-local.php`
 
 Parameters are read in the following order:
 
 - `common/config/params.php`
 - `common/config/params-local.php`
-- `frontend/config/params.php`
-- `frontend/config/params-local.php`
+- `app/config/params.php`
+- `app/config/params-local.php`
 
 The later config file overrides the former.
 

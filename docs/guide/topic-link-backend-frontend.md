@@ -1,7 +1,7 @@
-Creating links from backend to frontend
+Creating links from backend to app
 =======================================
 
-Often it's required to create links from the backend application to the frontend application. Since the frontend application may
+Often it's required to create links from the backend application to the app application. Since the app application may
 contain its own URL manager rules you need to duplicate that for the backend application by naming it differently:
 
 ```php
@@ -11,14 +11,14 @@ return [
             // here is your normal backend url manager config
         ],
         'urlManagerFrontend' => [
-            // here is your frontend URL manager config
+            // here is your app URL manager config
         ],
 
     ],
 ];
 ```
 
-After it is done, you can get an URL pointing to frontend like the following:
+After it is done, you can get an URL pointing to app like the following:
 
 ```php
 echo Yii::$app->urlManagerFrontend->createUrl(...);

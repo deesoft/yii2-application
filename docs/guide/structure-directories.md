@@ -5,9 +5,8 @@ The root directory contains the following subdirectories:
 
 - `backend` - backend web application.
 - `common` - files common to all applications.
-- `console` - console application.
 - `environments` - environment configs.
-- `frontend` - frontend web application.
+- `app` - app web application.
 
 Root directory contains a set of files.
 

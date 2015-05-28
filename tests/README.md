@@ -32,7 +32,7 @@ After creating and setting up the advanced application, follow these steps to pr
    ```
 
 4. In order to be able to run acceptance tests you need to start a webserver. The simplest way is to use PHP built in
-   webserver. In the root directory where `common`, `frontend` etc. are execute the following:
+   webserver. In the root directory where `common`, `app` etc. are execute the following:
 
    ```
    php -S localhost:8080
@@ -41,8 +41,8 @@ After creating and setting up the advanced application, follow these steps to pr
 5. Now you can run the tests with the following commands, assuming you are in the `tests/codeception` directory:
 
    ```
-   # frontend tests
-   cd frontend
+   # app tests
+   cd app
    codecept build
    codecept run
    
