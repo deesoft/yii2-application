@@ -31,8 +31,8 @@
         "deesoft/yii2-rest": "~1.0",
         "deesoft/yii2-rest-base": "~1.0",
         "deesoft/yii2-base": "~1.0",
-        "almasaeed2010/adminlte": "~2.0",
-        "rmrevin/yii2-fontawesome": "2.9.2"
+        "bower-asset/AdminLTE": "~2.0",
+        "rmrevin/yii2-fontawesome": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0",

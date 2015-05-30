@@ -1,40 +1,26 @@
 <?php
-use yii\web\View;
 
-/* @var $this View*/
+use yii\web\View;
+use yii\helpers\Url;
+
+/* @var $this View */
 
 $this->title = 'Simple Chat';
-$this->registerJs($this->render('script.js.php'));
+$this->registerJs($this->render('script.js'), View::POS_END);
+$this->registerCss($this->render('style.css'));
+
+$urls = [
+    'chatUrl' => Url::to(['chat']),
+    'newAccountUrl' => Url::to(['new-account']),
+    'markReadUrl' => Url::to(['mark-read']),
+];
+
+$this->registerJs('yii.dChat.initProperty(' . json_encode($urls) . ')');
 ?>
-<style>
-    #list-account li.idle a{
-        color: gray;
-    }
-    #list-account li.online a{
-        color: black;
-    }
-    #list-account li.active{
-        background: #ddd;
-    }
-    #list-account li.new-message a::after{
-        content: " (new)";
-        color: red;
-    }
-    #messages div.sent{
-        text-align: right;
-    }
-    #messages div.receive{
-        text-align: left;
-    }
-    #messages {
-        overflow: auto;
-        height: 300px;
-        padding: 20px;
-    }
-    #messages div{
-        padding-bottom: 10px;
-    }
-</style>
+
+<p>
+    Source code: <a href="https://github.com/deesoft/yii2-application/tree/master/app" target="_blank">Github</a>
+</p>
 <div class="row">
     <div class="col-lg-4">
         <div>

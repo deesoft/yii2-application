@@ -30,8 +30,9 @@ app\assets\AppAsset::register($this);
         </style>
     </head>
     <?php $this->beginBody() ?>
-    <body class="skin-blue">
-        <header class="header">
+    <body class="skin-blue sidebar-mini">
+        <div class="wrapper">
+        <header class="main-header">
             <?php echo $this->render('heading'); ?>
         </header>
         <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -67,6 +68,7 @@ app\assets\AppAsset::register($this);
                 <?php echo $this->render('sidebar'); ?>
             </aside>
         </div>
+            </div>
     <?php $this->endBody() ?>
 </body>
 </html>

@@ -15,19 +15,18 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/almasaeed2010/adminlte';
+    public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
     public $css = [
-        'css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
-        'css/AdminLTE.css'
+        'css/AdminLTE.css',
+        'css/skins/_all-skins.min.css'
     ];
     public $js = [
-        'js/AdminLTE/app.js',
+        'js/app.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset',
-        'app\\assets\\FontAwesome',
-        'app\\assets\\Ionicon',
+        'rmrevin\yii\fontawesome\AssetBundle',
     ];
 
 }
