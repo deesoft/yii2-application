@@ -17,7 +17,11 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.4",
         "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*"
+        "yiisoft/yii2-swiftmailer": "*",
+        "deesoft/yii2-console": "~1.0",
+        "mdmsoft/yii2-admin": "~1.0",
+        "bower-asset/AdminLTE": "~2.0",
+        "rmrevin/yii2-fontawesome": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
