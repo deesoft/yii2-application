@@ -1,8 +1,8 @@
 <?php
+
 namespace app\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -47,14 +47,13 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-      * @inheritdoc
-      */
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-
             ['role', 'default', 'value' => self::ROLE_USER],
             ['role', 'in', 'range' => [self::ROLE_USER]],
         ];
@@ -73,7 +72,30 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        $duration = 3600;
+        $cache = Yii::$app->cache;
+        if ($cache !== null && ($id = $cache->get([__CLASS__, 'token', $token])) !== false) {
+            if (($user = static::findIdentity($id)) !== null) {
+                $cache->set([__CLASS__, 'token', $token], $id, $duration);
+                $cache->set([__CLASS__, 'id', $user->id], $token, $duration);
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    public function getAccessToken()
+    {
+        $duration = 3600;
+        $cache = Yii::$app->cache;
+        if ($cache === null || ($token = $cache->get([__CLASS__, 'id', $this->id])) !== false) {
+            $token = Yii::$app->security->generateRandomString();
+        }
+        if ($cache) {
+            $cache->set([__CLASS__, 'id', $this->id], $token, $duration);
+            $cache->set([__CLASS__, 'token', $token], $id, $duration);
+        }
+        return $token;
     }
 
     /**
@@ -104,8 +126,8 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+                'password_reset_token' => $token,
+                'status' => self::STATUS_ACTIVE,
         ]);
     }
 

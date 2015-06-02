@@ -13,10 +13,10 @@ return [
     ],
     'modules' => [
         'api' => [
-            'class' => 'app\api\Module',
+            'class' => 'biz\api\Module',
         ],
-        'web' => [
-            'class' => 'app\angular\Module',
+        'client' => [
+            'class' => 'biz\client\Module',
         ],
     ],
     'components' => [
@@ -46,7 +46,6 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'page/<view:\w+>'=>'site/page',
-//                'purchase/<view:(.*)+>' => 'web/purchase/purchase/index',
             ],
         ],
     ],
