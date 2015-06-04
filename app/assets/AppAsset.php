@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
+    public $sourcePath = '@bower/adminlte/dist';
     public $css = [
         'css/AdminLTE.css',
         'css/skins/_all-skins.min.css'
