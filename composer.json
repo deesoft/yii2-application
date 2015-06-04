@@ -33,8 +33,7 @@
         "deesoft/yii2-base": "~1.0",
         "deesoft/biz3-client": "~3.0",
         "deesoft/biz3-api": "~3.0",
-        "bower-asset/AdminLTE": "~2.0",
-        "rmrevin/yii2-fontawesome": "~2.0"
+        "deesoft/yii2-adminlte": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0",
