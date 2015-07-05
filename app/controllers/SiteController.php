@@ -25,6 +25,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['login', 'error', 'signup', 'page','message'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index', 'user-list'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -125,7 +130,7 @@ class SiteController extends Controller
             // Every second, sent a "ping" event.
 
             $curDate = date(DATE_ISO8601);
-            $sse->event('ping', ['time' => $curDate]);
+            $sse->event('ping',['time' => $curDate]);
 
             // Send a simple message at random intervals.
 
@@ -141,14 +146,4 @@ class SiteController extends Controller
         exit();
     }
 
-    public function actionImsakiyah()
-    {
-        $model = new \app\models\Imsakiyah();
-        $jadwal = null;
-        // 7.004 112.425
-        if ($model->load(\Yii::$app->request->get(), '') && $model->validate()) {
-            $jadwal = $model->getImsakiyah();
-        }
-        return $this->render('imsakiyah', ['model' => $model, 'jadwal' => $jadwal]);
-    }
 }
