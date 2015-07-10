@@ -57,22 +57,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $parent = $this->module;
-        $modules = [];
-        foreach ($parent->modules as $id => $module) {
-            $module = $parent->getModule($id);
-            $class = new \ReflectionClass($module);
-            $comment = strtr(trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($class->getDocComment(), '/'))), "\r", '');
-            if (preg_match('/^\s*@\w+/m', $comment, $matches, PREG_OFFSET_CAPTURE)) {
-                $comment = trim(substr($comment, 0, $matches[0][1]));
-            }
-            $modules[$module->uniqueId] = [
-                'name' => \yii\helpers\Inflector::camel2words($module->id),
-                'comment' => $comment
-            ];
-        }
-
-        return $this->render('index', ['modules' => $modules]);
+        return $this->render('index');
     }
 
     public function actionLogin()
