@@ -33,3 +33,10 @@ environments/            contains environment-based overrides
 tests                    contains various tests for the advanced application
     codeception/         contains tests developed with Codeception PHP Testing Framework
 ```
+
+INSTALLATION
+------------
+
+```
+composer create-project deesoft/yii2-app-single myapp
+```
