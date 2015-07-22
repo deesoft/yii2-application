@@ -1,12 +1,14 @@
 <?php
 
 use yii\web\View;
+use dee\adminlte\Nav;
+use yii\helpers\ArrayHelper;
 
 /* @var $this View */
 ?>
 <header class="main-header">
     <a href="<?= Yii::$app->homeUrl; ?>" class="logo">
-        <span class="logo-mini"><b>D</b>ee</span>
+        <span class="logo-mini"><?= ArrayHelper::getValue(Yii::$app->params, 'app.name.small', 'App')?></span>
         <span class="logo-lg"><?= Yii::$app->name ?></span>
     </a>
     <nav class="navbar navbar-static-top" role="navigation">
@@ -16,8 +18,14 @@ use yii\web\View;
         </a>
 
         <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-            </ul>
+            <?=
+            Nav::widget([
+                'options' => ['class' => 'navbar-nav'],
+                'items' => [
+
+                ]
+            ]);
+            ?>
         </div>
     </nav>
 </header>

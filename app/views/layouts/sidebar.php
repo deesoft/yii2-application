@@ -1,27 +1,20 @@
 <?php
 
 use yii\web\View;
-use dee\adminlte\widgets\Nav;
+use dee\adminlte\SideNav;
+use yii\helpers\ArrayHelper;
 
 //use yii\helpers\Html;
 
 /* @var $this View */
 
-$items = [];
-if(isset($this->params['menuCallback'])){
-    $callback = $this->params['menuCallback'];
-}elseif (class_exists('mdm\admin\components\MenuHelper')) {
-    $callback = ['mdm\admin\components\MenuHelper','getAssignedMenu'];
-}
-if(isset($callback) && is_callable($callback)){
-    $items = call_user_func($callback, Yii::$app->user->id);
-}
+$items = ArrayHelper::getValue($this->params, 'sideMenu', []);
 ?>
 <aside class="main-sidebar">
-    
+
     <section class="sidebar">
         <?php
-        echo Nav::widget([
+        echo SideNav::widget([
             'options' => [
                 'class' => 'sidebar-menu',
                 'items' => $items,
