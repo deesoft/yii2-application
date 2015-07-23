@@ -3,24 +3,35 @@
 use yii\web\View;
 use dee\adminlte\Nav;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /* @var $this View */
 if (Yii::$app->user->isGuest) {
     $userItem = [
-        'label' => 'User',
+        'icon' => 'user-times',
         'items' => [
-            ['label' => 'Login', 'url' => ['/site/login']],
-            ['label' => 'Signup', 'url' => ['/site/signup']],
+            ['label' => 'Login', 'url' => ['/user/login']],
+            'icon' => 'sign-in',
+            ['label' => 'Signup', 'url' => ['/user/signup']],
         ]
     ];
 } else {
+    /* @var $user app\models\ar\User */
+    $user = Yii::$app->user->identity;
+    $name = $user->profile ? $user->profile->fullname : $user->username;
+    $label = Html::img(['/file','id'=>$user->profile ? $user->profile->photo_id : null], ['class' => 'user-image']) .
+        Html::tag('span', $name, ['class' => 'hidden-xs']);
     $userItem = [
-        'label' => Yii::$app->user->identity->username,
+        'label' => $label,
+        'icon' => 'user',
+        'options' => ['class' => 'user user-menu'],
+        'url' => '#',
         'items' => [
-            ['label' => 'Change password', 'url' => ['/site/change-password']],
+            ['label' => 'Change password', 'url' => ['/user/change-password']],
             [
                 'label' => 'Logout',
-                'url' => ['/site/logout'],
+                'icon' => 'sign-out',
+                'url' => ['/user/logout'],
                 'linkOptions' => ['data-method' => 'POST']
             ],
         ]
@@ -44,6 +55,7 @@ if (Yii::$app->user->isGuest) {
                 'options' => ['class' => 'navbar-nav'],
                 'items' => [
                     $userItem,
+                    ['icon' => 'gears', 'options' => ['data-toggle' => 'control-sidebar']]
                 ]
             ]);
             ?>
