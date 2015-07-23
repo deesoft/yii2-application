@@ -13,8 +13,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/mdmsoft/yii2-application/issues?page=1&state=open",
-        "source": "https://github.com/mdmsoft/yii2-application"
+        "issues": "https://github.com/deesoft/yii2-app-single/issues?state=open",
+        "source": "https://github.com/deesoft/yii2-app-single"
     },
     "minimum-stability": "dev",
     "require": {
@@ -36,14 +36,10 @@
         "deesoft/yii2-adminlte": "~1.0"
     },
     "require-dev": {
+        "yiisoft/yii2-codeception": "~2.0",
         "yiisoft/yii2-debug": "~2.0",
-        "deesoft/yii2-gii": "~1.0"
-    },
-    "suggest": {
-        "codeception/codeception": "Codeception, 1.8.*@dev is currently works well with Yii.",
-        "codeception/specify": "BDD style code blocks for PHPUnit and Codeception",
-        "codeception/verify": "BDD Assertions for PHPUnit and Codeception",
-        "yiisoft/yii2-faker": "Fixtures generator for Yii2 based on Faker lib"
+        "deesoft/yii2-gii": "~1.0",
+        "yiisoft/yii2-faker": "~2.0"
     },
     "config": {
         "process-timeout": 1800
@@ -52,9 +48,6 @@
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
-        },
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
         }
     }
 }

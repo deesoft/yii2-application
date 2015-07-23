@@ -1,3 +1,6 @@
+# yii console command
+/yii
+
 # phpstorm project files
 .idea
 
@@ -15,15 +18,11 @@ Thumbs.db
 # composer vendor dir
 /vendor
 
-# @app/rbac
-/app/rbac
-
 # composer itself is not needed
 composer.phar
-composer.lock
 
-# yii console
-/yii
+# composer.lock
+/composer.lock
 
 # Mac DS_Store Files
 .DS_Store
