@@ -1,31 +1,32 @@
 <?php
-
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $model app\models\LoginForm */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \app\models\form\Login */
 
-//$this->context->layout = 'login';
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="site-login">
+    <h1><?= Html::encode($this->title) ?></h1>
 
-<?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-<div class="body bg-gray">
-    <?= $form->field($model, 'username') ?>
-    <?= $form->field($model, 'password')->passwordInput() ?>
-    <?= $form->field($model, 'rememberMe')->checkbox() ?>
+    <p>Please fill out the following fields to login:</p>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+                <?= $form->field($model, 'username') ?>
+                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <div style="color:#999;margin:1em 0">
+                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
+                </div>
+                <div class="form-group">
+                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
 </div>
-<div class="footer box-footer">
-    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-</div>
-<div class="margin text-center">
-    <span>Sign in using social networks</span>
-    <br/>
-    <button class="btn bg-light-blue btn-circle"><i class="fa fa-facebook"></i></button>
-    <button class="btn bg-aqua btn-circle"><i class="fa fa-twitter"></i></button>
-    <button class="btn bg-red btn-circle"><i class="fa fa-google-plus"></i></button>
-</div>
-<?php ActiveForm::end(); ?>

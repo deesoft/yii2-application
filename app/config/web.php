@@ -1,6 +1,7 @@
 <?php
 $params = array_merge(
-    require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
 );
 
 return [
@@ -21,7 +22,7 @@ return [
     ],
     'components' => [
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\ar\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
@@ -36,18 +37,9 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-//        'request' => [
-//            'parsers' => [
-//                'application/json' => 'yii\web\JsonParser',
-//            ],
-//        ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                'page/<view:\w+>'=>'site/page',
-            ],
-        ],
+        'authManager'=>[
+            'class'=>'yii\rbac\DbManager',
+        ]
     ],
     'params' => $params,
 ];

@@ -1,6 +1,5 @@
-bootstrap-local.php
-common-local.php
+main-local.php
 console-local.php
-container-local.php
-params-local.php
 web-local.php
+params-local.php
+bootstrap-local.php

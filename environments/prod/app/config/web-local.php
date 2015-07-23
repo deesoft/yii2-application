@@ -1,24 +1,16 @@
 <?php
-
-$config = [
-    'modules' => [
-        'admin' => 'mdm\admin\Module'
-    ],
+return [
     'components' => [
         'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '',
         ],
-        'session' => [
-            'cookieParams' => ['httponly' => true, 'path' => '/']
-        ],
         'urlManager' => [
-            'enablePrettyUrl' => false,
-            'enableStrictParsing' => true,
+            'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'page/<view:\w+>'=>'site/page',
             ],
-        ]
-    ]
+        ],
+    ],
 ];
-
-return $config;
