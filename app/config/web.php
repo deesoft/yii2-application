@@ -12,6 +12,7 @@ return [
     'components' => [
         'user' => [
             'identityClass' => 'app\models\ar\User',
+            'loginUrl' => ['user/login'],
             'enableAutoLogin' => true,
         ],
         'log' => [

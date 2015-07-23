@@ -5,6 +5,7 @@ use yii\db\Migration;
 
 class m130524_201442_init extends Migration
 {
+
     public function up()
     {
         $tableOptions = null;
@@ -15,7 +16,7 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%user}}', [
             'id' => Schema::TYPE_PK,
-            'username' => Schema::TYPE_STRING . ' NOT NULL',
+            'username' => Schema::TYPE_STRING . '(32) NOT NULL',
             'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
             'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
             'password_reset_token' => Schema::TYPE_STRING,
@@ -24,11 +25,21 @@ class m130524_201442_init extends Migration
             'status' => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 10',
             'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-        ], $tableOptions);
+            ], $tableOptions);
+
+        $this->createTable('{{%user_profile}}', [
+            'user_id' => Schema::TYPE_INTEGER,
+            'fullname' => Schema::TYPE_STRING . ' NOT NULL',
+            'photo_id'=> Schema::TYPE_INTEGER,
+
+            'PRIMARY KEY ([[user_id]])',
+            'FOREIGN KEY ([[user_id]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
+            ], $tableOptions);
     }
 
     public function down()
     {
+        $this->dropTable('{{%user_profile}}');
         $this->dropTable('{{%user}}');
     }
 }

@@ -48,6 +48,7 @@ $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'
                 </div>
                 <strong>Copyright &copy; 2015 <a href="#">Deesoft</a>.</strong> All rights reserved.
             </footer>
+            <?= $this->render('control-sidebar'); ?>
         </div>
         <?php $this->endBody() ?>
     </body>
