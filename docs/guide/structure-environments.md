@@ -21,15 +21,15 @@ Typically environment contains application bootstrap files such as `index.php` a
 In order to avoid duplication configurations are overriding each other. For example, the app reads configuration in the
 following order:
 
-- `common/config/main.php`
-- `common/config/main-local.php`
+- `app/config/main.php`
+- `app/config/main-local.php`
 - `app/config/web.php`
 - `app/config/web-local.php`
 
 Parameters are read in the following order:
 
-- `common/config/params.php`
-- `common/config/params-local.php`
+- `app/config/params.php`
+- `app/config/params-local.php`
 - `app/config/params.php`
 - `app/config/params-local.php`
 

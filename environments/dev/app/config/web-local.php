@@ -7,7 +7,7 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => true,
+            //'showScriptName' => false,
             'rules' => [
                 'page/<view:\w+>'=>'site/page',
             ],

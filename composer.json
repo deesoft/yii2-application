@@ -2,15 +2,11 @@
     "name": "deesoft/yii2-app-single",
     "description": "Yii 2 Single Project Template",
     "keywords": ["yii2", "framework", "advanced", "project template"],
-    "homepage": "http://www.yiiframework.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "issues": "https://github.com/deesoft/yii2-app-single/issues?state=open",
+        "source": "https://github.com/deesoft/yii2-app-single"
     },
     "minimum-stability": "dev",
     "require": {

@@ -6,31 +6,30 @@ directory:
 
 ```json
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
+    "name": "deesoft/yii2-app-single",
+    "description": "Yii 2 Single Project Template",
     "keywords": ["yii2", "framework", "advanced", "project template"],
-    "homepage": "http://www.yiiframework.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "issues": "https://github.com/deesoft/yii2-app-single/issues?state=open",
+        "source": "https://github.com/deesoft/yii2-app-single"
     },
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": "*",
-        "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*"
+        "yiisoft/yii2": ">=2.0.4",
+        "yiisoft/yii2-bootstrap": "~2.0",
+        "yiisoft/yii2-swiftmailer": "~2.0",
+        "deesoft/yii2-console": "~1.0",
+        "mdmsoft/yii2-admin": "~2.0",
+        "deesoft/yii2-adminlte": "~1.0"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
-        "yiisoft/yii2-debug": "*",
-        "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-codeception": "~2.0",
+        "yiisoft/yii2-debug": "~2.0",
+        "deesoft/yii2-gii": "~1.0",
+        "yiisoft/yii2-faker": "~2.0"
     },
     "config": {
         "process-timeout": 1800
