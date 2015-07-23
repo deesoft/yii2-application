@@ -1,13 +1,13 @@
 <?php
-namespace app\models;
+namespace app\models\form;
 
-use common\models\User;
+use app\models\ar\User;
 use yii\base\Model;
 
 /**
  * Password reset request form
  */
-class PasswordResetRequestForm extends Model
+class PasswordResetRequest extends Model
 {
     public $email;
 
@@ -21,7 +21,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => '\common\models\User',
+                'targetClass' => 'app\models\ar\User',
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with such email.'
             ],

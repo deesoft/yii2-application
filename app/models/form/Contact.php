@@ -1,14 +1,14 @@
 <?php
 
-namespace app\models;
+namespace app\models\form;
 
 use Yii;
 use yii\base\Model;
 
 /**
- * ContactForm is the model behind the contact form.
+ * Contact is the model behind the contact form.
  */
-class ContactForm extends Model
+class Contact extends Model
 {
     public $name;
     public $email;
