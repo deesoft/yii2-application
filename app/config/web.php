@@ -5,10 +5,21 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-app',
+    'id' => 'app-web',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
     'controllerNamespace' => 'app\controllers',
+    'bootstrap' => [
+        'log',
+        'api',
+    ],
+    'modules' => [
+        'api' => [
+            'class' => 'biz\api\Module',
+        ],
+        'client' => [
+            'class' => 'biz\client\Module',
+        ],
+    ],
     'components' => [
         'user' => [
             'identityClass' => 'app\models\ar\User',

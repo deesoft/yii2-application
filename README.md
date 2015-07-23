@@ -1,5 +1,5 @@
-Yii 2 Single Project Template
-===============================
+Yii2 Application Template
+===========
 
 Yii 2 Single Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
 developing complex Web applications with multiple tiers.
@@ -38,5 +38,5 @@ INSTALLATION
 ------------
 
 ```
-composer create-project deesoft/yii2-app-single myapp
+composer create-project deesoft/yii2-application myapp
 ```

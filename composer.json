@@ -13,14 +13,13 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/deesoft/yii2-app-single/issues?state=open",
-        "source": "https://github.com/deesoft/yii2-app-single"
+        "issues": "https://github.com/deesoft/yii2-application/issues?state=open",
+        "source": "https://github.com/deesoft/yii2-application"
     },
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.4",
-        "yiisoft/yii2-jui": "~2.0",
         "yiisoft/yii2-bootstrap": "~2.0",
         "mdmsoft/yii2-admin": "~2.0",
         "mdmsoft/yii2-autonumber": "~1.0",
