@@ -11,6 +11,7 @@ return [
     'bootstrap' => [
         'log',
         'api',
+        'admin',
     ],
     'modules' => [
         'api' => [
@@ -19,6 +20,9 @@ return [
         'client' => [
             'class' => 'biz\client\Module',
         ],
+        'admin'=>[
+            'class' => 'dee\admin\Module',
+        ]
     ],
     'components' => [
         'user' => [
