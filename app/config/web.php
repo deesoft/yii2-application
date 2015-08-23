@@ -21,7 +21,7 @@ return [
             'class' => 'biz\client\Module',
         ],
         'admin'=>[
-            'class' => 'dee\admin\Module',
+            'class' => 'mdm\admin\Module',
         ]
     ],
     'components' => [
