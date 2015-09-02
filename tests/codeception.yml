@@ -1,4 +1,7 @@
 include:
+  - codeception/common
+  - codeception/console
+  - codeception/rest
   - codeception/app
 
 paths:

@@ -13,7 +13,7 @@ If you do not have [Composer](http://getcomposer.org/), follow the instructions 
 With Composer installed, you can then install the application using the following commands:
 
     composer global require "fxp/composer-asset-plugin:~1.0.0"
-    composer create-project --prefer-dist deesoft/yii2-app-single yii-application
+    composer create-project --prefer-dist yiisoft/yii2-app-advanced yii-application
 
 The first command installs the [composer asset plugin](https://github.com/francoispluchino/composer-asset-plugin/)
 which allows managing bower and npm package dependencies through Composer. You only need to run this command
@@ -52,10 +52,10 @@ the installed application. You only need to do these once for all.
 4. Set document roots of your web server:
 
    - for app `/path/to/yii-application/app/web/` and using the URL `http://app.dev/`
-   - for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend.dev/`
+   - for rest `/path/to/yii-application/rest/web/` and using the URL `http://rest.dev/`
 
    For Apache it could be the following:
-
+```apache
        <VirtualHost *:80>
            ServerName app.dev
            ServerAlias 127.0.0.1
@@ -73,9 +73,27 @@ the installed application. You only need to do these once for all.
                # ...other settings...
            </Directory>
        </VirtualHost>
-
+       
+       <VirtualHost *:80>
+           ServerName rest.dev
+           ServerAlias 127.0.0.1
+           DocumentRoot /path/to/yii-application/rest/web/
+           
+           <Directory "/path/to/yii-application/rest/web/">
+               # use mod_rewrite for pretty URL support
+               RewriteEngine on
+               # If a directory or a file exists, use the request directly
+               RewriteCond %{REQUEST_FILENAME} !-f
+               RewriteCond %{REQUEST_FILENAME} !-d
+               # Otherwise forward the request to index.php
+               RewriteRule . index.php
+           
+               # ...other settings...
+           </Directory>
+       </VirtualHost>
+```
    For nginx:
-
+```nginx
        server {
            charset utf-8;
            client_max_body_size 128M;
@@ -113,8 +131,45 @@ the installed application. You only need to do these once for all.
                deny all;
            }
        }
+        
+       server {
+           charset utf-8;
+           client_max_body_size 128M;
        
-
+           listen 80; ## listen for ipv4
+           #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
+       
+           server_name rest.dev;
+           root        /path/to/yii-application/rest/web/;
+           index       index.php;
+       
+           access_log  /path/to/yii-application/log/rest-access.log;
+           error_log   /path/to/yii-application/log/rest-error.log;
+       
+           location / {
+               # Redirect everything that isn't a real file to index.php
+               try_files $uri $uri/ /index.php?$args;
+           }
+       
+           # uncomment to avoid processing of calls to non-existing static files by Yii
+           #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+           #    try_files $uri =404;
+           #}
+           #error_page 404 /404.html;
+       
+           location ~ \.php$ {
+               include fastcgi_params;
+               fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+               fastcgi_pass   127.0.0.1:9000;
+               #fastcgi_pass unix:/var/run/php5-fpm.sock;
+               try_files $uri =404;
+           }
+       
+           location ~ /\.(ht|svn|git) {
+               deny all;
+           }
+       }
+```
 5. Change the hosts file to point the domain to your server.
 
    - Windows: `c:\Windows\System32\Drivers\etc\hosts`
@@ -124,7 +179,7 @@ the installed application. You only need to do these once for all.
 
    ```
    127.0.0.1   app.dev
-   127.0.0.1   backend.dev
+   127.0.0.1   rest.dev
    ```
 
 To login into the application, you need to first sign up, with any of your email address, username and password.

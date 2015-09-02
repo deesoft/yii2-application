@@ -10,8 +10,7 @@ if (Yii::$app->user->isGuest) {
     $userItem = [
         'icon' => 'user-times',
         'items' => [
-            ['label' => 'Login', 'url' => ['/user/login']],
-            'icon' => 'sign-in',
+            ['label' => 'Login', 'url' => ['/user/login'],'icon' => 'sign-in'],
             ['label' => 'Signup', 'url' => ['/user/signup']],
         ]
     ];

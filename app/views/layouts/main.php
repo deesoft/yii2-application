@@ -2,13 +2,12 @@
 
 use yii\helpers\Html;
 use dee\adminlte\AdminlteAsset;
-use yii\widgets\Breadcrumbs;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 AdminlteAsset::register($this);
-$breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [];
+$this->registerJsFile('@web/js/md5.js');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,15 +26,15 @@ $breadcrumbs = isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'
             <?= $this->render('sidebar'); ?>
             <div class="content-wrapper">
                 <section class="content-header">
-                    <h1><?= $this->title; ?></h1>
-                    <?=
-                    Breadcrumbs::widget([
-                        'tag' => 'ol',
-                        'encodeLabels' => false,
-                        'homeLink' => ['label' => '<i class="fa fa-dashboard"></i> Home/Dashboard', 'url' => ['/site/index']],
-                        'links' => $breadcrumbs,
-                    ])
-                    ?>
+                    <h1 ng-bind="Page.title"><?= Yii::$app->name; ?></h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#/">Home</a></li>
+                        <li ng-repeat="item in Page.breadcrumbs">
+                            <a ng-href="{{item.url}}">
+                                <i class="fa" ng-class="'fa-'+item.icon" ng-if="!!item.icon"></i>
+                                {{item.label}}</a>
+                        </li>
+                    </ul>
                 </section>
                 <section class="content">
                     <?= $content ?>

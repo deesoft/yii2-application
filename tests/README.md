@@ -46,9 +46,9 @@ After creating and setting up the advanced application, follow these steps to pr
    codecept build
    codecept run
    
-   # backend tests
+   # rest tests
    
-   cd backend
+   cd rest
    codecept build
    codecept run
     

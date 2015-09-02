@@ -1,51 +1,124 @@
 <?php
-/* @var $this yii\web\View */
-$this->title = 'My Yii Application';
+
+use yii\web\View;
+use dee\angular\NgView;
+
+//use yii\helpers\Html;
+
+/* @var $this View */
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
-</div>
+<?=
+NgView::widget([
+    'requires' => ['ngResource', 'ui.bootstrap', 'dee', 'validation', 'validation.rule'],
+    'routes' => [
+        '/' => [
+            'redirectTo' => '/index',
+        ],
+        '/index' => [
+            'view' => 'site/index',
+            'js' => 'site/js/index.js',
+        ],
+        '/contact' => [
+            'view' => 'site/contact',
+        ],
+        '/user/login' => [
+            'visible' => false,
+            'view' => 'user/login',
+            'js' => 'user/js/login.js',
+            'injection' => ['Auth', '$modalInstance'],
+        ],
+        '/purchase' => [
+            'view' => 'purchase/index',
+            'js' => 'purchase/js/index.js',
+            'injection' => ['Purchase',],
+        ],
+        '/purchase/new' => [
+            'view' => 'purchase/create',
+            'js' => 'purchase/js/create.js',
+            'injection' => ['Purchase',],
+        ],
+        '/purchase/:id/edit' => [
+            'view' => 'purchase/update',
+            'js' => 'purchase/js/update.js',
+            'injection' => ['Purchase',],
+        ],
+        '/purchase/:id' => [
+            'view' => 'purchase/view',
+            'js' => 'purchase/js/view.js',
+            'injection' => ['Purchase'],
+        ],
+        '/sales' => [
+            'view' => 'sales/index',
+            'js' => 'sales/js/index.js',
+            'injection' => ['Sales',],
+        ],
+        '/sales/new' => [
+            'view' => 'sales/create',
+            'js' => 'sales/js/create.js',
+            'injection' => ['Sales',],
+        ],
+        '/sales/:id/edit' => [
+            'view' => 'sales/update',
+            'js' => 'sales/js/update.js',
+            'injection' => ['Sales',],
+        ],
+        '/sales/:id' => [
+            'view' => 'sales/view',
+            'js' => 'sales/js/view.js',
+            'injection' => ['Sales',],
+        ],
+        '/transfer' => [
+            'view' => 'transfer/index',
+            'js' => 'transfer/js/index.js',
+            'injection' => ['Transfer',],
+        ],
+        '/transfer/new' => [
+            'view' => 'transfer/create',
+            'js' => 'transfer/js/create.js',
+            'injection' => ['Transfer',],
+        ],
+        '/transfer/:id/edit' => [
+            'view' => 'transfer/update',
+            'js' => 'transfer/js/update.js',
+            'injection' => ['Transfer',],
+        ],
+        '/transfer/:id' => [
+            'view' => 'transfer/view',
+            'js' => 'transfer/js/view.js',
+            'injection' => ['Transfer'],
+        ],
+        '/movement' => [
+            'view' => 'movement/index',
+            'js' => 'movement/js/index.js',
+            'injection' => ['Movement',],
+        ],
+        '/movement/new' => [
+            'view' => 'movement/create',
+            'js' => 'movement/js/create.js',
+            'injection' => ['Movement',],
+        ],
+        '/movement/new/:reff/:id' => [
+            'view' => 'movement/create',
+            'js' => 'movement/js/create.js',
+            'injection' => ['Movement',],
+        ],
+        '/movement/:id/edit' => [
+            'view' => 'movement/update',
+            'js' => 'movement/js/update.js',
+            'injection' => ['Movement',],
+        ],
+        '/movement/:id' => [
+            'view' => 'movement/view',
+            'js' => 'movement/js/view.js',
+            'injection' => ['Movement',],
+        ],
+        'otherwise' => [
+            'view' => 'site/error'
+        ],
+    ],
+    'js' => 'app.js',
+    'clientOptions'=>[
+        'baseApiUrl'=>'http://api.dee-app.dev/index.php/v1/',
+//        'baseApiUrl'=>  '/index.php/api/v1/',
+    ]
+])?>
