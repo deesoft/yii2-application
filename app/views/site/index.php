@@ -25,7 +25,7 @@ NgView::widget([
             'visible' => false,
             'view' => 'user/login',
             'js' => 'user/js/login.js',
-            'injection' => ['Auth', '$modalInstance'],
+            'injection' => ['$modalInstance'],
         ],
         '/purchase' => [
             'view' => 'purchase/index',
@@ -118,6 +118,7 @@ NgView::widget([
     ],
     'js' => 'app.js',
     'clientOptions'=>[
+        'loginUrl'=>  \yii\helpers\Url::to(['site/login']),
         'baseApiUrl'=>'http://api.dee-app.dev/index.php/v1/',
 //        'baseApiUrl'=>  '/index.php/api/v1/',
     ]

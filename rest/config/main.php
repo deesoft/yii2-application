@@ -38,8 +38,13 @@ return [
                         'v<version:\d+>/<controller>' => 'v<version>/<controller>'
                     ]
                 ]
+            ],
+        ],
+        'request'=>[
+            'parsers'=>[
+                'application/json' => 'yii\web\JsonParser',
             ]
-        ]
+        ],
     ],
     'as biz' => [
         'class' => 'rest\classes\Hooks',
@@ -64,7 +69,7 @@ return [
         'authMethods' => [
             'yii\filters\auth\QueryParamAuth',
             'yii\filters\auth\HttpBearerAuth',
-            'dee\rest\GuestAuth',
+            //'dee\rest\GuestAuth',
         ],
     ],
     'params' => $params,

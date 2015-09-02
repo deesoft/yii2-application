@@ -17,11 +17,8 @@ if (Yii::$app->user->isGuest) {
 } else {
     /* @var $user app\models\ar\User */
     $user = Yii::$app->user->identity;
-    $name = $user->profile ? $user->profile->fullname : $user->username;
-    $label = Html::img(['/file','id'=>$user->profile ? $user->profile->photo_id : null], ['class' => 'user-image']) .
-        Html::tag('span', $name, ['class' => 'hidden-xs']);
     $userItem = [
-        'label' => $label,
+        'label' => $user->username,
         'icon' => 'user',
         'options' => ['class' => 'user user-menu'],
         'url' => '#',

@@ -11,7 +11,7 @@ use common\models\Login;
  */
 class SiteController extends Controller
 {
-
+    public $enableCsrfValidation = false;
     /**
      * Displays homepage.
      *
@@ -26,10 +26,11 @@ class SiteController extends Controller
     {
         Yii::$app->getResponse()->format = 'json';
         $model = new Login();
-        if ($model->load(Yii::$app->getRequest()->post(), '') && $model->login()) {
+        $model->load(Yii::$app->getRequest()->post(), '');
+        if ($model->login()) {
             /* @var $user \common\models\User */
             $user = Yii::$app->getUser()->getIdentity();
-            return $user->getToken(true);
+            return ['token'=>$user->getToken(true)];
         }
         return Yii::createObject('yii\rest\Serializer')->serialize($model);
     }

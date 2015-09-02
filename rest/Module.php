@@ -65,7 +65,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $prefix = $this->prefixUrlRule === null ? $this->uniqueId : $this->prefixUrlRule;
         $prefixRoute = $this->uniqueId;
         return[
-            $prefix => $prefixRoute.'/default/index',
             [
                 'class' => 'dee\rest\UrlRule',
                 'prefix' => $prefix,
