@@ -38,6 +38,7 @@ class m130524_201442_init extends Migration
             'user_id' => $this->integer()->notNull(),
             'param' => $this->string(64),
             'expire' => $this->integer()->notNull(),
+            'PRIMARY KEY ([[token]])',
             ], $tableOptions);
     }
 

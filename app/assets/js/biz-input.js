@@ -1,15 +1,26 @@
 (function () {
+    
     var module = angular.module('biz.input', []);
 
-    module.factory('Master',function(){
-        var pub = {};
-        var _products = MASTERS.products || {};
-        var _barcodes = MASTERS.barcodes || {};
-        
-        pub.products = [];
-        angular.forEach(_products,function(v){
-            pub.products.push(v);
+    function toArray(a){
+        var r = [];
+        angular.forEach(a,function (v){
+            r.push(v);
         });
+        return r;
+    }
+    
+    module.factory('Master',function(){        
+        var pub = {};
+        var _MASTERS = window.MASTERS || {};
+        var _products = _MASTERS.products || {};
+        var _barcodes = _MASTERS.barcodes || {};
+        
+        pub.products = toArray(_products);
+        pub.suppliers = _MASTERS.suppliers || [];
+        pub.customers = _MASTERS.customers || [];
+        pub.product_uoms = _MASTERS.product_uoms || {};
+        pub.branchs = _MASTERS.branchs || [];
         
         pub.getProductByCode = function(code){
             var id = _barcodes[code];

@@ -7,7 +7,6 @@ use dee\adminlte\AdminlteAsset;
 /* @var $content string */
 
 AdminlteAsset::register($this);
-$this->registerJsFile('@web/js/md5.js');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

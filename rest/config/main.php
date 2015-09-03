@@ -69,8 +69,9 @@ return [
         'authMethods' => [
             'yii\filters\auth\QueryParamAuth',
             'yii\filters\auth\HttpBearerAuth',
-            //'dee\rest\GuestAuth',
+            'dee\rest\GuestAuth',
         ],
+        'except'=>['v1/master/index'],
     ],
     'params' => $params,
 ];

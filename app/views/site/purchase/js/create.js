@@ -28,11 +28,13 @@ $scope.save = function () {
         id = model.id;
         $location.path('/purchase/' + id);
     }, function (r) {
-        $scope.errors = {status: r.status, text: r.statusText, data: {}};
+        $scope.errors = {};
         if (r.status == 422) {
-            for (var key in r.data) {
-                $scope.errors.data[r.data[key].field] = r.data[key].message;
-            }
+            angular.forEach(r.data,function(v){
+                $scope.errors[v.field] = v.message;
+            });
+        }else{
+            
         }
     });
 }

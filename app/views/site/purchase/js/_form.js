@@ -1,18 +1,16 @@
 // master
-$scope.products = yii.app.master('products');
-$scope.suppliers = yii.app.master('suppliers');
-$scope.branchs = yii.app.master('branchs');
-$scope.productUoms = yii.app.master('product_uoms');
-$scope.errors = {data: {}};
+var Master = $injector.get('Master');
+
+$scope.products = Master.products;
+$scope.suppliers = Master.suppliers;
+$scope.branchs = Master.branchs;
+$scope.productUoms = Master.product_uoms;
+$scope.errors = {};
 
 jQuery('form').on('keypress change',':input[ng-model]',function(){
     var field = $(this).attr('name');
-    if($scope.errors.status){
-        delete $scope.errors.status;
-        delete $scope.errors.text;
-    }
-    if($scope.errors.data[field]){
-        delete $scope.errors.data[field];
+    if($scope.errors[field]){
+        delete $scope.errors[field];
     }
 });
 
@@ -43,7 +41,7 @@ $scope.addItem = function (product) {
     if (!has) {
         key = $scope.model.items.length;
         var uom_id;
-        var uoms = $scope.productUoms.get(product.id);
+        var uoms = $scope.productUoms[product.id];
         if (uoms && uoms[0]) {
             uom_id = uoms[0].id;
         }

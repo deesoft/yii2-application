@@ -1,4 +1,4 @@
-var $resource = $injector.get('$resource');
+var $http = $injector.get('$http');
 
 $scope.error = {};
 
@@ -10,15 +10,14 @@ jQuery('form').on('change', ':input[name]', function () {
 $scope.login = function () {
     var post = $scope.model;
 
-    var auth = $resource(opts.loginUrl, {}, {login: {method: 'POST'}});
-    auth.login({}, post, function (r) {
-        $modalInstance.close(r);
-    }, function (r) {
-        if (r.status == 422) {
-            angular.forEach(r.data, function (v) {
-                $scope.error[v.field] = v.message;
-            });
-        }
-    });
-
+    $http.post(opts.loginUrl, post)
+        .then(function (r) {
+            $modalInstance.close(r.token);
+        }, function (r) {
+            if (r.status == 422) {
+                angular.forEach(r.data, function (v) {
+                    $scope.error[v.field] = v.message;
+                });
+            }
+        });
 }

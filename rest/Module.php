@@ -85,7 +85,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
                     QueryParamAuth::className(),
                     HttpBearerAuth::className(),
                     GuestAuth::className(),
-                ]
+                ],
+                'except'=>['v1/master/index'],
             ],
         ];
     }

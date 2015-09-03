@@ -12,14 +12,17 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
-    public $css = [
-    ];
+    public $sourcePath = '@app/assets/js';
     public $js = [
-        'js/md5.js'
+        'md5.js',
+        'biz-input.js',
     ];
     public $depends = [
+        'yii\web\JqueryAsset',
+        'dee\angular\AngularAsset',
     ];
 
+    public $publishOptions = [
+        'forceCopy'=>true,
+    ];
 }

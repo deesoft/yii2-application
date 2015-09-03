@@ -35,6 +35,12 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'rules' => [
+                ''=>'site/index'
+            ],
+        ],
 //        'errorHandler' => [
 //            'errorAction' => 'site/error',
 //        ],

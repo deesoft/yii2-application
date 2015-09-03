@@ -27,7 +27,7 @@ if (Yii::$app->user->isGuest) {
             [
                 'label' => 'Logout',
                 'icon' => 'sign-out',
-                'url' => ['/user/logout'],
+                'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'POST']
             ],
         ]

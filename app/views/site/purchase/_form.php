@@ -29,13 +29,13 @@ $widget->renderJs('js/_form.js');
                         <div class="form-group required" ng-class="{error:errors.supplier_id}">
                             <label for="purchase-supplier_id" class="control-label">Supplier</label>
                             <input id="purchase-supplier_id" name="supplier_id" class="form-control" ng-model="model.supplier"
-                                   typeahead="supplier as supplier.name for supplier in suppliers.asArray() | filter:$viewValue | limitTo:8">
+                                   typeahead="supplier as supplier.name for supplier in suppliers | filter:$viewValue | limitTo:8">
                             <div class="help-block">{{errors.supplier_id}}</div>
                         </div>
                         <div class="form-group required" ng-class="{error:errors.branch_id}">
                             <label for="purchase-branch_id" class="control-label">Branch</label>
                             <select id="purchase-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id"
-                                    ng-options="branch.id as branch.name for branch in branchs.asArray()">
+                                    ng-options="branch.id as branch.name for branch in branchs">
                             </select>
                             <div class="help-block">{{errors.branch_id}}</div>
                         </div>
