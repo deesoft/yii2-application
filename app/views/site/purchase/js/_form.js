@@ -61,12 +61,6 @@ $scope.selectProduct = function (product) {
 }
 
 $scope.deleteRow = function (idx) {
-    var temp = [];
-    for (var key in $scope.model.items) {
-        if (key != idx) {
-            temp.push($scope.model.items[key])
-        }
-    }
-    $scope.model.items = temp;
+    $scope.model.items.splice(idx,1);
     jQuery('#product').focus();
 }

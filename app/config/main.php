@@ -7,13 +7,16 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-app',
+    'id' => 'app-main',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log','api'],
+    'bootstrap' => ['log', 'admin'],
     'controllerNamespace' => 'app\controllers',
     'modules'=>[
         'api'=>[
             'class'=>'rest\Module',
+        ],
+        'admin'=>[
+            'class'=>'mdm\admin\Module',
         ]
     ],
     'components' => [
@@ -41,6 +44,9 @@ return [
                 ''=>'site/index'
             ],
         ],
+        'authManager'=>[
+            'class' => 'yii\rbac\DbManager',
+        ]
 //        'errorHandler' => [
 //            'errorAction' => 'site/error',
 //        ],

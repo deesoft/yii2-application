@@ -6,7 +6,7 @@ $scope.paramId = $routeParams.id;
 // model
 Purchase.get({
     id: $scope.paramId, 
-    expand: 'supplier,branch,items.product,items.uom'
+    expand: 'supplier,items.product,items.uom'
 }, function (row) {
     $scope.model = row;
 });

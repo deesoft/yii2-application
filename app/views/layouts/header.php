@@ -3,7 +3,6 @@
 use yii\web\View;
 use dee\adminlte\Nav;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /* @var $this View */
 if (Yii::$app->user->isGuest) {

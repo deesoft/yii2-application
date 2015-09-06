@@ -24,17 +24,6 @@ AdminlteAsset::register($this);
             <?= $this->render('header'); ?>
             <?= $this->render('sidebar'); ?>
             <div class="content-wrapper">
-                <section class="content-header">
-                    <h1 ng-bind="Page.title"><?= Yii::$app->name; ?></h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#/">Home</a></li>
-                        <li ng-repeat="item in Page.breadcrumbs">
-                            <a ng-href="{{item.url}}">
-                                <i class="fa" ng-class="'fa-'+item.icon" ng-if="!!item.icon"></i>
-                                {{item.label}}</a>
-                        </li>
-                    </ul>
-                </section>
                 <section class="content">
                     <?= $content ?>
                 </section>

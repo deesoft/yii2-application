@@ -6,7 +6,7 @@ $scope.paramId = $routeParams.id;
 // model
 Sales.get({
     id: $scope.paramId, 
-    expand: 'supplier,branch,items.product,items.uom'
+    expand: 'customer,items.product,items.uom'
 }, function (row) {
     $scope.model = row;
 });
@@ -14,8 +14,8 @@ Sales.get({
 // save Item
 $scope.save = function () {
     var post = {};
-    if ($scope.model.supplier) {
-        post.supplier_id = $scope.model.supplier.id;
+    if ($scope.model.customer) {
+        post.customer_id = $scope.model.customer.id;
     }
     post.date = $scope.model.date;
     post.branch_id = $scope.model.branch_id;
@@ -35,11 +35,13 @@ $scope.save = function () {
         id = model.id;
         $location.path('/sales/' + id);
     }, function (r) {
-        $scope.errors = {status: r.status, text: r.statusText, data: {}};
+        $scope.errors = {};
         if (r.status == 422) {
-            for (key in r.data) {
-                $scope.errors.data[r.data[key].field] = r.data[key].message;
-            }
+            angular.forEach(r.data,function(v){
+                $scope.errors[v.field] = v.message;
+            });
+        }else{
+            
         }
     });
 }

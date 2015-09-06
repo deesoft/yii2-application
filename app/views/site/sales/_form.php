@@ -7,35 +7,28 @@ use dee\angular\NgView;
 
 $widget->renderJs('js/_form.js');
 ?>
-
 <div class="sales-form">
-    <form name="Form" d-errors="errors">
+    <form name="Form">
         <div class="box box-default">
             <div class="box-header with-border">
                 <div class="btn-group">
                     <a class="btn btn-primary btn-sm" ng-click="save()">Save</a>
                     <a class="btn btn-danger btn-sm" ng-click="discard()">Discard</a>
                 </div>
-                <div ng-if="errors.status">
-                    <h1>Error {{errors.status}}: {{errors.text}}</h1>
-                    <ul>
-                        <li ng-repeat="(field,msg) in errors.data">{{field}}: {{msg}}</li>
-                    </ul>
-                </div>
             </div>
             <div class="box-body">
                 <div class="row">
                     <div class="col-xs-6">
-                        <div class="form-group required" ng-class="{error:errors.supplier_id}">
-                            <label for="sales-supplier_id" class="control-label">Supplier</label>
-                            <input id="sales-supplier_id" name="supplier_id" class="form-control" ng-model="model.supplier"
-                                   typeahead="supplier as supplier.name for supplier in suppliers.asArray() | filter:$viewValue | limitTo:8">
-                            <div class="help-block">{{errors.supplier_id}}</div>
+                        <div class="form-group required" ng-class="{error:errors.customer_id}">
+                            <label for="sales-customer_id" class="control-label">Customer</label>
+                            <input id="sales-customer_id" name="customer_id" class="form-control" ng-model="model.customer"
+                                   typeahead="customer as customer.name for customer in customers | filter:$viewValue | limitTo:8">
+                            <div class="help-block">{{errors.customer_id}}</div>
                         </div>
                         <div class="form-group required" ng-class="{error:errors.branch_id}">
                             <label for="sales-branch_id" class="control-label">Branch</label>
                             <select id="sales-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id"
-                                    ng-options="branch.id as branch.name for branch in branchs.asArray()">
+                                    ng-options="branch.id as branch.name for branch in branchs">
                             </select>
                             <div class="help-block">{{errors.branch_id}}</div>
                         </div>

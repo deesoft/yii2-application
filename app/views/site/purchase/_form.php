@@ -9,18 +9,12 @@ $widget->renderJs('js/_form.js');
 ?>
 
 <div class="purchase-form">
-    <form name="Form" d-errors="errors">
+    <form name="Form">
         <div class="box box-default">
             <div class="box-header with-border">
                 <div class="btn-group">
                     <a class="btn btn-primary btn-sm" ng-click="save()">Save</a>
                     <a class="btn btn-danger btn-sm" ng-click="discard()">Discard</a>
-                </div>
-                <div ng-if="errors.status">
-                    <h1>Error {{errors.status}}: {{errors.text}}</h1>
-                    <ul>
-                        <li ng-repeat="(field,msg) in errors.data">{{field}}: {{msg}}</li>
-                    </ul>
                 </div>
             </div>
             <div class="box-body">
