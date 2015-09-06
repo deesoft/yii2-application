@@ -33,12 +33,6 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'rules' => [
-                [
-                    'class' => 'dee\rest\UrlRule',
-                    'controller' => [
-                        'v<version:\d+>/<controller>' => 'v<version>/<controller>'
-                    ]
-                ]
             ],
         ],
         'request'=>[
