@@ -7,11 +7,11 @@ return [
         ],
     ],
     'as authenticator' => [
-        'class' => 'yii\filters\auth\CompositeAuth',
         'authMethods' => [
+//            'yii\filters\auth\QueryParamAuth',
 //            'yii\filters\auth\HttpBearerAuth',
 //            'dee\rest\GuestAuth',
         ],
-        'except'=>[],
+        'except'=>['v1/master/index'],
     ],
 ];

@@ -67,10 +67,6 @@ return [
     ],
     'as authenticator' => [
         'class' => 'yii\filters\auth\CompositeAuth',
-        'authMethods' => [
-            'yii\filters\auth\QueryParamAuth',
-        ],
-        'except'=>['v1/master/index'],
     ],
     'params' => $params,
 ];
