@@ -69,8 +69,6 @@ return [
         'class' => 'yii\filters\auth\CompositeAuth',
         'authMethods' => [
             'yii\filters\auth\QueryParamAuth',
-            'yii\filters\auth\HttpBearerAuth',
-            'dee\rest\GuestAuth',
         ],
         'except'=>['v1/master/index'],
     ],

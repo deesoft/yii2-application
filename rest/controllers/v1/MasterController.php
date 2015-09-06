@@ -65,11 +65,14 @@ class MasterController extends Controller
         // barcodes
         $barcodes = [];
         $query_barcode = ProductChild::find()
-            ->select(['barcode', 'id' => 'product_id'])
-            ->union(Product::find()->select(['code', 'id']))
+            ->select(['barcode', 'product_id'])
             ->asArray();
         foreach ($query_barcode->all() as $row) {
-            $barcodes[strtoupper($row['barcode'])] = $row['id'];
+            $barcodes[strtoupper($row['barcode'])] = $row['product_id'];
+        }
+        $query_barcode = Product::find()->select(['code', 'id'])->asArray();
+        foreach ($query_barcode->all() as $row) {
+            $barcodes[strtoupper($row['code'])] = $row['id'];
         }
         $result['barcodes'] = $barcodes;
 

@@ -30,7 +30,7 @@ class m130524_201442_init extends Migration
             'user_id' => $this->integer()->notNull(),
             'source' => $this->string(255)->notNull(),
             'source_id' => $this->string(255)->notNull(),
-            'FOREIGN KEY [[user_id]] REFERENCES {{%user}}([[id]]) ON DELETE CASCADE ON UPDATE CASCADE'
+            'FOREIGN KEY ([[user_id]]) REFERENCES {{%user}}([[id]]) ON DELETE CASCADE ON UPDATE CASCADE'
             ], $tableOptions);
 
         $this->createTable('{{%user_token}}', [
