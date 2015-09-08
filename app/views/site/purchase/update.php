@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 <div class="purchase-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <page title="Update Purchase: {{model.number}}"></page>
 
     <?= $this->render('_form', [
         'widget' => $widget,

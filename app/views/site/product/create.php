@@ -10,7 +10,6 @@ use yii\helpers\Html;
 <div class="product-create">
 
     <page title="New Product"></page>
-
     <?= $this->render('_form', [
         'widget' => $widget,
     ]) ?>

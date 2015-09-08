@@ -20,14 +20,14 @@ $widget->renderJs('js/_form.js');
             <div class="box-body">
                 <div class="row">
                     <div class="col-xs-6">
-                        <div class="form-group required" ng-class="{error:errors.branch_id}">
+                        <div class="form-group required" ng-class="{'has-error':errors.branch_id}">
                             <label for="transfer-branch_id" class="control-label">Branch</label>
                             <select id="transfer-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id"
                                     ng-options="branch.id as branch.name for branch in branchs">
                             </select>
                             <div class="help-block">{{errors.branch_id}}</div>
                         </div>
-                        <div class="form-group required" ng-class="{error:errors.branch_dest_id}">
+                        <div class="form-group required" ng-class="{'has-error':errors.branch_dest_id}">
                             <label for="transfer-branch_dest_id" class="control-label">Branch Destination</label>
                             <select id="transfer-branch_dest_id" name="branch_dest_id" class="form-control" ng-model="model.branch_dest_id"
                                     ng-options="branch.id as branch.name for branch in branchs">
@@ -36,7 +36,7 @@ $widget->renderJs('js/_form.js');
                         </div>
                     </div>
                     <div class="col-xs-6">
-                        <div class="form-group required" ng-class="{error:errors.date}">
+                        <div class="form-group required" ng-class="{'has-error':errors.date}">
                             <label for="transfer-date" class="control-label">Date</label>
                             <p class="input-group" style="width: 50%;">
                                 <input id="transfer-date" name="date" type="text" class="form-control"

@@ -4,7 +4,7 @@
 
 ?>
 <div class="site-index">
-
+    <page title="Home"></page>
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 

@@ -35,7 +35,14 @@ module.directive('navMenu', ['$location', function ($location) {
     }]);
 
 module.directive('page', ['$rootScope', function ($rootScope) {
-        return function (scope, el, attrs) {
-            $rootScope.Page.title = attrs.title;
+        return {
+            scope:{
+                title:'@'
+            },
+            link:function (scope){
+                scope.$watch('title',function(val){
+                    $rootScope.Page.title = val;
+                });
+            }
         }
-    }])
+    }]);

@@ -20,13 +20,13 @@ $widget->renderJs('js/_form.js');
             <div class="box-body">
                 <div class="row">
                     <div class="col-xs-6">
-                        <div class="form-group required" ng-class="{error:errors.supplier_id}">
+                        <div class="form-group required" ng-class="{'has-error':errors.supplier_id}">
                             <label for="purchase-supplier_id" class="control-label">Supplier</label>
                             <input id="purchase-supplier_id" name="supplier_id" class="form-control" ng-model="model.supplier"
                                    typeahead="supplier as supplier.name for supplier in suppliers | filter:$viewValue | limitTo:8">
                             <div class="help-block">{{errors.supplier_id}}</div>
                         </div>
-                        <div class="form-group required" ng-class="{error:errors.branch_id}">
+                        <div class="form-group required" ng-class="{'has-error':errors.branch_id}">
                             <label for="purchase-branch_id" class="control-label">Branch</label>
                             <select id="purchase-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id"
                                     ng-options="branch.id as branch.name for branch in branchs">
@@ -35,7 +35,7 @@ $widget->renderJs('js/_form.js');
                         </div>
                     </div>
                     <div class="col-xs-6">
-                        <div class="form-group required" ng-class="{error:errors.date}">
+                        <div class="form-group required" ng-class="{'has-error':errors.date}">
                             <label for="purchase-date" class="control-label">Date</label>
                             <p class="input-group" style="width: 50%;">
                                 <input id="purchase-date" name="date" type="text" class="form-control"
@@ -48,7 +48,7 @@ $widget->renderJs('js/_form.js');
                             </p>
                             <div class="help-block">{{errors.date}}</div>
                         </div>
-                        <div class="form-group" ng-class="{error:errors.discount}">
+                        <div class="form-group" ng-class="{'has-error':errors.discount}">
                             <label for="purchase-discount" class="control-label">Discount</label>
                             <input id="purchase-discount" name="discount" class="form-control" ng-model="model.discount">
                             <div class="help-block">{{errors.discount}}</div>

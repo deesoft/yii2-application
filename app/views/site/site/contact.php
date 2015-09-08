@@ -4,6 +4,7 @@
 ?>
 <div class="box box-info">
     <div class="box-header with-border">
+        <page title="Contact"></page>
         <h3 class="box-title">Contact</h3>
     </div>
     <div class="box-body">

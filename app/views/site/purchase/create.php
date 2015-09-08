@@ -8,7 +8,7 @@ use yii\helpers\Html;
 ?>
 
 <div class="purchase-create">
-
+    
     <page title="New Purchase"></page>
 
     <?= $this->render('_form', [

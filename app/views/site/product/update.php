@@ -10,7 +10,6 @@ use yii\helpers\Html;
 <div class="product-update">
 
     <page title="Update Product: {{model.name}}"></page>
-
     <?= $this->render('_form', [
         'widget' => $widget,
     ]) ?>
