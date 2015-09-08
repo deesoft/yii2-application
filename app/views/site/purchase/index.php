@@ -9,9 +9,9 @@ use yii\helpers\Html;
 ?>
 
 <div class="purchase-index">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <page title="Purchase"></page>
     <p>
-        <?= Html::a('Create', '#/purchase/new', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create', '#/product/new', ['class' => 'btn btn-success']) ?>
     </p>
 
     <div class="grid-view">
@@ -37,8 +37,8 @@ use yii\helpers\Html;
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="(no,model) in rows">
-                    <td>{{(provider.page - 1) * provider.itemPerPage + no + 1}}</td>
+                <tr ng-repeat="model in rows">
+                    <td>{{(provider.page - 1) * provider.itemPerPage + $index + 1}}</td>
                     <td>{{model.id}}</td>
                     <td>{{model.number}}</td>
                     <td>{{model.supplier.name}}</td>

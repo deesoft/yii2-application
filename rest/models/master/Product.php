@@ -105,76 +105,12 @@ class Product extends \rest\classes\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPrices()
+    public function extraFields()
     {
-        return $this->hasMany(Price::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPriceCategories()
-    {
-        return $this->hasMany(PriceCategory::className(), ['id' => 'price_category_id'])->viaTable('{{%price}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductSuppliers()
-    {
-        return $this->hasMany(ProductSupplier::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuppliers()
-    {
-        return $this->hasMany(Supplier::className(), ['id' => 'supplier_id'])->viaTable('{{%product_supplier}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductStocks()
-    {
-        return $this->hasMany(ProductStock::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWarehouses()
-    {
-        return $this->hasMany(Warehouse::className(), ['id' => 'warehouse_id'])->viaTable('{{%product_stock}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductUoms()
-    {
-        return $this->hasMany(ProductUom::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUoms()
-    {
-        return $this->hasMany(Uom::className(), ['id' => 'uom_id'])->viaTable('{{%product_uom}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductChildren()
-    {
-        return $this->hasMany(ProductChild::className(), ['product_id' => 'id']);
+        return[
+            'group',
+            'category',
+        ];
     }
 
     /**

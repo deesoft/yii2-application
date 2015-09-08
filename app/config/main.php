@@ -41,7 +41,8 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'rules' => [
-                ''=>'site/index'
+                ''=>'site/index',
+                'template/<view>' => 'site/template'
             ],
         ],
         'authManager'=>[

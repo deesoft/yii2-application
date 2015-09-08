@@ -6,6 +6,8 @@ use Yii;
 use yii\helpers\Json;
 use rest\models\master\Product;
 use rest\models\master\ProductUom;
+use rest\models\master\Category;
+use rest\models\master\ProductGroup;
 use rest\models\master\Uom;
 use rest\models\master\ProductChild;
 use rest\models\master\PriceCategory;
@@ -75,6 +77,16 @@ class MasterController extends Controller
             $barcodes[strtoupper($row['code'])] = $row['id'];
         }
         $result['barcodes'] = $barcodes;
+
+        // category
+        $result['categories'] = Category::find()
+                ->select(['id', 'name'])
+                ->asArray()->all();
+
+        // product_group
+        $result['product_groups'] = ProductGroup::find()
+                ->select(['id', 'name'])
+                ->asArray()->all();
 
 
         // price_category

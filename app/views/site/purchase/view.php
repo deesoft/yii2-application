@@ -9,7 +9,7 @@ use yii\helpers\Html;
 ?>
 
 <div class="purchase-view">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <page title="Purchase: {{model.number}}"></page>
 
     <div class="box box-default">
         <div class="box-header with-border">
@@ -104,5 +104,4 @@ use yii\helpers\Html;
             </tabset>
         </div>
     </div>
-
 </div>

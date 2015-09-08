@@ -37,6 +37,11 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionTemplate($view)
+    {
+        return $this->renderPartial('_templates/' . $view);
+    }
+
     public function actionLogin()
     {
         Yii::$app->getResponse()->format = 'json';

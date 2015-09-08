@@ -5,6 +5,8 @@ namespace rest\controllers\v1;
 use Yii;
 use yii\rest\Controller;
 use common\models\Login;
+use common\models\Signup;
+use common\models\User;
 
 /**
  * Description of UserController
@@ -14,6 +16,20 @@ use common\models\Login;
  */
 class UserController extends Controller
 {
+
+    public function actionOptions($action)
+    {
+        if (Yii::$app->getRequest()->getMethod() !== 'OPTIONS') {
+            Yii::$app->getResponse()->setStatusCode(405);
+        }
+        $options = [];
+        switch ($action) {
+            case 'login':
+            case 'signup':
+                $options = ['POST'];
+        }
+        Yii::$app->getResponse()->getHeaders()->set('Allow', implode(', ', $options));
+    }
 
     /**
      * Logs in a user.
@@ -38,18 +54,17 @@ class UserController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
+        $model = new Signup();
+        $model->load(Yii::$app->request->post(), '');
+        if ($model->validate()) {
+            $user = new User();
+            $user->username = $model->username;
+            $user->email = $model->email;
+            $user->setPassword($model->password);
+            $user->generateAuthKey();
+            $user->save(false);
         }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+        return $model;
     }
 
     /**
@@ -71,7 +86,7 @@ class UserController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
@@ -97,7 +112,7 @@ class UserController extends Controller
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 }

@@ -5,62 +5,48 @@ use dee\angular\NgView;
 /* @var $this yii\web\View */
 /* @var $widget NgView */
 
-$widget->renderJs('_form.js');
+$widget->renderJs('js/_form.js');
 ?>
 
-<div class="purchase-form">
-    <form name="Form" d-errors="errors">
-        <div ng-if="errors.status">
-            <h1>Error {{errors.status}}: {{errors.text}}</h1>
-            <ul>
-                <li ng-repeat="(field,msg) in errors.data">{{field}}: {{msg}}</li>
-            </ul>
-        </div>
-        <div class="btn-group">
-            <a class="btn btn-primary btn-sm" ng-click="save()">Save</a>
-            <a class="btn btn-danger btn-sm" ng-click="discard()">Discard</a>
-        </div>
-        <div class="box box-body">
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="form-group required" ng-class="{error:errors.supplier_id}">
-                        <label for="purchase-supplier_id" class="control-label">Supplier</label>
-                        <input id="purchase-supplier_id" name="supplier_id" class="form-control" ng-model="model.supplier"
-                               typeahead="supplier as supplier.name for supplier in suppliers.asArray() | filter:$viewValue | limitTo:8">
-                        <div class="help-block">{{errors.supplier_id}}</div>
-                    </div>
-                    <div class="form-group required" ng-class="{error:errors.branch_id}">
-                        <label for="purchase-branch_id" class="control-label">Branch</label>
-                        <select id="purchase-branch_id" name="branch_id" class="form-control" ng-model="model.branch_id"
-                               ng-options="branch.id as branch.name for branch in branchs.asArray()">
-                        </select>
-                        <div class="help-block">{{errors.branch_id}}</div>
-                    </div>
+<div class="product-form">
+    <form name="Form">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" ng-click="save()">Save</a>
+                    <a class="btn btn-danger btn-sm" ng-click="discard()">Discard</a>
                 </div>
-                <div class="col-xs-6">
-                    <div class="form-group required" ng-class="{error:errors.date}">
-                        <label for="purchase-date" class="control-label">Date</label>
-                        <p class="input-group" style="width: 50%;">
-                            <input id="purchase-date" name="date" type="text" class="form-control"
-                                   ng-model="model.date" datepicker-popup="dd-MM-yyyy"
-                                   is-open="dt.opened" datepicker-options="{}"
-                                   ng-focus="dt.open($event)" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="dt.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                        <div class="help-block">{{errors.date}}</div>
-                    </div>
-                    <div class="form-group" ng-class="{error:errors.discount}">
-                        <label for="purchase-discount" class="control-label">Discount</label>
-                        <input id="purchase-discount" name="discount" class="form-control" ng-model="model.discount">
-                        <div class="help-block">{{errors.discount}}</div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group required" ng-class="{error:errors.code}">
+                            <label for="product-code" class="control-label">Code</label>
+                            <input id="product-code" name="code" class="form-control" ng-model="model.code">
+                            <div class="help-block">{{errors.code}}</div>
+                        </div>
+                        <div class="form-group required" ng-class="{error:errors.name}">
+                            <label for="product-name" class="control-label">Name</label>
+                            <input id="product-code" name="name" class="form-control" ng-model="model.name">
+                            <div class="help-block">{{errors.name}}</div>
+                        </div>
+                        <div class="form-group required" ng-class="{error:errors.category_id}">
+                            <label for="product-category_id" class="control-label">Category</label>
+                            <select id="product-category_id" name="category_id" class="form-control" ng-model="model.category_id"
+                                    ng-options="category.id as category.name for category in categories">
+                            </select>
+                            <div class="help-block">{{errors.category_id}}</div>
+                        </div>
+                        <div class="form-group required" ng-class="{error:errors.group_id}">
+                            <label for="product-group_id" class="control-label">Group</label>
+                            <select id="product-group_id" name="group_id" class="form-control" ng-model="model.group_id"
+                                    ng-options="group.id as group.name for group in productGroups">
+                            </select>
+                            <div class="help-block">{{errors.group_id}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <?= $this->render('_form_detail', ['widget' => $widget]) ?>
-
     </form>
 </div>

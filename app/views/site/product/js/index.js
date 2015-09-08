@@ -2,13 +2,13 @@ var $location = $injector.get('$location');
 var search = $location.search();
 var $pageInfo = $injector.get('$pageInfo');
 
-//Page.setTitle('Purchase');
-
+$scope.q = search.q;
 query = function () {
-    Purchase.query({
+    Product.query({
         page: search.page,
         sort: search.sort,
-        expand: 'supplier,branch',
+        expand: 'group,category',
+        q:search.q,
     }, function (rows, headerCallback) {
         $pageInfo(headerCallback, $scope.provider);
         $scope.rows = rows;
@@ -24,6 +24,10 @@ $scope.provider = {
     },
     sorting: function () {
         search.sort = $scope.provider.sort;
+        $location.search(search);
+    },
+    search:function (){
+        search.q = $scope.q;
         $location.search(search);
     }
 };

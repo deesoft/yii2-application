@@ -1,4 +1,11 @@
 <?php
+use yii\web\JsExpression;
+$func = <<<FUNC
+function(param){
+    return 'template/' + param.page;
+}
+FUNC;
+
 return [
     '/' => [
         'redirectTo' => '/index',
@@ -10,11 +17,19 @@ return [
     '/contact' => [
         'view' => 'site/contact',
     ],
+    '/page/:page' => [
+        'templateUrl' => new JsExpression($func),
+    ],
     '/user/login' => [
         'visible' => false,
         'view' => 'user/login',
         'js' => 'user/js/login.js',
-        'injection' => ['$modalInstance'],
+        'injection' => ['$modalInstance','$http'],
+    ],
+    '/user/signup' => [
+        'view' => 'user/signup',
+        'js' => 'user/js/signup.js',
+        'injection' => ['$http'],
     ],
     '/purchase' => [
         'view' => 'purchase/index',
@@ -100,6 +115,26 @@ return [
         'view' => 'movement/view',
         'js' => 'movement/js/view.js',
         'injection' => ['Movement',],
+    ],
+    '/product'=>[
+        'view'=>'product/index',
+        'js'=>'product/js/index.js',
+        'injection'=>['Product'],
+    ],
+    '/product/new'=>[
+        'view'=>'product/create',
+        'js'=>'product/js/create.js',
+        'injection'=>['Product'],
+    ],
+    '/product/:id/edit'=>[
+        'view'=>'product/update',
+        'js'=>'product/js/update.js',
+        'injection'=>['Product'],
+    ],
+    '/product/:id'=>[
+        'view'=>'product/view',
+        'js'=>'product/js/view.js',
+        'injection'=>['Product'],
     ],
     'otherwise' => [
         'view' => 'site/error'

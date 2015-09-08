@@ -1,5 +1,3 @@
-var $http = $injector.get('$http');
-
 $scope.error = {};
 
 jQuery('form').on('change', ':input[name]', function () {

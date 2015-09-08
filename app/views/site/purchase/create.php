@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 <div class="purchase-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <page title="New Purchase"></page>
 
     <?= $this->render('_form', [
         'widget' => $widget,

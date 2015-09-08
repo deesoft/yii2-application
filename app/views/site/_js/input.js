@@ -17,6 +17,8 @@ module.factory('Master', function () {
     pub.customers = _MASTERS.customers || [];
     pub.product_uoms = _MASTERS.product_uoms || {};
     pub.branchs = _MASTERS.branchs || [];
+    pub.categories = _MASTERS.categories || [];
+    pub.product_groups = _MASTERS.product_groups || [];
 
     pub.getProductByCode = function (code) {
         var id = _barcodes[code];

@@ -1,4 +1,3 @@
-
 $location = $injector.get('$location');
 
 // model

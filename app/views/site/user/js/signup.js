@@ -1,13 +1,22 @@
+var $location = $injector.get('$location');
 $scope.error = {};
 
-jQuery('form').on('change',':input[name]',function (){
+jQuery('form').on('change', ':input[name]', function () {
     var $th = jQuery(this);
     delete $scope.error[$th.attr('name')];
 });
 
-$scope.submit = function(){
+$scope.submit = function () {
     var post = $scope.model;
-    
-    User.save({},post,function(){        
-    });
+
+    $http.post(opts.baseApiUrl + 'user/signup', post)
+        .then(function () {
+            $location.path('/index');
+        }, function (r) {
+            if (r.status == 422) {
+                angular.forEach(r.data, function (v) {
+                    $scope.error[v.field] = v.message;
+                });
+            }
+        });
 }
